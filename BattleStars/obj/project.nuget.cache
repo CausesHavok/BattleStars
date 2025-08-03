@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "cUTmhmGkMi8=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Sigersdal\\OneDrive\\Dokumenter\\GitHub\\BattleStars\\BattleStars\\BattleStars.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Sigersdal\\.nuget\\packages\\raylib-cs\\7.0.1\\raylib-cs.7.0.1.nupkg.sha512"
+  ],
+  "logs": []
+}
