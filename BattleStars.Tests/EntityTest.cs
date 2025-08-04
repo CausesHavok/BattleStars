@@ -244,5 +244,114 @@ public class EntityTest
         Entity.Position.Y.Should().Be(-5);
     }
 
+    [Fact]
+    public void GivenDeadEntity_WhenMoving_ThenPositionDoesNotChange()
+    {
+        // Arrange - Entity
+        var entity = new TestEntity(_testPosition, 10f);
+        entity.TakeDamage(10f); // Make it dead
+        entity.IsDead.Should().BeTrue();
+
+        // Act - try to move dead Entity
+        entity.Move(new Vector2(5, 0));
+
+        // Assert - Entity has not moved
+        entity.Position.X.Should().Be(0);
+        entity.Position.Y.Should().Be(0);
+    }
+
+    // Test when health is small fraction that it still behaves correctly
+    [Fact]
+    public void GivenEntity_WhenHealthIsSmallFraction_ThenDiesCorrectly()
+    {
+        // Arrange - Entity
+        var entity = new TestEntity(_testPosition, 0.1f);
+
+        // Act 
+        entity.TakeDamage(0.1f); // Reduce health to a small fraction
+
+        // Assert - Entity is dead
+        entity.IsDead.Should().BeTrue();
+    }
+
+    //Test when movement is small fraction that it still behaves correctly
+    [Fact]
+    public void GivenEntity_WhenMovingSmallFraction_ThenPositionUpdatesCorrectly()
+    {
+        // Arrange - Entity
+        var entity = new TestEntity(_testPosition, 100f);
+
+        // Act - move Entity by a small fraction
+        entity.Move(new Vector2(0.1f, 0.1f));
+
+        // Assert - Entity has moved by the small fraction
+        entity.Position.X.Should().Be(0.1f);
+        entity.Position.Y.Should().Be(0.1f);
+    }
+
+    // Test when damage is float.max value that it still behaves correctly
+    [Fact]
+    public void GivenEntity_WhenTakingMaxDamage_ThenDiesCorrectly()
+    {
+        // Arrange - Entity
+        var entity = new TestEntity(_testPosition, float.MaxValue);
+
+        // Act - take max damage
+        entity.TakeDamage(float.MaxValue);
+
+        // Assert - Entity is dead
+        entity.IsDead.Should().BeTrue();
+    }
+
+    // Test when moving with float.max value that it still behaves correctly
+    [Fact]
+    public void GivenEntity_WhenMovingWithMaxValue_ThenPositionUpdatesCorrectly()
+    {
+        // Arrange - Entity
+        var entity = new TestEntity(_testPosition, 100f);
+
+        // Act - move Entity by max value
+        entity.Move(new Vector2(float.MaxValue, float.MaxValue));
+
+        // Assert - Entity has moved to the max position
+        entity.Position.X.Should().Be(float.MaxValue);
+        entity.Position.Y.Should().Be(float.MaxValue);
+    }
+
+    // Test for float.nan
+    [Fact]
+    public void GivenEntity_WhenMovingWithNaN_ThenPositionDoesNotChange()
+    {
+        // Arrange - Entity
+        var entity = new TestEntity(_testPosition, 100f);
+
+        // Act - move Entity by NaN
+        Action act = () => entity.Move(new Vector2(float.NaN, float.NaN));
+
+        // Assert - Entity has not moved
+        act.Should().Throw<ArgumentException>()
+            .WithMessage("Movement vector contains NaN.*")
+            .WithParameterName("direction");
+    }
+
+    // float.positiveInfinity and float.negativeInfinity
+    [Fact]
+    public void GivenEntity_WhenMovingWithInfinity_ThenPositionUpdatesCorrectly()
+    {
+        // Arrange - Entity
+        var entity = new TestEntity(_testPosition, 100f);
+
+        // Act - move Entity with positive and negative infinity
+        Action actPositive = () => entity.Move(new Vector2(float.PositiveInfinity, float.PositiveInfinity));
+        Action actNegative = () => entity.Move(new Vector2(float.NegativeInfinity, float.NegativeInfinity));
+
+        // Assert - Entity has moved to the infinity position
+        actPositive.Should().Throw<ArgumentException>()
+            .WithMessage("Movement vector contains Infinity.*")
+            .WithParameterName("direction");
+        actNegative.Should().Throw<ArgumentException>()
+            .WithMessage("Movement vector contains Infinity.*")
+            .WithParameterName("direction");
+    }
 
 }
