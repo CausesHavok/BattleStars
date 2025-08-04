@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("BattleStars")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5c20f7a302cf0dc845aeb41607ee641430321726")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8bff46992db59052e95fd87ff61179e88a2f7c8d")]
 [assembly: System.Reflection.AssemblyProductAttribute("BattleStars")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BattleStars")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
