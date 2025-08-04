@@ -108,10 +108,10 @@ public class PlayerTest
     public void Player_Cannot_Be_Created_Without_BoundaryChecker()
     {
         // Arrange & Act
-        #pragma warning disable CS8625
+#pragma warning disable CS8625
         Action act = () => new Player(StartPositions[StartPosition.Center], 100f, null);
-        #pragma warning restore CS8625
-        
+#pragma warning restore CS8625
+
         // Assert
         act.Should().Throw<ArgumentNullException>()
             .WithMessage("Boundary checker cannot be null.*")
@@ -315,5 +315,17 @@ public class PlayerTest
         player.IsDead.Should().BeFalse();
     }
 
+    [Fact]
+    public void Player_Cannot_Take_Negative_Damage()
+    {
+        // Arrange - player with initial health
+        var player = new Player(StartPositions[StartPosition.Center], 100f, new NullBoundaryChecker());
+
+        // Act & Assert - player cannot take negative damage
+        Action act = () => player.TakeDamage(-10f);
+        act.Should().Throw<ArgumentOutOfRangeException>()
+            .WithMessage("Damage cannot be negative.*")
+            .WithParameterName("damage");
+    }
 
 }
