@@ -6,12 +6,18 @@
 
 # User specified files
 ## Ignore build output
-bin/
-obj/
-*.user
-*.suo
-*.userosscache
-*.sln.docstates
+BattleStars/bin/
+BattleStars/obj/
+BattleStars/*.user
+BattleStars/*.suo
+BattleStars/*.userosscache
+BattleStars/*.sln.docstates
+BattleStars.Tests/bin/
+BattleStars.Tests/obj/
+BattleStars.Tests/*.user
+BattleStars.Tests/*.suo
+BattleStars.Tests/*.userosscache
+BattleStars.Tests/*.sln.docstates
 
 # User-specific files
 *.rsuser
