@@ -41,6 +41,7 @@ public class Player
     public void TakeDamage(float damage)
     {
         if (damage < 0) throw new ArgumentOutOfRangeException(nameof(damage), "Damage cannot be negative.");
+        if (IsDead) return; // Ignore further damage if already dead
         Health -= damage;
     }
 
