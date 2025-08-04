@@ -12,7 +12,7 @@ public class EnemyTest
     }
 
     [Fact]
-    public void Enemy_DoesNotOverrideMove_WhenCalled()
+    public void GivenEnemy_WhenMoveCalled_DoesNotOverrideBaseMove()
     {
         var method = typeof(Enemy).GetMethod("Move");
         Assert.NotNull(method);
@@ -20,7 +20,7 @@ public class EnemyTest
     }
 
     [Fact]
-    public void Enemy_DoesNotOverrideTakeDamage_WhenCalled()
+    public void GivenEnemy_WhenTakeDamageCalled_DoesNotOverrideBaseTakeDamage()
     {
         var method = typeof(Enemy).GetMethod("TakeDamage");
         Assert.NotNull(method);
@@ -28,7 +28,7 @@ public class EnemyTest
     }
 
     [Fact]
-    public void Enemy_IsIdenticalToEntity_WhenConstructed()
+    public void GivenEnemy_WhenConstructed_IsIdenticalToEntity()
     {
         var enemy = new Enemy(new Vector2(1, 2), 100);
         var testEntity = new TestEntity(new Vector2(1, 2), 100);
