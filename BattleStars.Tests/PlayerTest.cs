@@ -230,7 +230,7 @@ public class PlayerTest
         player.IsDead.Should().BeFalse();
 
         // Act - player takes a hit
-        player.TakeHit(20f);
+        player.TakeDamage(20f);
 
         // Assert - player's health has decreased
         player.Health.Should().Be(80f);
@@ -245,7 +245,7 @@ public class PlayerTest
         player.IsDead.Should().BeFalse();
 
         // Act - player takes a hit that exceeds current health
-        player.TakeHit(20f);
+        player.TakeDamage(20f);
 
         // Assert - player's health is set to zero
         player.Health.Should().Be(0f);

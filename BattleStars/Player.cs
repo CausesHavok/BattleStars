@@ -5,13 +5,20 @@ namespace BattleStars;
 public class Player
 {
     public Vector2 Position { get; private set; }
-    public float Health { get; private set; } = 100f; // Default health value
-    public bool IsDead => Health <= 0;
+    private float _health;
+    public float Health
+    {
+        get => _health;
+        private set => _health = value > 0 ? value : 0;
+    }
+
+    public bool IsDead => _health <= 0;
 
     private readonly IBoundaryChecker boundaryChecker;
 
     public Player(Vector2 position, float health, IBoundaryChecker boundaryChecker)
     {
+        if (health <= 0) throw new ArgumentOutOfRangeException(nameof(health), "Health must be positive.");
         Position = position;
         Health = health;
         this.boundaryChecker = boundaryChecker;
@@ -31,11 +38,10 @@ public class Player
         Position += direction;
     }
 
-    public void TakeHit(float damage)
+    public void TakeDamage(float damage)
     {
+        if (damage < 0) throw new ArgumentOutOfRangeException(nameof(damage), "Damage cannot be negative.");
         Health -= damage;
-        if (Health < 0) Health = 0;
-        // Optionally: trigger death logic here if Health == 0
     }
 
 
