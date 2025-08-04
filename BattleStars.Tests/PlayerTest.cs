@@ -81,6 +81,44 @@ public class PlayerTest
 
 
     [Fact]
+    public void Player_Cannot_Be_Created_With_Negative_Health()
+    {
+        // Arrange & Act
+        Action act = () => new Player(StartPositions[StartPosition.Center], -10f, new NullBoundaryChecker());
+
+        // Assert
+        act.Should().Throw<ArgumentOutOfRangeException>()
+            .WithMessage("Health must be positive.*")
+            .WithParameterName("health");
+    }
+
+    [Fact]
+    public void Player_Cannot_Be_Created_With_Zero_Health()
+    {
+        // Arrange & Act
+        Action act = () => new Player(StartPositions[StartPosition.Center], 0f, new NullBoundaryChecker());
+
+        // Assert
+        act.Should().Throw<ArgumentOutOfRangeException>()
+            .WithMessage("Health must be positive.*")
+            .WithParameterName("health");
+    }
+
+    [Fact]
+    public void Player_Cannot_Be_Created_Without_BoundaryChecker()
+    {
+        // Arrange & Act
+        #pragma warning disable CS8625
+        Action act = () => new Player(StartPositions[StartPosition.Center], 100f, null);
+        #pragma warning restore CS8625
+        
+        // Assert
+        act.Should().Throw<ArgumentNullException>()
+            .WithMessage("Boundary checker cannot be null.*")
+            .WithParameterName("boundaryChecker");
+    }
+
+    [Fact]
     public void Player_Cannot_Move_Beyond_Left_Edge()
     {
         //Arrange - player at left edge
@@ -256,9 +294,14 @@ public class PlayerTest
     public void Player_Is_Dead_When_Health_Is_Zero()
     {
         // Arrange - player with zero health
-        var player = new Player(StartPositions[StartPosition.Center], 0f, new NullBoundaryChecker());
+        var player = new Player(StartPositions[StartPosition.Center], 10f, new NullBoundaryChecker());
+        player.IsDead.Should().BeFalse();
+
+        // Act - player takes a hit that reduces health to zero
+        player.TakeDamage(10f);
 
         // Assert - player is dead
+        player.Health.Should().Be(0f);
         player.IsDead.Should().BeTrue();
     }
 

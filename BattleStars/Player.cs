@@ -21,7 +21,7 @@ public class Player
         if (health <= 0) throw new ArgumentOutOfRangeException(nameof(health), "Health must be positive.");
         Position = position;
         Health = health;
-        this.boundaryChecker = boundaryChecker;
+        this.boundaryChecker = boundaryChecker ?? throw new ArgumentNullException(nameof(boundaryChecker), "Boundary checker cannot be null.");
     }
 
 
