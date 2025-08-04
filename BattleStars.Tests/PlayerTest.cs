@@ -359,5 +359,22 @@ public class PlayerTest
         player.IsDead.Should().BeFalse();
     }
 
+    [Fact]
+    public void Player_Losses_Health_Multiple_Times_When_Hit_Multiple_Times()
+    {
+        // Arrange - player with initial health
+        var player = new Player(StartPositions[StartPosition.Center], 100f, new NullBoundaryChecker());
+        player.IsDead.Should().BeFalse();
+
+        // Act - player takes multiple hits
+        player.TakeDamage(20f);
+        player.TakeDamage(30f);
+        player.TakeDamage(10f);
+
+        // Assert - player's health has decreased correctly
+        player.Health.Should().Be(40f);
+        player.IsDead.Should().BeFalse();
+    }
+
 
 }
