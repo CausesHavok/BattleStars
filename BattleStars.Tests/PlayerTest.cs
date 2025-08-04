@@ -81,7 +81,7 @@ public class PlayerTest
 
 
     [Fact]
-    public void Player_Cannot_Be_Created_With_Negative_Health()
+    public void GivenNegativeHealth_WhenCreatingPlayer_ThenThrowsArgumentOutOfRangeException()
     {
         // Arrange & Act
         Action act = () => new Player(StartPositions[StartPosition.Center], -10f, new NullBoundaryChecker());
@@ -93,7 +93,7 @@ public class PlayerTest
     }
 
     [Fact]
-    public void Player_Cannot_Be_Created_With_Zero_Health()
+    public void GivenZeroHealth_WhenCreatingPlayer_ThenThrowsArgumentOutOfRangeException()
     {
         // Arrange & Act
         Action act = () => new Player(StartPositions[StartPosition.Center], 0f, new NullBoundaryChecker());
@@ -105,12 +105,12 @@ public class PlayerTest
     }
 
     [Fact]
-    public void Player_Cannot_Be_Created_Without_BoundaryChecker()
+    public void GivenNullBoundaryChecker_WhenCreatingPlayer_ThenThrowsArgumentNullException()
     {
         // Arrange & Act
-#pragma warning disable CS8625
+        #pragma warning disable CS8625
         Action act = () => new Player(StartPositions[StartPosition.Center], 100f, null);
-#pragma warning restore CS8625
+        #pragma warning restore CS8625
 
         // Assert
         act.Should().Throw<ArgumentNullException>()
@@ -119,7 +119,7 @@ public class PlayerTest
     }
 
     [Fact]
-    public void Player_Cannot_Move_Beyond_Left_Edge()
+    public void GivenPlayerAtLeftEdge_WhenMovingLeft_ThenPositionDoesNotChange()
     {
         //Arrange - player at left edge
         var player = new Player(StartPositions[StartPosition.LeftEdge], 100f, new FakeBoundaryChecker());
@@ -133,7 +133,7 @@ public class PlayerTest
     }
 
     [Fact]
-    public void Player_Cannot_Move_Beyond_Right_Edge()
+    public void GivenPlayerAtRightEdge_WhenMovingRight_ThenPositionDoesNotChange()
     {
         //Arrange - player at right edge
         var player = new Player(StartPositions[StartPosition.RightEdge], 100f, new FakeBoundaryChecker());
@@ -147,7 +147,7 @@ public class PlayerTest
     }
 
     [Fact]
-    public void Player_Cannot_Move_Beyond_Top_Edge()
+    public void GivenPlayerAtTopEdge_WhenMovingUp_ThenPositionDoesNotChange()
     {
         //Arrange - player at top edge
         var player = new Player(StartPositions[StartPosition.TopEdge], 100f, new FakeBoundaryChecker());
@@ -161,7 +161,7 @@ public class PlayerTest
     }
 
     [Fact]
-    public void Player_Cannot_Move_Beyond_Bottom_Edge()
+    public void GivenPlayerAtBottomEdge_WhenMovingDown_ThenPositionDoesNotChange()
     {
         //Arrange - player at bottom edge
         var player = new Player(StartPositions[StartPosition.BottomEdge], 100f, new FakeBoundaryChecker());
@@ -175,7 +175,7 @@ public class PlayerTest
     }
 
     [Fact]
-    public void Player_Can_Move_Along_Edge()
+    public void GivenPlayerAtTopEdge_WhenMovingRight_ThenMovesAlongEdge()
     {
         //Arrange - player at top edge
         var player = new Player(StartPositions[StartPosition.TopEdge], 100f, new FakeBoundaryChecker());
@@ -189,7 +189,7 @@ public class PlayerTest
     }
 
     [Fact]
-    public void Player_Can_Move_Away_From_Edge()
+    public void GivenPlayerAtLeftEdge_WhenMovingRight_ThenMovesAwayFromEdge()
     {
         //Arrange - player at left edge
         var player = new Player(StartPositions[StartPosition.LeftEdge], 100f, new FakeBoundaryChecker());
@@ -202,9 +202,8 @@ public class PlayerTest
         player.Position.Y.Should().Be(5);
     }
 
-
     [Fact]
-    public void Player_Can_Move_Within_Bounds()
+    public void GivenPlayerWithinBounds_WhenMovingRight_ThenMovesWithinBounds()
     {
         //Arrange - player within bounds
         var player = new Player(StartPositions[StartPosition.Center], 100f, new FakeBoundaryChecker());
@@ -217,9 +216,8 @@ public class PlayerTest
         player.Position.Y.Should().Be(5);
     }
 
-
     [Fact]
-    public void Player_Cannot_Move_Diagonally_Beyond_TopLeft_Edge()
+    public void GivenPlayerAtTopLeftCorner_WhenMovingDiagonallyUpLeft_ThenPositionDoesNotChange()
     {
         // Arrange - player at top-left corner
         var player = new Player(StartPositions[StartPosition.TopLeftCorner], 100f, new FakeBoundaryChecker());
@@ -233,7 +231,7 @@ public class PlayerTest
     }
 
     [Fact]
-    public void Player_Can_Move_Diagonally_Within_Bounds()
+    public void GivenPlayerWithinBounds_WhenMovingDiagonallyUpRight_ThenMovesDiagonally()
     {
         // Arrange - player within bounds
         var player = new Player(StartPositions[StartPosition.Center], 100f, new FakeBoundaryChecker());
@@ -247,7 +245,7 @@ public class PlayerTest
     }
 
     [Fact]
-    public void Player_Does_Not_Move_When_Not_Directed_To()
+    public void GivenPlayerWithinBounds_WhenNoDirectionGiven_ThenPositionDoesNotChange()
     {
         // Arrange - player within bounds
         var player = new Player(StartPositions[StartPosition.Center], 100f, new FakeBoundaryChecker());
@@ -261,7 +259,7 @@ public class PlayerTest
     }
 
     [Fact]
-    public void Player_Takes_Hit_And_Health_Decreases()
+    public void GivenPlayerWithHealth_WhenTakingDamage_ThenHealthDecreases()
     {
         // Arrange - player with initial health
         var player = new Player(StartPositions[StartPosition.Center], 100f, new NullBoundaryChecker());
@@ -276,7 +274,7 @@ public class PlayerTest
     }
 
     [Fact]
-    public void Player_Takes_Hit_And_Health_Does_Not_Go_Below_Zero()
+    public void GivenPlayerWithLowHealth_WhenTakingExcessiveDamage_ThenHealthIsZeroAndIsDead()
     {
         // Arrange - player with initial health
         var player = new Player(StartPositions[StartPosition.Center], 10f, new NullBoundaryChecker());
@@ -291,7 +289,7 @@ public class PlayerTest
     }
 
     [Fact]
-    public void Player_Is_Dead_When_Health_Is_Zero()
+    public void GivenPlayerWithHealth_WhenTakingDamageEqualToHealth_ThenHealthIsZeroAndIsDead()
     {
         // Arrange - player with zero health
         var player = new Player(StartPositions[StartPosition.Center], 10f, new NullBoundaryChecker());
@@ -306,7 +304,7 @@ public class PlayerTest
     }
 
     [Fact]
-    public void Player_Is_Not_Dead_When_Health_Is_Positive()
+    public void GivenPlayerWithPositiveHealth_WhenCheckingIsDead_ThenReturnsFalse()
     {
         // Arrange - player with positive health
         var player = new Player(StartPositions[StartPosition.Center], 50f, new NullBoundaryChecker());
@@ -316,7 +314,7 @@ public class PlayerTest
     }
 
     [Fact]
-    public void Player_Cannot_Take_Negative_Damage()
+    public void GivenPlayerWithHealth_WhenTakingNegativeDamage_ThenThrowsArgumentOutOfRangeException()
     {
         // Arrange - player with initial health
         var player = new Player(StartPositions[StartPosition.Center], 100f, new NullBoundaryChecker());
@@ -329,7 +327,7 @@ public class PlayerTest
     }
 
     [Fact]
-    public void Player_Takes_No_Damage_When_Health_Is_Zero()
+    public void GivenDeadPlayer_WhenTakingDamage_ThenHealthDoesNotChange()
     {
         // Arrange - player with zero health
         var player = new Player(StartPositions[StartPosition.Center], 10f, new NullBoundaryChecker());
@@ -345,7 +343,7 @@ public class PlayerTest
     }
 
     [Fact]
-    public void Player_Takes_No_Damage_When_Hit_With_Zero_Damage()
+    public void GivenPlayerWithHealth_WhenTakingZeroDamage_ThenHealthDoesNotChange()
     {
         // Arrange - player with initial health
         var player = new Player(StartPositions[StartPosition.Center], 100f, new NullBoundaryChecker());
@@ -360,7 +358,7 @@ public class PlayerTest
     }
 
     [Fact]
-    public void Player_Losses_Health_Multiple_Times_When_Hit_Multiple_Times()
+    public void GivenPlayerWithHealth_WhenTakingMultipleHits_ThenHealthDecreasesCorrectly()
     {
         // Arrange - player with initial health
         var player = new Player(StartPositions[StartPosition.Center], 100f, new NullBoundaryChecker());
@@ -375,6 +373,5 @@ public class PlayerTest
         player.Health.Should().Be(40f);
         player.IsDead.Should().BeFalse();
     }
-
 
 }
