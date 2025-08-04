@@ -1,15 +1,36 @@
 using System.Numerics;
 using FluentAssertions;
-using Xunit;
+
 
 namespace BattleStars.Tests;
 
 public class EntityTest
 {
+    #region Supporting Classes
     // Minimal concrete subclass for testing purposes
     private class TestEntity(Vector2 position, float health) : Entity(position, health) { }
 
     private Vector2 _testPosition = new(0, 0);
+    #endregion
+
+    #region Construction Tests
+    /* --- Construction logic ---
+        * - Entity should be created with valid position and health
+        * - Should throw exceptions for invalid health values (negative, zero, NaN, Infinity)
+        * - Should throw exceptions for invalid position values (NaN, Infinity)
+    */
+
+    [Fact]
+    public void GivenValidHealthAndPosition_WhenCreatingEntity_ThenEntityIsCreated()
+    {
+        // Arrange & Act
+        var entity = new TestEntity(_testPosition, 100f);
+
+        // Assert
+        entity.Should().NotBeNull();
+        entity.Position.Should().Be(_testPosition);
+        entity.Health.Should().Be(100f);
+    }
 
     [Fact]
     public void GivenNegativeHealth_WhenCreatingEntity_ThenThrowsArgumentOutOfRangeException()
@@ -19,7 +40,7 @@ public class EntityTest
 
         // Assert
         act.Should().Throw<ArgumentOutOfRangeException>()
-            .WithMessage("Health must be positive.*")
+            .WithMessage("health cannot be negative.*")
             .WithParameterName("health");
     }
 
@@ -31,9 +52,76 @@ public class EntityTest
 
         // Assert
         act.Should().Throw<ArgumentOutOfRangeException>()
-            .WithMessage("Health must be positive.*")
+            .WithMessage("health cannot be zero.*")
             .WithParameterName("health");
     }
+
+    [Fact]
+    public void GivenNaNHealth_WhenCreatingEntity_ThenThrowsArgumentException()
+    {
+        // Arrange & Act
+        Action act = () => new TestEntity(_testPosition, float.NaN);
+
+        // Assert
+        act.Should().Throw<ArgumentException>()
+            .WithMessage("health cannot be NaN.*")
+            .WithParameterName("health");
+    }
+
+    [Fact]
+    public void GivenInfinityHealth_WhenCreatingEntity_ThenThrowsArgumentException()
+    {
+        // Arrange & Act
+        Action act = () => new TestEntity(_testPosition, float.PositiveInfinity);
+
+        // Assert
+        act.Should().Throw<ArgumentException>()
+            .WithMessage("health cannot be Infinity.*")
+            .WithParameterName("health");
+    }
+
+    [Fact]
+    public void GivenNaNPosition_WhenCreatingEntity_ThenThrowsArgumentException()
+    {
+        // Arrange
+        var position = new Vector2(float.NaN, 0);
+
+        // Act
+        Action act = () => new TestEntity(position, 100f);
+
+        // Assert
+        act.Should().Throw<ArgumentException>()
+            .WithMessage("Position cannot be NaN.*")
+            .WithParameterName("position");
+    }
+
+    [Fact]
+    public void GivenInfinityPosition_WhenCreatingEntity_ThenThrowsArgumentException()
+    {
+        // Arrange
+        var position = new Vector2(float.PositiveInfinity, 0);
+
+        // Act
+        Action act = () => new TestEntity(position, 100f);
+
+        // Assert
+        act.Should().Throw<ArgumentException>()
+            .WithMessage("Position cannot be Infinity.*")
+            .WithParameterName("position");
+    }
+
+
+    #endregion
+
+    #region Damage/Health Tests
+    /* --- Damage/health logic ---
+        * - Entity should be able to take damage
+        * - Health should decrease by the amount of damage taken (unless see edge cases)
+        * - Should handle cases where health to zero (entity should be marked as dead)
+        * - Should handle edge cases (e.g., taking more damage than current health)
+        * - Should throw exceptions for invalid damage values (negative, NaN, Infinity)
+        * - Should not allow damage to change health if entity is already dead
+    */
 
     [Fact]
     public void GivenEntityWithHealth_WhenTakingDamage_ThenHealthDecreases()
@@ -146,6 +234,75 @@ public class EntityTest
     }
 
     [Fact]
+    public void GivenEntity_WhenHealthIsSmallFraction_ThenDiesCorrectly()
+    {
+        // Arrange - Entity
+        var entity = new TestEntity(_testPosition, 0.1f);
+
+        // Act 
+        entity.TakeDamage(0.1f); // Reduce health to a small fraction
+
+        // Assert - Entity is dead
+        entity.IsDead.Should().BeTrue();
+    }
+
+    [Fact]
+    public void GivenEntity_WhenTakingMaxDamage_ThenDiesCorrectly()
+    {
+        // Arrange - Entity
+        var entity = new TestEntity(_testPosition, float.MaxValue);
+
+        // Act - take max damage
+        entity.TakeDamage(float.MaxValue);
+
+        // Assert - Entity is dead
+        entity.IsDead.Should().BeTrue();
+    }
+
+    [Fact]
+    public void GivenEntity_WhenTakingNaNDamage_ThenThrowsArgumentException()
+    {
+        // Arrange - Entity
+        var entity = new TestEntity(_testPosition, 100f);
+
+        // Act - take NaN damage
+        Action act = () => entity.TakeDamage(float.NaN);
+
+        // Assert - Entity has not moved
+        act.Should().Throw<ArgumentException>()
+            .WithMessage("damage cannot be NaN.*")
+            .WithParameterName("damage");
+    }
+
+    [Fact]
+    public void GivenEntity_WhenTakingInfinityDamage_ThenThrowsArgumentException()
+    {
+        // Arrange - Entity
+        var entity = new TestEntity(_testPosition, 100f);
+
+        // Act - take Infinity damage
+        Action act = () => entity.TakeDamage(float.PositiveInfinity);
+
+        // Assert - Entity has not moved
+        act.Should().Throw<ArgumentException>()
+            .WithMessage("damage cannot be Infinity.*")
+            .WithParameterName("damage");
+    }
+
+    #endregion
+
+    #region Movement Tests
+    /* --- Movement logic ---
+        * - Entity should be able to move in all directions (up, down, left, right)
+        * - Position should update correctly based on movement direction
+        * - Should handle diagonal movement
+        * - Should not allow movement if entity is dead
+        * - Should handle cases where no direction is given (position should not change)
+        * - Should handle small fractions and large values correctly
+        * - Should throw exceptions for invalid movement values (NaN, Infinity)
+    */
+
+    [Fact]
     public void GivenEntity_WhenMovingRight_ThenPositionUpdatesCorrectly()
     {
         // Arrange - Entity
@@ -205,43 +362,43 @@ public class EntityTest
     public void GivenEntity_WhenMovingDiagonallyUpRight_ThenMovesDiagonally()
     {
         // Arrange - Entity
-        var Entity = new TestEntity(_testPosition, 100f);
+        var entity = new TestEntity(_testPosition, 100f);
 
         // Act - move Entity up and right
-        Entity.Move(new Vector2(5, -5));
+        entity.Move(new Vector2(5, -5));
 
         // Assert - Entity has moved diagonally
-        Entity.Position.X.Should().Be(5);
-        Entity.Position.Y.Should().Be(-5);
+        entity.Position.X.Should().Be(5);
+        entity.Position.Y.Should().Be(-5);
     }
 
     [Fact]
     public void GivenEntity_WhenNoDirectionGiven_ThenPositionDoesNotChange()
     {
         // Arrange - Entity
-        var Entity = new TestEntity(_testPosition, 100f);
+        var entity = new TestEntity(_testPosition, 100f);
 
         // Act - Move Entity with no direction
-        Entity.Move(Vector2.Zero);
+        entity.Move(Vector2.Zero);
 
         // Assert - Entity has not moved
-        Entity.Position.X.Should().Be(0);
-        Entity.Position.Y.Should().Be(0);
+        entity.Position.X.Should().Be(0);
+        entity.Position.Y.Should().Be(0);
     }
 
     [Fact]
     public void GivenEntity_WhenMovingMultipleTimes_ThenPositionUpdatesCorrectly()
     {
         // Arrange - Entity
-        var Entity = new TestEntity(_testPosition, 100f);
+        var entity = new TestEntity(_testPosition, 100f);
 
         // Act - move Entity right, then up
-        Entity.Move(new Vector2(5, 0)); // Move right
-        Entity.Move(new Vector2(0, -5)); // Move up
+        entity.Move(new Vector2(5, 0)); // Move right
+        entity.Move(new Vector2(0, -5)); // Move up
 
         // Assert - Entity has moved to the new position
-        Entity.Position.X.Should().Be(5);
-        Entity.Position.Y.Should().Be(-5);
+        entity.Position.X.Should().Be(5);
+        entity.Position.Y.Should().Be(-5);
     }
 
     [Fact]
@@ -260,21 +417,6 @@ public class EntityTest
         entity.Position.Y.Should().Be(0);
     }
 
-    // Test when health is small fraction that it still behaves correctly
-    [Fact]
-    public void GivenEntity_WhenHealthIsSmallFraction_ThenDiesCorrectly()
-    {
-        // Arrange - Entity
-        var entity = new TestEntity(_testPosition, 0.1f);
-
-        // Act 
-        entity.TakeDamage(0.1f); // Reduce health to a small fraction
-
-        // Assert - Entity is dead
-        entity.IsDead.Should().BeTrue();
-    }
-
-    //Test when movement is small fraction that it still behaves correctly
     [Fact]
     public void GivenEntity_WhenMovingSmallFraction_ThenPositionUpdatesCorrectly()
     {
@@ -289,21 +431,6 @@ public class EntityTest
         entity.Position.Y.Should().Be(0.1f);
     }
 
-    // Test when damage is float.max value that it still behaves correctly
-    [Fact]
-    public void GivenEntity_WhenTakingMaxDamage_ThenDiesCorrectly()
-    {
-        // Arrange - Entity
-        var entity = new TestEntity(_testPosition, float.MaxValue);
-
-        // Act - take max damage
-        entity.TakeDamage(float.MaxValue);
-
-        // Assert - Entity is dead
-        entity.IsDead.Should().BeTrue();
-    }
-
-    // Test when moving with float.max value that it still behaves correctly
     [Fact]
     public void GivenEntity_WhenMovingWithMaxValue_ThenPositionUpdatesCorrectly()
     {
@@ -318,9 +445,8 @@ public class EntityTest
         entity.Position.Y.Should().Be(float.MaxValue);
     }
 
-    // Test for float.nan
     [Fact]
-    public void GivenEntity_WhenMovingWithNaN_ThenPositionDoesNotChange()
+    public void GivenEntity_WhenMovingWithNaN_ThenThrowsArgumentException()
     {
         // Arrange - Entity
         var entity = new TestEntity(_testPosition, 100f);
@@ -330,13 +456,12 @@ public class EntityTest
 
         // Assert - Entity has not moved
         act.Should().Throw<ArgumentException>()
-            .WithMessage("Movement vector contains NaN.*")
+            .WithMessage("direction cannot be NaN.*")
             .WithParameterName("direction");
     }
 
-    // float.positiveInfinity and float.negativeInfinity
     [Fact]
-    public void GivenEntity_WhenMovingWithInfinity_ThenPositionUpdatesCorrectly()
+    public void GivenEntity_WhenMovingWithInfinity_ThenThrowsArgumentException()
     {
         // Arrange - Entity
         var entity = new TestEntity(_testPosition, 100f);
@@ -347,11 +472,13 @@ public class EntityTest
 
         // Assert - Entity has moved to the infinity position
         actPositive.Should().Throw<ArgumentException>()
-            .WithMessage("Movement vector contains Infinity.*")
+            .WithMessage("direction cannot be Infinity.*")
             .WithParameterName("direction");
         actNegative.Should().Throw<ArgumentException>()
-            .WithMessage("Movement vector contains Infinity.*")
+            .WithMessage("direction cannot be Infinity.*")
             .WithParameterName("direction");
     }
+
+    #endregion
 
 }

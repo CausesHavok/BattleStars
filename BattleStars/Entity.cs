@@ -16,19 +16,19 @@ public abstract class Entity
 
     protected Entity(Vector2 position, float health)
     {
-        if (float.IsNaN(health)) throw new ArgumentException("Health cannot be NaN.", nameof(health));
-        if (float.IsInfinity(health)) throw new ArgumentException("Health cannot be Infinity.", nameof(health));
-        if (health <= 0) throw new ArgumentOutOfRangeException(nameof(health), "Health must be positive.");
+        FloatValidator.ThrowIfNaNOrInfinity(health, nameof(health));
+        FloatValidator.ThrowIfNegative(health, nameof(health));
+        FloatValidator.ThrowIfZero(health, nameof(health));
+        FloatValidator.ThrowIfNaNOrInfinity(position.X, nameof(position));
+        FloatValidator.ThrowIfNaNOrInfinity(position.Y, nameof(position));
         Position = position;
         Health = health;
     }
 
     public virtual void Move(Vector2 direction)
     {
-        if (float.IsNaN(direction.X) || float.IsNaN(direction.Y))
-            throw new ArgumentException("Movement vector contains NaN.", nameof(direction));
-        if (float.IsInfinity(direction.X) || float.IsInfinity(direction.Y))
-            throw new ArgumentException("Movement vector contains Infinity.", nameof(direction));
+        FloatValidator.ThrowIfNaNOrInfinity(direction.X, nameof(direction));
+        FloatValidator.ThrowIfNaNOrInfinity(direction.Y, nameof(direction));
         if (IsDead) return;
         if (direction == Vector2.Zero) return;
         Position += direction;
@@ -36,10 +36,9 @@ public abstract class Entity
 
     public void TakeDamage(float damage)
     {
-        if (float.IsNaN(damage)) throw new ArgumentException("Damage cannot be NaN.", nameof(damage));
-        if (float.IsInfinity(damage)) throw new ArgumentException("Damage cannot be Infinity.", nameof(damage));
-        if (damage < 0) throw new ArgumentOutOfRangeException(nameof(damage), "Damage cannot be negative.");
-        if (IsDead) return; // Ignore further damage if already dead
+        FloatValidator.ThrowIfNaNOrInfinity(damage, nameof(damage));
+        FloatValidator.ThrowIfNegative(damage, nameof(damage));
+        if (IsDead) return;
         Health -= damage;
     }
 }
