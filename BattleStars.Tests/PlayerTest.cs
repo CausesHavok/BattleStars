@@ -335,7 +335,7 @@ public class PlayerTest
         var player = new Player(StartPositions[StartPosition.Center], 10f, new NullBoundaryChecker());
         player.TakeDamage(10f);
         player.IsDead.Should().BeTrue();
-        
+
         // Act - player tries to take damage
         player.TakeDamage(20f);
 
@@ -344,6 +344,20 @@ public class PlayerTest
         player.IsDead.Should().BeTrue();
     }
 
+    [Fact]
+    public void Player_Takes_No_Damage_When_Hit_With_Zero_Damage()
+    {
+        // Arrange - player with initial health
+        var player = new Player(StartPositions[StartPosition.Center], 100f, new NullBoundaryChecker());
+        player.IsDead.Should().BeFalse();
+
+        // Act - player takes zero damage
+        player.TakeDamage(0f);
+
+        // Assert - player's health remains unchanged
+        player.Health.Should().Be(100f);
+        player.IsDead.Should().BeFalse();
+    }
 
 
 }
