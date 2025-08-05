@@ -12,16 +12,21 @@ public abstract class Entity
         protected set => _health = value > 0 ? value : 0;
     }
 
+    private readonly Func<Vector2, Vector2, IShot> _shotFactory;
+
     public bool IsDead => _health <= 0;
 
-    protected Entity(Vector2 position, float health)
+    protected Entity(Vector2 position, float health, Func<Vector2, Vector2, IShot> shotFactory)
     {
+        if (shotFactory == null) throw new ArgumentNullException(nameof(shotFactory), "Shot factory cannot be null.");
+
         FloatValidator.ThrowIfNaNOrInfinity(health, nameof(health));
         FloatValidator.ThrowIfNegative(health, nameof(health));
         FloatValidator.ThrowIfZero(health, nameof(health));
         VectorValidator.ThrowIfNaNOrInfinity(position, nameof(position));
         Position = position;
         Health = health;
+        _shotFactory = shotFactory;
     }
 
     public virtual void Move(Vector2 direction)
@@ -40,5 +45,10 @@ public abstract class Entity
         Health -= damage;
     }
 
+    public IShot Shoot(Vector2 direction)
+    {
+        if (IsDead) throw new InvalidOperationException("Cannot shoot when dead.");
+        return _shotFactory(Position, direction);
+    }
 
 }

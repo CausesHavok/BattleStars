@@ -8,7 +8,15 @@ public class EntityTest
 {
     #region Supporting Classes
     // Minimal concrete subclass for testing purposes
-    private class TestEntity(Vector2 position, float health) : Entity(position, health) { }
+
+    
+    private class TestEntity : Entity {
+
+        private static readonly Func<Vector2, Vector2, IShot> testShotFactory = (pos, dir) => new Shot(pos, dir, 1f, 1f);
+        public TestEntity(Vector2 position, float health)
+            : base(position, health, testShotFactory) { }
+
+    }
 
     private Vector2 _testPosition = new(0, 0);
     #endregion
@@ -91,8 +99,8 @@ public class EntityTest
 
         // Assert
         act.Should().Throw<ArgumentException>()
-            .WithMessage("Position cannot be NaN.*")
-            .WithParameterName("position");
+            .WithMessage("position.X cannot be NaN.*")
+            .WithParameterName("position.X");
     }
 
     [Fact]
@@ -106,8 +114,8 @@ public class EntityTest
 
         // Assert
         act.Should().Throw<ArgumentException>()
-            .WithMessage("Position cannot be Infinity.*")
-            .WithParameterName("position");
+            .WithMessage("position.X cannot be Infinity.*")
+            .WithParameterName("position.X");
     }
 
 
@@ -456,8 +464,8 @@ public class EntityTest
 
         // Assert - Entity has not moved
         act.Should().Throw<ArgumentException>()
-            .WithMessage("direction cannot be NaN.*")
-            .WithParameterName("direction");
+            .WithMessage("direction.X cannot be NaN.*")
+            .WithParameterName("direction.X");
     }
 
     [Fact]
@@ -472,11 +480,11 @@ public class EntityTest
 
         // Assert - Entity has moved to the infinity position
         actPositive.Should().Throw<ArgumentException>()
-            .WithMessage("direction cannot be Infinity.*")
-            .WithParameterName("direction");
+            .WithMessage("direction.X cannot be Infinity.*")
+            .WithParameterName("direction.X");
         actNegative.Should().Throw<ArgumentException>()
-            .WithMessage("direction cannot be Infinity.*")
-            .WithParameterName("direction");
+            .WithMessage("direction.X cannot be Infinity.*")
+            .WithParameterName("direction.X");
     }
 
     #endregion

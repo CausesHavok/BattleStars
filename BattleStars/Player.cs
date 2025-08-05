@@ -6,7 +6,7 @@ public class Player : Entity
 {
     private readonly IBoundaryChecker boundaryChecker;
 
-    public Player(Vector2 position, float health, IBoundaryChecker boundaryChecker) : base(position, health)
+    public Player(Vector2 position, float health, IBoundaryChecker boundaryChecker, Func<Vector2, Vector2, IShot> shotFactory) : base(position, health, shotFactory)
     {
         this.boundaryChecker = boundaryChecker ?? throw new ArgumentNullException(nameof(boundaryChecker), "Boundary checker cannot be null.");
     }
