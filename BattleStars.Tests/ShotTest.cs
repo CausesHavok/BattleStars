@@ -61,8 +61,7 @@ public class ShotTest
 
         // Act & Assert
         Action act = () => new Shot(position, direction, speed, damage);
-        act.Should().Throw<ArgumentException>()
-        .WithMessage("Position cannot be NaN.");
+        act.Should().Throw<ArgumentException>().WithMessage("Position.X cannot be NaN.*");
     }
 
     [Fact]
@@ -76,8 +75,7 @@ public class ShotTest
 
         // Act & Assert
         Action act = () => new Shot(position, direction, speed, damage);
-        act.Should().Throw<ArgumentException>()
-            .WithMessage("Position cannot be Infinity.");
+        act.Should().Throw<ArgumentException>().WithMessage("position.X cannot be Infinity.*");
     }
 
     [Fact]
@@ -91,7 +89,7 @@ public class ShotTest
 
         // Act & Assert
         Action act = () => new Shot(position, direction, speed, damage);
-        act.Should().Throw<ArgumentException>().WithMessage("Direction cannot be NaN.");
+        act.Should().Throw<ArgumentException>().WithMessage("direction.X cannot be NaN.*");
     }
 
     [Fact]
@@ -105,7 +103,7 @@ public class ShotTest
 
         // Act & Assert
         Action act = () => new Shot(position, direction, speed, damage);
-        act.Should().Throw<ArgumentException>().WithMessage("Direction cannot be Infinity.");
+        act.Should().Throw<ArgumentException>().WithMessage("direction.X cannot be Infinity.*");
     }
 
     [Fact]
@@ -119,7 +117,7 @@ public class ShotTest
 
         // Act & Assert
         Action act = () => new Shot(position, direction, speed, damage);
-        act.Should().Throw<ArgumentException>().WithMessage("Direction must be normalized.");
+        act.Should().Throw<ArgumentException>().WithMessage("direction must be a normalized vector.*");
     }
 
     [Fact]
@@ -133,7 +131,7 @@ public class ShotTest
 
         // Act & Assert
         Action act = () => new Shot(position, direction, speed, damage);
-        act.Should().Throw<ArgumentException>().WithMessage("Speed cannot be NaN.");
+        act.Should().Throw<ArgumentException>().WithMessage("speed cannot be NaN.*");
     }
 
     [Fact]
@@ -147,7 +145,7 @@ public class ShotTest
 
         // Act & Assert
         Action act = () => new Shot(position, direction, speed, damage);
-        act.Should().Throw<ArgumentException>().WithMessage("Speed cannot be Infinity.");
+        act.Should().Throw<ArgumentException>().WithMessage("speed cannot be Infinity.*");
     }
 
     [Fact]
@@ -161,7 +159,7 @@ public class ShotTest
 
         // Act & Assert
         Action act = () => new Shot(position, direction, speed, damage);
-        act.Should().Throw<ArgumentException>().WithMessage("Speed cannot be negative.");
+        act.Should().Throw<ArgumentException>().WithMessage("speed cannot be negative.*");
     }
 
     [Fact]
@@ -175,7 +173,7 @@ public class ShotTest
 
         // Act & Assert
         Action act = () => new Shot(position, direction, speed, damage);
-        act.Should().Throw<ArgumentException>().WithMessage("Damage cannot be NaN or Infinity.");
+        act.Should().Throw<ArgumentException>().WithMessage("damage cannot be NaN*");
     }
 
     [Fact]
@@ -189,7 +187,7 @@ public class ShotTest
 
         // Act & Assert
         Action act = () => new Shot(position, direction, speed, damage);
-        act.Should().Throw<ArgumentException>().WithMessage("Damage cannot be NaN or Infinity.");
+        act.Should().Throw<ArgumentException>().WithMessage("damage cannot be Infinity.*");
     }
 
     [Fact]
@@ -203,7 +201,7 @@ public class ShotTest
 
         // Act & Assert
         Action act = () => new Shot(position, direction, speed, damage);
-        act.Should().Throw<ArgumentException>().WithMessage("Damage cannot be NaN or Infinity.");
+        act.Should().Throw<ArgumentException>().WithMessage("damage cannot be negative.*");
     }
 
     #endregion
@@ -211,7 +209,6 @@ public class ShotTest
     #region Update Tests
     /* Tests the Update method
         * If the shot is deactivated, it should not update its position
-        * If the direction is zero, it should not update its position
         * If the speed is zero, it should not update its position
         * Should update the position based on the direction and speed
             * Up
@@ -312,6 +309,7 @@ public class ShotTest
         // Arrange
         var position = new Vector2(5, 5);
         var direction = new Vector2(1 / (float)Math.Sqrt(2), -1 / (float)Math.Sqrt(2)); // Diagonal (Down-Right)
+        direction = Vector2.Normalize(direction); // Ensure it's normalized
         float speed = 3f;
         float damage = 10f;
         var shot = new Shot(position, direction, speed, damage);
@@ -320,26 +318,10 @@ public class ShotTest
         shot.Update();
 
         // Assert
-        shot.Position.Should().Be(new Vector2(8, 2)); // Position should be updated by speed in the diagonal direction
+        shot.Position.X.Should().BeApproximately(7.12f, 0.01f); // Position should be updated by speed in the diagonal direction
+        shot.Position.Y.Should().BeApproximately(2.88f, 0.01f); // Position should be updated by speed in the diagonal direction
     }
 
-
-    [Fact]
-    public void GivenShot_WhenUpdateCalled_WithZeroDirection_ThenDoesNotUpdatePosition()
-    {
-        // Arrange
-        var position = new Vector2(1, 2);
-        var direction = Vector2.Zero; // No movement
-        float speed = 5f;
-        float damage = 10f;
-        var shot = new Shot(position, direction, speed, damage);
-
-        // Act
-        shot.Update();
-
-        // Assert
-        shot.Position.Should().Be(position); // Position should remain unchanged
-    }
 
     [Fact]
     public void GivenShot_WhenUpdateCalled_WithZeroSpeed_ThenDoesNotUpdatePosition()
