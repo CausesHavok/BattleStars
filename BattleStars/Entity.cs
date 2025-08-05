@@ -39,4 +39,6 @@ public abstract class Entity
         if (IsDead) return;
         Health -= damage;
     }
+
+
 }

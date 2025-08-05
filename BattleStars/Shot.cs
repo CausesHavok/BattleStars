@@ -1,7 +1,7 @@
 using System.Numerics;
 namespace BattleStars;
 
-public class Shot
+public class Shot : IShot
 {
     public Vector2 Position { get; private set; }
     public Vector2 Direction { get; private set; }
