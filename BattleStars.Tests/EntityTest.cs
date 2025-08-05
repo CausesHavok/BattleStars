@@ -9,8 +9,9 @@ public class EntityTest
     #region Supporting Classes
     // Minimal concrete subclass for testing purposes
 
-    
-    private class TestEntity : Entity {
+
+    private class TestEntity : Entity
+    {
 
         private static readonly Func<Vector2, Vector2, IShot> testShotFactory = (pos, dir) => new Shot(pos, dir, 1f, 1f);
         public TestEntity(Vector2 position, float health)
@@ -38,6 +39,7 @@ public class EntityTest
         entity.Should().NotBeNull();
         entity.Position.Should().Be(_testPosition);
         entity.Health.Should().Be(100f);
+        entity.IsDead.Should().BeFalse();
     }
 
     [Fact]
@@ -489,4 +491,92 @@ public class EntityTest
 
     #endregion
 
+    #region Shooting Tests
+    /* --- Shooting logic ---
+        * - Entity should be able to shoot in a given direction
+        * - Should return a shot object created by the shot factory
+        * - Should throw exceptions if entity is dead or if direction is invalid (NaN, Infinity, not normalized)
+    */
+
+    [Fact]
+    public void GivenEntity_WhenShooting_ThenReturnsShot()
+    {
+        // Arrange - Entity
+        var entity = new TestEntity(_testPosition, 100f);
+
+        // Act - shoot in a direction
+        var shot = entity.Shoot(new Vector2(1, 0));
+
+        // Assert - Shot is created correctly
+        shot.Should().NotBeNull();
+        shot.Position.Should().Be(_testPosition);
+        shot.Direction.Should().Be(new Vector2(1, 0));
+    }
+
+    [Fact]
+    public void GivenDeadEntity_WhenShooting_ThenThrowsInvalidOperationException()
+    {
+        // Arrange - Entity
+        var entity = new TestEntity(_testPosition, 10f);
+        entity.TakeDamage(10f); // Make it dead
+
+        // Act - try to shoot
+        Action act = () => entity.Shoot(new Vector2(1, 0));
+
+        // Assert - Exception is thrown
+        act.Should().Throw<InvalidOperationException>()
+            .WithMessage("Cannot shoot when dead.");
+    }
+
+    [Fact]
+    public void GivenEntity_WhenShootingWithNaNDirection_ThenThrowsArgumentException()
+    {
+        // Arrange - Entity
+        var entity = new TestEntity(_testPosition, 100f);
+
+        // Act - shoot with NaN direction
+        Action act = () => entity.Shoot(new Vector2(float.NaN, float.NaN));
+
+        // Assert - Exception is thrown
+        act.Should().Throw<ArgumentException>()
+            .WithMessage("direction.X cannot be NaN.*")
+            .WithParameterName("direction.X");
+    }
+
+    [Fact]
+    public void GivenEntity_WhenShootingWithInfinityDirection_ThenThrowsArgumentException()
+    {
+        // Arrange - Entity
+        var entity = new TestEntity(_testPosition, 100f);
+
+        // Act - shoot with positive and negative infinity direction
+        Action actPositive = () => entity.Shoot(new Vector2(float.PositiveInfinity, float.PositiveInfinity));
+        Action actNegative = () => entity.Shoot(new Vector2(float.NegativeInfinity, float.NegativeInfinity));
+
+        // Assert - Exception is thrown
+        actPositive.Should().Throw<ArgumentException>()
+            .WithMessage("direction.X cannot be Infinity.*")
+            .WithParameterName("direction.X");
+        actNegative.Should().Throw<ArgumentException>()
+            .WithMessage("direction.X cannot be Infinity.*")
+            .WithParameterName("direction.X");
+    }
+
+    [Fact]
+    public void GivenEntity_WhenShootingWithNonNormalizedDirection_ThenThrowsArgumentException()
+    {
+        // Arrange - Entity
+        var entity = new TestEntity(_testPosition, 100f);
+
+        // Act - shoot with non-normalized direction
+        Action act = () => entity.Shoot(new Vector2(1, 1)); // Not normalized
+
+        // Assert - Exception is thrown
+        act.Should().Throw<ArgumentException>()
+            .WithMessage("direction must be a normalized vector.*")
+            .WithParameterName("direction");
+    }
+
+
+    #endregion
 }

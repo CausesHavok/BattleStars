@@ -47,6 +47,8 @@ public abstract class Entity
 
     public IShot Shoot(Vector2 direction)
     {
+        VectorValidator.ThrowIfNaNOrInfinity(direction, nameof(direction));
+        VectorValidator.ThrowIfNotNormalized(direction, nameof(direction));
         if (IsDead) throw new InvalidOperationException("Cannot shoot when dead.");
         return _shotFactory(Position, direction);
     }
