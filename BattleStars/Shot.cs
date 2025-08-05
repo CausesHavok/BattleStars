@@ -1,4 +1,5 @@
 using System.Numerics;
+namespace BattleStars;
 
 public class Shot
 {
@@ -10,16 +11,34 @@ public class Shot
 
     public Shot(Vector2 position, Vector2 direction, float speed, float damage)
     {
+        VectorValidator.ThrowIfNaNOrInfinity(direction, nameof(direction));
+        VectorValidator.ThrowIfNotNormalized(direction, nameof(direction));
+        VectorValidator.ThrowIfNaNOrInfinity(position, nameof(position));
+        FloatValidator.ThrowIfNegative(speed, nameof(speed));
+        FloatValidator.ThrowIfNaNOrInfinity(speed, nameof(speed));
+        FloatValidator.ThrowIfNegative(damage, nameof(damage));
+        FloatValidator.ThrowIfNaNOrInfinity(damage, nameof(damage));
 
+        Position = position;
+        Direction = Vector2.Normalize(direction);
+        Speed = speed;
+        Damage = damage;
     }
 
     public void Update()
     {
+        if (!IsActive)
+            return;
+
+        if (Speed == 0)
+            return;
+
+        Position += Direction * Speed;
 
     }
 
     public void Deactivate()
     {
-
+        IsActive = false;
     }
 }
