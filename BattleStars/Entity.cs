@@ -19,16 +19,14 @@ public abstract class Entity
         FloatValidator.ThrowIfNaNOrInfinity(health, nameof(health));
         FloatValidator.ThrowIfNegative(health, nameof(health));
         FloatValidator.ThrowIfZero(health, nameof(health));
-        FloatValidator.ThrowIfNaNOrInfinity(position.X, nameof(position));
-        FloatValidator.ThrowIfNaNOrInfinity(position.Y, nameof(position));
+        VectorValidator.ThrowIfNaNOrInfinity(position, nameof(position));
         Position = position;
         Health = health;
     }
 
     public virtual void Move(Vector2 direction)
     {
-        FloatValidator.ThrowIfNaNOrInfinity(direction.X, nameof(direction));
-        FloatValidator.ThrowIfNaNOrInfinity(direction.Y, nameof(direction));
+        VectorValidator.ThrowIfNaNOrInfinity(direction, nameof(direction));
         if (IsDead) return;
         if (direction == Vector2.Zero) return;
         Position += direction;
