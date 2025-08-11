@@ -15,8 +15,18 @@ public class BoundaryChecker : IBoundaryChecker
         return x < minX || x > maxX;
     }
 
+    public float XDistanceToBoundary(float x)
+    {
+        return Math.Min(Math.Abs(x - minX), Math.Abs(x - maxX));
+    }
+
     public bool IsOutsideYBounds(float y)
     {
         return y < minY || y > maxY;
+    }
+
+    public float YDistanceToBoundary(float y)
+    {
+        return Math.Min(Math.Abs(y - minY), Math.Abs(y - maxY));
     }
 }

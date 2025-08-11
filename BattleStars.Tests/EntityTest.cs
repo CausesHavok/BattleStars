@@ -1,5 +1,6 @@
 using System.Numerics;
 using FluentAssertions;
+using BattleStars.Shapes;
 
 
 namespace BattleStars.Tests;
@@ -8,16 +9,16 @@ public class EntityTest
 {
     #region Supporting Classes
     // Minimal concrete subclass for testing purposes
-
-
     private class TestEntity : Entity
     {
 
         private static readonly Func<Vector2, Vector2, IShot> testShotFactory = (pos, dir) => new Shot(pos, dir, 1f, 1f);
+        private static readonly IShape _circle = new Circle(1f, System.Drawing.Color.Red);
         public TestEntity(Vector2 position, float health)
-            : base(position, health, testShotFactory) { }
+            : base(position, health, testShotFactory, _circle) { }
 
     }
+
 
     private Vector2 _testPosition = new(0, 0);
     #endregion

@@ -24,7 +24,8 @@ public static class VectorValidator
 
     public static void ThrowIfNotNormalized(Vector2 vector, string paramName)
     {
-        if (vector.Length() != 1)
+        // Allow slight floating-point imprecision
+        if (Math.Abs(vector.LengthSquared() - 1f) > 0.001f)
             throw new ArgumentException($"{paramName} must be a normalized vector.", paramName);
     }
     
