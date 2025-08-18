@@ -5,8 +5,8 @@ namespace BattleStars.Shapes;
 
 public class Polygon : IShape
 {
-    private Triangle[] _triangles;
-    public Rectangle BoundingBox { get; private set; }
+    private readonly Triangle[] _triangles;
+    private readonly Rectangle _boundingBox;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Polygon"/> class with the specified triangles
@@ -23,7 +23,7 @@ public class Polygon : IShape
             throw new ArgumentException("A polygon must have at least one triangle.");
 
         _triangles = triangles;
-        BoundingBox = CalculateBoundingBox();
+        _boundingBox = CalculateBoundingBox();
     }
 
     private Rectangle CalculateBoundingBox()
@@ -52,7 +52,7 @@ public class Polygon : IShape
         VectorValidator.ThrowIfNaNOrInfinity(entityPosition, nameof(entityPosition));
 
         // Check bounding box first for quick rejection
-        if (!BoundingBox.Contains(point, entityPosition)) return false;
+        if (!_boundingBox.Contains(point, entityPosition)) return false;
 
         // Check each triangle for point containment
         foreach (var triangle in _triangles)

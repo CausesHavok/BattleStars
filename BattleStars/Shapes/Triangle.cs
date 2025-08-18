@@ -5,9 +5,9 @@ namespace BattleStars.Shapes;
 
 public class Triangle : IShape
 {
-    public Vector2 _point1 { get; private set; }
-    public Vector2 _point2 { get; private set; }
-    public Vector2 _point3 { get; private set; }
+    public Vector2 Point1 { get; private set; }
+    public Vector2 Point2 { get; private set; }
+    public Vector2 Point3 { get; private set; }
     public Rectangle BoundingBox { get; private set; }
 
     public Color Color { get; private set; }
@@ -27,9 +27,9 @@ public class Triangle : IShape
         VectorValidator.ThrowIfNaNOrInfinity(point2, nameof(point2));
         VectorValidator.ThrowIfNaNOrInfinity(point3, nameof(point3));
 
-        _point1 = point1;
-        _point2 = point2;
-        _point3 = point3;
+        Point1 = point1;
+        Point2 = point2;
+        Point3 = point3;
 
         if (!IsValidTriangle())
             throw new ArgumentException("The points do not form a valid triangle.");
@@ -40,10 +40,10 @@ public class Triangle : IShape
 
     private Rectangle CalculateBoundingBox()
     {
-        var minX = Math.Min(_point1.X, Math.Min(_point2.X, _point3.X));
-        var minY = Math.Min(_point1.Y, Math.Min(_point2.Y, _point3.Y));
-        var maxX = Math.Max(_point1.X, Math.Max(_point2.X, _point3.X));
-        var maxY = Math.Max(_point1.Y, Math.Max(_point2.Y, _point3.Y));
+        var minX = Math.Min(Point1.X, Math.Min(Point2.X, Point3.X));
+        var minY = Math.Min(Point1.Y, Math.Min(Point2.Y, Point3.Y));
+        var maxX = Math.Max(Point1.X, Math.Max(Point2.X, Point3.X));
+        var maxY = Math.Max(Point1.Y, Math.Max(Point2.Y, Point3.Y));
         return new Rectangle(new Vector2(minX, minY), new Vector2(maxX, maxY), Color);
     }
 
@@ -51,8 +51,8 @@ public class Triangle : IShape
     {
         // Calculate the area using the cross product
         float area = 0.5f * Math.Abs(
-            (_point2.X - _point1.X) * (_point3.Y - _point1.Y) -
-            (_point3.X - _point1.X) * (_point2.Y - _point1.Y)
+            (Point2.X - Point1.X) * (Point3.Y - Point1.Y) -
+            (Point3.X - Point1.X) * (Point2.Y - Point1.Y)
         );
         return area > 0;
     }
@@ -68,9 +68,9 @@ public class Triangle : IShape
         var adjustedPoint = point - entityPosition;
 
         // Vectors from triangle points to the point
-        var v0 = _point3 - _point1;
-        var v1 = _point2 - _point1;
-        var v2 = adjustedPoint - _point1;
+        var v0 = Point3 - Point1;
+        var v1 = Point2 - Point1;
+        var v2 = adjustedPoint - Point1;
 
         // Compute dot products
         float dot00 = Vector2.Dot(v0, v0);
@@ -94,6 +94,6 @@ public class Triangle : IShape
     {
         VectorValidator.ThrowIfNaNOrInfinity(entityPosition, nameof(entityPosition));
         ArgumentNullException.ThrowIfNull(drawer);
-        drawer.DrawTriangle(entityPosition + _point1, entityPosition + _point2, entityPosition + _point3, Color);
+        drawer.DrawTriangle(entityPosition + Point1, entityPosition + Point2, entityPosition + Point3, Color);
     }
 }
