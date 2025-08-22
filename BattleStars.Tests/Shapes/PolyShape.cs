@@ -5,7 +5,7 @@ using FluentAssertions;
 
 namespace BattleStars.Tests.Shapes;
 
-public class PolygonTest
+public class PolyShapeTest
 {
     public class MockShapeDrawer : IShapeDrawer
     {
@@ -33,7 +33,7 @@ public class PolygonTest
     [Fact]
     public void GivenNullTriangleArray_WhenConstructingPolygon_ThenThrowsArgumentException()
     {
-        Action act = () => new Polygon(null!);
+        Action act = () => new PolyShape(null!);
 
         act.Should().Throw<ArgumentException>()
             .WithMessage("A polygon must have at least one shape.*");
@@ -42,7 +42,7 @@ public class PolygonTest
     [Fact]
     public void GivenEmptyTriangleArray_WhenConstructingPolygon_ThenThrowsArgumentException()
     {
-        Action act = () => new Polygon(Array.Empty<Triangle>());
+        Action act = () => new PolyShape(Array.Empty<Triangle>());
 
         act.Should().Throw<ArgumentException>()
             .WithMessage("A polygon must have at least one shape.*");
@@ -51,7 +51,7 @@ public class PolygonTest
     [Fact]
     public void GivenMalformedTriangle_WhenConstructingPolygon_ThenThrowsArgumentException()
     {
-        Action act = () => new Polygon(
+        Action act = () => new PolyShape(
         [
             new Triangle(new Vector2(0, 0), new Vector2(1, 0), new Vector2(0, 1), Color.Red),
             new Triangle(new Vector2(1, 0), new Vector2(1, 1), new Vector2(0, 1), Color.Red),
@@ -65,7 +65,7 @@ public class PolygonTest
     public void GivenSingleTriangle_WhenConstructingPolygon_ThenDoesNotThrowArgumentException()
     {
         var triangle = new Triangle(new Vector2(0, 0), new Vector2(1, 0), new Vector2(0, 1), Color.Red);
-        Action act = () => new Polygon([triangle]);
+        Action act = () => new PolyShape([triangle]);
 
         act.Should().NotThrow<ArgumentException>();
     }
@@ -75,7 +75,7 @@ public class PolygonTest
     {
         var t1 = new Triangle(new Vector2(0, 0), new Vector2(1, 0), new Vector2(0, 1), Color.Red);
         var t2 = new Triangle(new Vector2(1, 0), new Vector2(1, 1), new Vector2(0, 1), Color.Red);
-        Action act = () => new Polygon([t1, t2]);
+        Action act = () => new PolyShape([t1, t2]);
 
         act.Should().NotThrow<ArgumentException>();
     }
@@ -116,7 +116,7 @@ public class PolygonTest
     {
         var t1 = new Triangle(new Vector2(0, 0), new Vector2(1, 0), new Vector2(0, 1), Color.Red);
         var t2 = new Triangle(new Vector2(0, 0), new Vector2(1, 0), new Vector2(0, -1), Color.Red);
-        var poly = new Polygon([t1, t2]);
+        var poly = new PolyShape([t1, t2]);
         var entityPos = new Vector2(entityX, entityY);
         var point = new Vector2(pointX, pointY);
 
@@ -136,7 +136,7 @@ public class PolygonTest
     {
         var t1 = new Triangle(new Vector2(0, 0), new Vector2(1, 0), new Vector2(0, 1), Color.Red);
         var t2 = new Triangle(new Vector2(1, 0), new Vector2(1, 1), new Vector2(0, 1), Color.Red);
-        var poly = new Polygon([t1, t2]);
+        var poly = new PolyShape([t1, t2]);
         var point = new Vector2(px, py);
         var entityPos = new Vector2(ex, ey);
 
@@ -162,7 +162,7 @@ public class PolygonTest
         var drawer = new MockShapeDrawer();
         var t1 = new Triangle(new Vector2(0, 0), new Vector2(1, 0), new Vector2(0, 1), Color.Red);
         var t2 = new Triangle(new Vector2(1, 0), new Vector2(1, 1), new Vector2(0, 1), Color.Red);
-        var poly = new Polygon([t1, t2]);
+        var poly = new PolyShape([t1, t2]);
 
         poly.Draw(new Vector2(1, 1), drawer);
         var TimesCalled = drawer.TimesCalled;
@@ -181,7 +181,7 @@ public class PolygonTest
         var drawer = new MockShapeDrawer();
         var t1 = new Triangle(new Vector2(0, 0), new Vector2(1, 0), new Vector2(0, 1), Color.Red);
         var t2 = new Triangle(new Vector2(1, 0), new Vector2(1, 1), new Vector2(0, 1), Color.Red);
-        var poly = new Polygon([t1, t2]);
+        var poly = new PolyShape([t1, t2]);
         var position = new Vector2(px, py);
 
         Action act = () => poly.Draw(position, drawer);
@@ -195,7 +195,7 @@ public class PolygonTest
     {
         var t1 = new Triangle(new Vector2(0, 0), new Vector2(1, 0), new Vector2(0, 1), Color.Red);
         var t2 = new Triangle(new Vector2(1, 0), new Vector2(1, 1), new Vector2(0, 1), Color.Red);
-        var poly = new Polygon([t1, t2]);
+        var poly = new PolyShape([t1, t2]);
         var position = new Vector2(1, 1);
 
         Action act = () => poly.Draw(position, null!);

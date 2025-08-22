@@ -3,13 +3,13 @@ using System.Drawing;
 
 namespace BattleStars.Shapes;
 
-public class Polygon : IShape
+public class PolyShape : IShape
 {
     private readonly IShape[] _shapes;
     public BoundingBox BoundingBox { get; } 
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="Polygon"/> class with the specified triangles
+    /// Initializes a new instance of the <see cref="PolyShape"/> class with the specified triangles
     /// It is assumed that the shape is created around the origin (0, 0), as the entities that use this class use their position as an offset for the shape.
     /// This means that the triangles are relative to the entity's position.
     /// The bounding box is calculated based on the triangles.
@@ -17,7 +17,7 @@ public class Polygon : IShape
     /// <param name="triangles">An array of triangles that make up the polygon.</param>
     /// <exception cref="ArgumentNullException">Thrown when the triangles array is null.</exception>
     /// <exception cref="ArgumentException">Thrown when the triangles array has less than three triangles.</exception>
-    public Polygon(IShape[] shapes)
+    public PolyShape(IShape[] shapes)
     {
         if (shapes == null || shapes.Length == 0)
             throw new ArgumentException("A polygon must have at least one shape.");

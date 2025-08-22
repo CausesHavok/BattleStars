@@ -39,8 +39,8 @@ public class ShapeFactory
     private Rectangle CreateSquare()
     {
         float halfSize = _scale * _defaultSize / 2;
-        Vector2 topLeft = new Vector2(-halfSize, -halfSize);
-        Vector2 bottomRight = new Vector2(halfSize, halfSize);
+        Vector2 topLeft = new(-halfSize, -halfSize);
+        Vector2 bottomRight = new(halfSize, halfSize);
         return new Rectangle(topLeft, bottomRight, _color);
     }
 
@@ -50,14 +50,14 @@ public class ShapeFactory
         float height = (float)(Math.Sqrt(3) * halfSize);
 
         // Center the centroid at (0,0)
-        Vector2 point1 = new Vector2(-halfSize, height / 3f);
-        Vector2 point2 = new Vector2(halfSize, height / 3f);
-        Vector2 point3 = new Vector2(0, -2f * height / 3f);
+        Vector2 point1 = new(-halfSize, height / 3f);
+        Vector2 point2 = new(halfSize, height / 3f);
+        Vector2 point3 = new(0, -2f * height / 3f);
 
         return new Triangle(point1, point2, point3, _color);
     }
 
-    private Polygon CreateHexagon()
+    private PolyShape CreateHexagon()
     {
         float radius = _scale * _defaultSize / 2f;
         Vector2[] outerPoints = new Vector2[6];
@@ -80,6 +80,6 @@ public class ShapeFactory
             triangles[i] = new Triangle(p1, p2, p3, _color);
         }
 
-        return new Polygon(triangles);
+        return new PolyShape(triangles);
     }
 }
