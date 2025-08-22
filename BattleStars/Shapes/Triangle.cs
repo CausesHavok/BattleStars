@@ -8,8 +8,7 @@ public class Triangle : IShape
     public Vector2 Point1 { get; private set; }
     public Vector2 Point2 { get; private set; }
     public Vector2 Point3 { get; private set; }
-    public Rectangle BoundingBox { get; private set; }
-
+    public BoundingBox BoundingBox { get; }
     public Color Color { get; private set; }
 
     /// <summary>
@@ -38,13 +37,13 @@ public class Triangle : IShape
         BoundingBox = CalculateBoundingBox();
     }
 
-    private Rectangle CalculateBoundingBox()
+    private BoundingBox CalculateBoundingBox()
     {
         var minX = Math.Min(Point1.X, Math.Min(Point2.X, Point3.X));
         var minY = Math.Min(Point1.Y, Math.Min(Point2.Y, Point3.Y));
         var maxX = Math.Max(Point1.X, Math.Max(Point2.X, Point3.X));
         var maxY = Math.Max(Point1.Y, Math.Max(Point2.Y, Point3.Y));
-        return new Rectangle(new Vector2(minX, minY), new Vector2(maxX, maxY), Color);
+        return new BoundingBox(new Vector2(minX, minY), new Vector2(maxX, maxY));
     }
 
     private bool IsValidTriangle()
@@ -62,10 +61,8 @@ public class Triangle : IShape
         VectorValidator.ThrowIfNaNOrInfinity(point, nameof(point));
         VectorValidator.ThrowIfNaNOrInfinity(entityPosition, nameof(entityPosition));
         // Check bounding box first for quick rejection
-        if (!BoundingBox.Contains(point, entityPosition)) return false;
-
-        // Adjust the point based on the shape's offset
         var adjustedPoint = point - entityPosition;
+        if (!BoundingBox.Contains(adjustedPoint)) return false;
 
         // Vectors from triangle points to the point
         var v0 = Point3 - Point1;

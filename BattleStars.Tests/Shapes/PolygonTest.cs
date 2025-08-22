@@ -36,7 +36,7 @@ public class PolygonTest
         Action act = () => new Polygon(null!);
 
         act.Should().Throw<ArgumentException>()
-            .WithMessage("A polygon must have at least one triangle.*");
+            .WithMessage("A polygon must have at least one shape.*");
     }
 
     [Fact]
@@ -45,7 +45,7 @@ public class PolygonTest
         Action act = () => new Polygon(Array.Empty<Triangle>());
 
         act.Should().Throw<ArgumentException>()
-            .WithMessage("A polygon must have at least one triangle.*");
+            .WithMessage("A polygon must have at least one shape.*");
     }
 
     [Fact]

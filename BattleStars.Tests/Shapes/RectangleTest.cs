@@ -70,8 +70,8 @@ public class RectangleTest
         var color = Color.Blue;
         var rect = new BattleStars.Shapes.Rectangle(v1, v2, color);
 
-        rect.TopLeft.Should().Be(new Vector2(0, 0));
-        rect.BottomRight.Should().Be(new Vector2(2, 3));
+        rect.BoundingBox.TopLeft.Should().Be(new Vector2(0, 0));
+        rect.BoundingBox.BottomRight.Should().Be(new Vector2(2, 3));
         rect.Color.Should().Be(color);
     }
 

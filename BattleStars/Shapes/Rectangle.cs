@@ -5,9 +5,9 @@ namespace BattleStars.Shapes;
 
 public class Rectangle : IShape
 {
-    public Vector2 TopLeft { get; private set; }
-    public Vector2 BottomRight { get; private set; }
     public Color Color { get; private set; }
+
+    public BoundingBox BoundingBox { get; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Rectangle"/> class with the specified top-left and bottom-right corners.
@@ -28,10 +28,9 @@ public class Rectangle : IShape
         float maxY = Math.Max(v1.Y, v2.Y);
 
         if (minX == maxX || minY == maxY)
-        throw new ArgumentException("Rectangle must have non-zero width and height.");
+            throw new ArgumentException("Rectangle must have non-zero width and height.");
 
-        TopLeft = new Vector2(minX, minY);
-        BottomRight = new Vector2(maxX, maxY);
+        BoundingBox = new BoundingBox(new Vector2(minX, minY), new Vector2(maxX, maxY));
         Color = color;
     }
 
@@ -43,14 +42,13 @@ public class Rectangle : IShape
         // Point within(offset + triangle) <=> (point - offset) within triangle
         // This allows us to reduce save on calculations by not having to adjust the triangle points
         var adjustedPoint = point - entityPosition;
-        return adjustedPoint.X >= TopLeft.X && adjustedPoint.X <= BottomRight.X &&
-               adjustedPoint.Y >= TopLeft.Y && adjustedPoint.Y <= BottomRight.Y;
+        return BoundingBox.Contains(adjustedPoint);
     }
 
     public void Draw(Vector2 position, IShapeDrawer drawer)
     {
         VectorValidator.ThrowIfNaNOrInfinity(position, nameof(position));
         ArgumentNullException.ThrowIfNull(drawer);
-        drawer.DrawRectangle(position + TopLeft, position + BottomRight, Color);
+        drawer.DrawRectangle(position + BoundingBox.TopLeft, position + BoundingBox.BottomRight, Color);
     }
 }

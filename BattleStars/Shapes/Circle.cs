@@ -7,6 +7,7 @@ public class Circle : IShape
 {
     private readonly float _radius;
     private readonly Color _color;
+    public BoundingBox BoundingBox { get; }
 
     public Circle(float radius, Color color)
     {
@@ -16,6 +17,7 @@ public class Circle : IShape
 
         _radius = radius;
         _color = color;
+        BoundingBox = new BoundingBox(new Vector2(-_radius, -_radius), new Vector2(_radius, _radius));
     }
 
     public bool Contains(Vector2 point, Vector2 entityPosition)
