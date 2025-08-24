@@ -1,3 +1,4 @@
+namespace BattleStars;
 public static class FloatValidator
 {
     public static void ThrowIfNaN(float value, string paramName)

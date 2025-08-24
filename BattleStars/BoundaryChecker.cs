@@ -1,3 +1,4 @@
+namespace BattleStars;
 public class BoundaryChecker : IBoundaryChecker
 {
     private readonly float minX, maxX, minY, maxY;

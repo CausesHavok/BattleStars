@@ -1,3 +1,4 @@
+namespace BattleStars;
 public interface IBoundaryChecker
 {
     bool IsOutsideXBounds(float x);
