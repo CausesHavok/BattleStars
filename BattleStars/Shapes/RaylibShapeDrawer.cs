@@ -1,12 +1,12 @@
 using Raylib_cs;
 using System.Numerics;
-namespace BattleStars;
+namespace BattleStars.Shapes;
 
 public class RaylibShapeDrawer : IShapeDrawer
 {
 
-    private static Raylib_cs.Color ToRaylibColor(System.Drawing.Color color)
-        => new Raylib_cs.Color(color.R, color.G, color.B, color.A);
+    private static Color ToRaylibColor(System.Drawing.Color color)
+        => new(color.R, color.G, color.B, color.A);
     public void DrawRectangle(Vector2 v1, Vector2 v2, System.Drawing.Color color)
     {
         Raylib.DrawRectangle((int)v1.X, (int)v1.Y, (int)(v2.X - v1.X), (int)(v2.Y - v1.Y), ToRaylibColor(color));
