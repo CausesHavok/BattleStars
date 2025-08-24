@@ -1,5 +1,4 @@
 using System.Drawing;
-
 namespace BattleStars.Shapes;
 
 public enum ShapeType

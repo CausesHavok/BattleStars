@@ -1,6 +1,5 @@
 using System.Numerics;
 using System.Drawing;
-
 namespace BattleStars;
 
 public interface IShapeDrawer

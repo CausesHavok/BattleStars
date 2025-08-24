@@ -1,5 +1,5 @@
-namespace BattleStars.Shapes;
 using System.Numerics;
+namespace BattleStars.Shapes;
 
 public readonly struct BoundingBox(Vector2 topLeft, Vector2 bottomRight) :
     IContains<Vector2>

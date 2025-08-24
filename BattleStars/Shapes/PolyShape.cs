@@ -1,6 +1,4 @@
 using System.Numerics;
-using System.Drawing;
-
 namespace BattleStars.Shapes;
 
 public class PolyShape : IShape
