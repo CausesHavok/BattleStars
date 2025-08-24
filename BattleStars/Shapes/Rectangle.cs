@@ -34,15 +34,10 @@ public class Rectangle : IShape
         Color = color;
     }
 
-    public bool Contains(Vector2 point, Vector2 entityPosition)
+    public bool Contains(Vector2 point)
     {
         VectorValidator.ThrowIfNaNOrInfinity(point, nameof(point));
-        VectorValidator.ThrowIfNaNOrInfinity(entityPosition, nameof(entityPosition));
-        // Adjust the point based on the shape's offset
-        // Point within(offset + triangle) <=> (point - offset) within triangle
-        // This allows us to reduce save on calculations by not having to adjust the triangle points
-        var adjustedPoint = point - entityPosition;
-        return BoundingBox.Contains(adjustedPoint);
+        return BoundingBox.Contains(point);
     }
 
     public void Draw(Vector2 position, IShapeDrawer drawer)

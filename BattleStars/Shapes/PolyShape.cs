@@ -46,19 +46,17 @@ public class PolyShape : IShape
     }
  
 
-    public bool Contains(Vector2 point, Vector2 entityPosition)
+    public bool Contains(Vector2 point)
     {
         VectorValidator.ThrowIfNaNOrInfinity(point, nameof(point));
-        VectorValidator.ThrowIfNaNOrInfinity(entityPosition, nameof(entityPosition));
 
         // Check bounding box first for quick rejection
-        var adjustedPoint = point - entityPosition;
-        if (!BoundingBox.Contains(adjustedPoint)) return false;
+        if (!BoundingBox.Contains(point)) return false;
 
         // Check each shape for point containment
         foreach (var shape in _shapes)
         {
-            if (shape.Contains(point, entityPosition)) return true;
+            if (shape.Contains(point)) return true;
         }
 
         return false;

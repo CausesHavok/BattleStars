@@ -90,40 +90,33 @@ public class RectangleTest
     */
 
     [Theory]
-    [InlineData(0.5f, 0.5f, 0f, 0f, true)]  // inside, origin
-    [InlineData(1f,     0f, 0f, 0f, true)]  // on edge, origin
-    [InlineData(1f,     1f, 0f, 0f, true)]  // on corner, origin
-    [InlineData(3f,     3f, 0f, 0f, false)] // outside, origin
-    [InlineData(0f,     0f, 0f, 0f, true)]  // point on origin
-    [InlineData(1.5f, 1.5f, 1f, 1f, true)]  // inside, offset
-    [InlineData(4f,     4f, 1f, 1f, false)] // outside, offset
-    public void GivenRectangle_WhenTestingContains_ThenReturnsExpected(float pointX, float pointY, float entityX, float entityY, bool expected)
+    [InlineData(0.5f, 0.5f, true)]  // inside
+    [InlineData(1f,     0f, true)]  // on edge
+    [InlineData(1f,     1f, true)]  // on corner
+    [InlineData(3f,     3f, false)] // outside
+    [InlineData(0f,     0f, true)]  // point on origin
+    public void GivenRectangle_WhenTestingContains_ThenReturnsExpected(float pointX, float pointY, bool expected)
     {
         var vec1 = new Vector2(-1, -1);
         var vec2 = new Vector2( 1,  1);
         var rect = new BattleStars.Shapes.Rectangle(vec1, vec2, Color.Red);
-        var entityPos = new Vector2(entityX, entityY);
         var point = new Vector2(pointX, pointY);
 
-        rect.Contains(point, entityPos).Should().Be(expected);
+        rect.Contains(point).Should().Be(expected);
     }
 
     [Theory]
-    [InlineData(float.NaN, 0f, 0f, 0f, "point.X")]
-    [InlineData(0f, float.NaN, 0f, 0f, "point.Y")]
-    [InlineData(float.PositiveInfinity, 0f, 0f, 0f, "point.X")]
-    [InlineData(0f, float.NegativeInfinity, 0f, 0f, "point.Y")]
-    [InlineData(0f, 0f, float.NaN, 0f, "entityPosition.X")]
-    [InlineData(0f, 0f, 0f, float.NaN, "entityPosition.Y")]
-    [InlineData(0f, 0f, float.PositiveInfinity, 0f, "entityPosition.X")]
-    [InlineData(0f, 0f, 0f, float.NegativeInfinity, "entityPosition.Y")]
-    public void GivenRectangle_WhenTestingContains_WithInvalidPointOrEntity_ThenThrowsArgumentException(float px, float py, float ex, float ey, string paramName)
+    [InlineData(             float.NaN,                     0f, "point.X")]
+    [InlineData(                    0f,              float.NaN, "point.Y")]
+    [InlineData(float.PositiveInfinity,                     0f, "point.X")]
+    [InlineData(                    0f, float.NegativeInfinity, "point.Y")]
+
+    public void GivenRectangle_WhenTestingContains_WithInvalidPointOrEntity_ThenThrowsArgumentException(float px, float py, string paramName)
     {
         var rect = new BattleStars.Shapes.Rectangle(new Vector2(0, 0), new Vector2(2, 2), Color.Red);
         var point = new Vector2(px, py);
-        var entityPos = new Vector2(ex, ey);
 
-        Action act = () => rect.Contains(point, entityPos);
+        Action act = () => rect.Contains(point);
 
         act.Should().Throw<ArgumentException>()
             .And.ParamName.Should().Be(paramName);

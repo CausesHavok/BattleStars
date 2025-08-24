@@ -100,44 +100,33 @@ public class TriangleTest
     */
 
     [Theory]
-    [InlineData(0.2f, 0.2f, 0f, 0f, true)]   // inside, origin
-    [InlineData(  0f,   0f, 0f, 0f, true)]   // on vertex, origin
-    [InlineData(0.5f,   0f, 0f, 0f, true)]   // on edge, origin
-    [InlineData(  2f,   2f, 0f, 0f, false)]  // outside, origin
-    [InlineData(0.8f, 0.8f, 0f, 0f, false)]  // Inside Bounding Box, but outside Triangle
-    [InlineData(1.2f, 1.2f, 1f, 1f, true)]   // inside, offset
-    [InlineData(  1f,   1f, 1f, 1f, true)]   // on vertex, offset
-    [InlineData(1.5f,   1f, 1f, 1f, true)]   // on edge, offset
-    [InlineData(  3f,   3f, 1f, 1f, false)]  // outside, offset
-    [InlineData(1.8f, 1.8f, 1f, 1f, false)]  // Inside Bounding Box, but outside Triangle
-    public void GivenTriangle_WhenTestingContains_ThenReturnsExpected(float pointX, float pointY, float entityX, float entityY, bool expected)
+    [InlineData(0.2f, 0.2f, true)]   // inside
+    [InlineData(  0f,   0f, true)]   // on vertex
+    [InlineData(0.5f,   0f, true)]   // on edge
+    [InlineData(  2f,   2f, false)]  // outside
+    [InlineData(0.8f, 0.8f, false)]  // Inside Bounding Box, but outside Triangle
+    public void GivenTriangle_WhenTestingContains_ThenReturnsExpected(float pointX, float pointY, bool expected)
     {
         var Point1 = new Vector2(0, 0);
         var Point2 = new Vector2(1, 0);
         var Point3 = new Vector2(0, 1);
         var tri = new Triangle(Point1, Point2, Point3, Color.Red);
-        var entityPos = new Vector2(entityX, entityY);
         var point = new Vector2(pointX, pointY);
 
-        tri.Contains(point, entityPos).Should().Be(expected);
+        tri.Contains(point).Should().Be(expected);
     }
 
     [Theory]
-    [InlineData(float.NaN, 0f, 0f, 0f, "point.X")]
-    [InlineData(0f, float.NaN, 0f, 0f, "point.Y")]
-    [InlineData(float.PositiveInfinity, 0f, 0f, 0f, "point.X")]
-    [InlineData(0f, float.NegativeInfinity, 0f, 0f, "point.Y")]
-    [InlineData(0f, 0f, float.NaN, 0f, "entityPosition.X")]
-    [InlineData(0f, 0f, 0f, float.NaN, "entityPosition.Y")]
-    [InlineData(0f, 0f, float.PositiveInfinity, 0f, "entityPosition.X")]
-    [InlineData(0f, 0f, 0f, float.NegativeInfinity, "entityPosition.Y")]
-    public void GivenTriangle_WhenTestingContains_WithInvalidPointOrEntity_ThenThrowsArgumentException(float px, float py, float ex, float ey, string paramName)
+    [InlineData(             float.NaN,                     0f, "point.X")]
+    [InlineData(                    0f,              float.NaN, "point.Y")]
+    [InlineData(float.PositiveInfinity,                     0f, "point.X")]
+    [InlineData(                    0f, float.NegativeInfinity, "point.Y")]
+    public void GivenTriangle_WhenTestingContains_WithInvalidPointOrEntity_ThenThrowsArgumentException(float px, float py, string paramName)
     {
         var tri = new Triangle(new Vector2(0, 0), new Vector2(1, 0), new Vector2(0, 1), Color.Red);
         var point = new Vector2(px, py);
-        var entityPos = new Vector2(ex, ey);
 
-        Action act = () => tri.Contains(point, entityPos);
+        Action act = () => tri.Contains(point);
 
         act.Should().Throw<ArgumentException>()
             .And.ParamName.Should().Be(paramName);

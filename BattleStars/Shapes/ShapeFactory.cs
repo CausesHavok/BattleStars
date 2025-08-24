@@ -4,11 +4,9 @@ namespace BattleStars.Shapes;
 
 public class ShapeFactory
 {
-
-    private float _defaultSize = 1.0f; // Default size for shapes
+    private readonly float _defaultSize = 1.0f; // Default size for shapes
     private Color _color;
     private float _scale;
-
 
     public IShape CreateShape(ShapeDescriptor shapeDescriptor)
     {

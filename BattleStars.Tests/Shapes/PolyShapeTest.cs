@@ -98,49 +98,36 @@ public class PolyShapeTest
     */
 
     [Theory]
-    [InlineData(0.2f,  0.2f, 0f, 0f, true)]  // Inside first triangle
-    [InlineData(0.2f, -0.2f, 0f, 0f, true)]  // Inside second triangle
-    [InlineData(  8f,    8f, 0f, 0f, false)] // Outside polygon
-    [InlineData(  0f,    1f, 0f, 0f, true)]  // Vertex of first triangle
-    [InlineData(  0f,   -1f, 0f, 0f, true)]  // Vertex of second triangle
-    [InlineData(0.5f,    0f, 0f, 0f, true)]  // Point on edge of polygon
-    [InlineData(0.8f,  0.8f, 0f, 0f, false)] // Inside bounding box but outside triangles
-    [InlineData(1.2f,  1.2f, 1f, 1f, true)]  // Offset - Inside first triangle
-    [InlineData(1.2f,  0.8f, 1f, 1f, true)]  // Offset - Inside second triangle
-    [InlineData(  8f,    8f, 1f, 1f, false)] // Offset - Outside polygon
-    [InlineData(  1f,    2f, 1f, 1f, true)]  // Offset - Vertex of first triangle
-    [InlineData(  1f,    0f, 1f, 1f, true)]  // Offset - Vertex of second triangle
-    [InlineData(1.5f,    1f, 1f, 1f, true)]  // Offset - Point on edge of polygon
-    [InlineData(1.8f,  1.8f, 1f, 1f, false)] // Offset - Inside bounding box but outside triangles
-    public void GivenPolygon_WhenTestingContains_ThenReturnsExpected(float pointX, float pointY, float entityX, float entityY, bool expected)
+    [InlineData(0.2f,  0.2f, true)]  // Inside first triangle
+    [InlineData(0.2f, -0.2f, true)]  // Inside second triangle
+    [InlineData(  8f,    8f, false)] // Outside polygon
+    [InlineData(  0f,    1f, true)]  // Vertex of first triangle
+    [InlineData(  0f,   -1f, true)]  // Vertex of second triangle
+    [InlineData(0.5f,    0f, true)]  // Point on edge of polygon
+    [InlineData(0.8f,  0.8f, false)] // Inside bounding box but outside triangles
+    public void GivenPolygon_WhenTestingContains_ThenReturnsExpected(float pointX, float pointY, bool expected)
     {
         var t1 = new Triangle(new Vector2(0, 0), new Vector2(1, 0), new Vector2(0, 1), Color.Red);
         var t2 = new Triangle(new Vector2(0, 0), new Vector2(1, 0), new Vector2(0, -1), Color.Red);
         var poly = new PolyShape([t1, t2]);
-        var entityPos = new Vector2(entityX, entityY);
         var point = new Vector2(pointX, pointY);
 
-        poly.Contains(point, entityPos).Should().Be(expected);
+        poly.Contains(point).Should().Be(expected);
     }
 
     [Theory]
-    [InlineData(float.NaN, 0f, 0f, 0f, "point.X")]
-    [InlineData(0f, float.NaN, 0f, 0f, "point.Y")]
-    [InlineData(float.PositiveInfinity, 0f, 0f, 0f, "point.X")]
-    [InlineData(0f, float.NegativeInfinity, 0f, 0f, "point.Y")]
-    [InlineData(0f, 0f, float.NaN, 0f, "entityPosition.X")]
-    [InlineData(0f, 0f, 0f, float.NaN, "entityPosition.Y")]
-    [InlineData(0f, 0f, float.NegativeInfinity, 0f, "entityPosition.X")]
-    [InlineData(0f, 0f, 0f, float.PositiveInfinity, "entityPosition.Y")]
-    public void GivenPolygon_WhenTestingContains_WithInvalidPointOrEntity_ThenThrowsArgumentException(float px, float py, float ex, float ey, string paramName)
+    [InlineData(             float.NaN,                     0f, "point.X")]
+    [InlineData(                    0f,              float.NaN, "point.Y")]
+    [InlineData(float.PositiveInfinity,                     0f, "point.X")]
+    [InlineData(                    0f, float.NegativeInfinity, "point.Y")]
+    public void GivenPolygon_WhenTestingContains_WithInvalidPointOrEntity_ThenThrowsArgumentException(float px, float py, string paramName)
     {
         var t1 = new Triangle(new Vector2(0, 0), new Vector2(1, 0), new Vector2(0, 1), Color.Red);
         var t2 = new Triangle(new Vector2(1, 0), new Vector2(1, 1), new Vector2(0, 1), Color.Red);
         var poly = new PolyShape([t1, t2]);
         var point = new Vector2(px, py);
-        var entityPos = new Vector2(ex, ey);
 
-        Action act = () => poly.Contains(point, entityPos);
+        Action act = () => poly.Contains(point);
 
         act.Should().Throw<ArgumentException>()
             .And.ParamName.Should().Be(paramName);

@@ -56,18 +56,16 @@ public class Triangle : IShape
         return area > 0;
     }
 
-    public bool Contains(Vector2 point, Vector2 entityPosition)
+    public bool Contains(Vector2 point)
     {
         VectorValidator.ThrowIfNaNOrInfinity(point, nameof(point));
-        VectorValidator.ThrowIfNaNOrInfinity(entityPosition, nameof(entityPosition));
-        // Check bounding box first for quick rejection
-        var adjustedPoint = point - entityPosition;
-        if (!BoundingBox.Contains(adjustedPoint)) return false;
+        // Check bounding box first for quick rejection;
+        if (!BoundingBox.Contains(point)) return false;
 
         // Vectors from triangle points to the point
         var v0 = Point3 - Point1;
         var v1 = Point2 - Point1;
-        var v2 = adjustedPoint - Point1;
+        var v2 = point - Point1;
 
         // Compute dot products
         float dot00 = Vector2.Dot(v0, v0);

@@ -13,7 +13,8 @@ public static class CollisionChecker
     {
         ArgumentNullException.ThrowIfNull(entity);
         ArgumentNullException.ThrowIfNull(shot);
-        return entity.Shape.Contains(shot.Position, entity.Position);
+        var adjustedPosition = shot.Position - entity.Position;
+        return entity.Shape.Contains(adjustedPosition);
     }
 
     public static bool CheckShotShotCollision(IShot shot1, IShot shot2)

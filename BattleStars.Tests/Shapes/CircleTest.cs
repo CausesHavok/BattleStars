@@ -82,40 +82,37 @@ public class CircleTest
     */
 
     [Theory]
-    [InlineData(1f, -2f, 0f, 0f, true)]
-    [InlineData(1f, -2f, 2f, 2f, true)]
-    [InlineData(5f, 0f, 0f, 0f, true)]
-    [InlineData(7f, 0f, 2f, 0f, true)]
-    [InlineData(5f, 5f, 0f, 0f, false)]
-    [InlineData(5f, 5f, 10f, 10f, false)]
-    public void GivenCircle_WhenTestingContains_ThenReturnsExpectedResult(float pointX, float pointY, float circleX, float circleY, bool expected)
+    [InlineData(1f, -2f, true)]  // Inside circle
+    [InlineData(5f,  0f, true)]  // On circle
+    [InlineData(7f,  0f, false)] // Outside circle
+    [InlineData(4f,  4f, false)] // Outside circle, but inside boundingbox
+    public void GivenCircle_WhenTestingContains_ThenReturnsExpectedResult(float pointX, float pointY, bool expected)
     {
+        // Arrange
         var circle = new Circle(5.0f, Color.Red);
         var point = new Vector2(pointX, pointY);
-        var circleCenter = new Vector2(circleX, circleY);
 
         // Act
-        bool result = circle.Contains(point, circleCenter);
+        bool result = circle.Contains(point);
 
         // Assert
         result.Should().Be(expected);
     }
 
     [Theory]
-    [InlineData(float.NaN, 0f, 0f, 0f, "NaN", "point.X")]
-    [InlineData(0f, float.NaN, 0f, 0f, "NaN", "point.Y")]
-    [InlineData(float.PositiveInfinity, 0f, 0f, 0f, "Infinity", "point.X")]
-    [InlineData(0f, float.PositiveInfinity, 0f, 0f, "Infinity", "point.Y")]
-    [InlineData(float.NegativeInfinity, 0f, 0f, 0f, "Infinity", "point.X")]
-    [InlineData(0f, float.NegativeInfinity, 0f, 0f, "Infinity", "point.Y")]
-    public void GivenCircle_WhenTestingContains_WithInvalidPosition_ThenThrowsArgumentException(float pointX, float pointY, float circleX, float circleY, string expectedException, string paramName)
+    [InlineData(             float.NaN,                     0f,      "NaN", "point.X")]
+    [InlineData(                    0f,              float.NaN,      "NaN", "point.Y")]
+    [InlineData(float.PositiveInfinity,                     0f, "Infinity", "point.X")]
+    [InlineData(                    0f, float.PositiveInfinity, "Infinity", "point.Y")]
+    [InlineData(float.NegativeInfinity,                     0f, "Infinity", "point.X")]
+    [InlineData(                    0f, float.NegativeInfinity, "Infinity", "point.Y")]
+    public void GivenCircle_WhenTestingContains_WithInvalidPosition_ThenThrowsArgumentException(float pointX, float pointY, string expectedException, string paramName)
     {
         var circle = new Circle(5.0f, Color.Red);
         var point = new Vector2(pointX, pointY);
-        var circleCenter = new Vector2(circleX, circleY);
 
         // Act
-        Action act = () => circle.Contains(point, circleCenter);
+        Action act = () => circle.Contains(point);
 
         // Assert
         act.Should().Throw<ArgumentException>()
