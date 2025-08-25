@@ -1,4 +1,4 @@
-namespace BattleStars;
+namespace BattleStars.Utility;
 public static class FloatValidator
 {
     public static void ThrowIfNaN(float value, string paramName)

@@ -1,5 +1,6 @@
 using System.Numerics;
 using System.Drawing;
+using BattleStars.Utility;
 namespace BattleStars.Shapes;
 
 public class Circle : IShape

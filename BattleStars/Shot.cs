@@ -1,4 +1,6 @@
 using System.Numerics;
+using BattleStars.Utility;
+
 namespace BattleStars;
 
 public class Shot : IShot

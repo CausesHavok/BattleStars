@@ -1,5 +1,5 @@
 using System.Numerics;
-namespace BattleStars;
+namespace BattleStars.Utility;
 
 public static class VectorValidator
 {
