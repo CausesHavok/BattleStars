@@ -1,3 +1,4 @@
+using BattleStars.Shots;
 namespace BattleStars.Logic;
 
 public static class CollisionChecker

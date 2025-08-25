@@ -1,6 +1,6 @@
 using System.Numerics;
 using FluentAssertions;
-using Xunit;
+using BattleStars.Shots;
 
 namespace BattleStars.Tests;
 

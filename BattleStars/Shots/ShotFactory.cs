@@ -1,5 +1,5 @@
 using System.Numerics;
-namespace BattleStars;
+namespace BattleStars.Shots;
 
 public static class ShotFactory
 {

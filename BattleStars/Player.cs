@@ -2,6 +2,7 @@ using System.Numerics;
 using BattleStars.Shapes;
 using BattleStars.Utility;
 using BattleStars.Logic;
+using BattleStars.Shots;
 
 namespace BattleStars;
 

@@ -1,6 +1,7 @@
 ﻿using System.Numerics;
 using BattleStars.Shapes;
 using BattleStars.Logic;
+using BattleStars.Shots;
 using FluentAssertions;
 
 namespace BattleStars.Tests;

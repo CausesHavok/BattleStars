@@ -1,5 +1,6 @@
 using System.Numerics;
 using BattleStars.Shapes;
+using BattleStars.Shots;
 namespace BattleStars;
 
 public class Enemy : Entity
