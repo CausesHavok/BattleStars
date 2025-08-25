@@ -1,4 +1,4 @@
-namespace BattleStars;
+namespace BattleStars.Logic;
 public interface IBoundaryChecker
 {
     bool IsOutsideXBounds(float x);

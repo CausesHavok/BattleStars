@@ -1,5 +1,6 @@
 using System.Drawing;
 using System.Numerics;
+using BattleStars.Utility;
 namespace BattleStars.Shapes;
 
 public class ShapeFactory

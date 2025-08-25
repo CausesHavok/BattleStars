@@ -2,6 +2,7 @@
 using System.Numerics;
 using BattleStars;
 using BattleStars.Shapes;
+using BattleStars.Logic;
 
 Raylib.InitWindow(800, 600, "BattleStars - Square Test");
 Raylib.SetTargetFPS(60);

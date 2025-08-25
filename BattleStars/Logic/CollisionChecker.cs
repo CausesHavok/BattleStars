@@ -1,4 +1,4 @@
-namespace BattleStars;
+namespace BattleStars.Logic;
 
 public static class CollisionChecker
 {

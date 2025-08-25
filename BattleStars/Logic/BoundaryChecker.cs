@@ -1,4 +1,4 @@
-namespace BattleStars;
+namespace BattleStars.Logic;
 public class BoundaryChecker : IBoundaryChecker
 {
     private readonly float minX, maxX, minY, maxY;
