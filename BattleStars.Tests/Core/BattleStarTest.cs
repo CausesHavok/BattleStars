@@ -11,11 +11,16 @@ public class TestBattleStarFixture
     public Mock<IShape> MockShape = new();
     public Mock<IShapeDrawer> MockShapeDrawer = new();
     public Mock<IMovable> MockMovable = new();
+    public Mock<IDestructable> MockDestructable = new();
     public BattleStar BattleStar;
 
     public TestBattleStarFixture()
     {
-        BattleStar = new BattleStar(MockShape.Object, MockShapeDrawer.Object, MockMovable.Object);
+        BattleStar = new BattleStar(
+            MockShape.Object,
+            MockShapeDrawer.Object,
+            MockMovable.Object,
+            MockDestructable.Object);
     }
 }
 
@@ -54,8 +59,9 @@ public class BattleStarTest : IClassFixture<TestBattleStarFixture>
         IShape nullShape = null!;
         var mockShapeDrawer = new Mock<IShapeDrawer>();
         var mockMovable = new Mock<IMovable>();
+        var mockDestructable = new Mock<IDestructable>();
 
-        Action act = () => new BattleStar(nullShape, mockShapeDrawer.Object, mockMovable.Object);
+        Action act = () => new BattleStar(nullShape, mockShapeDrawer.Object, mockMovable.Object, mockDestructable.Object);
 
         // Act & Assert
         act.Should().Throw<ArgumentNullException>();
@@ -68,8 +74,9 @@ public class BattleStarTest : IClassFixture<TestBattleStarFixture>
         var mockShape = new Mock<IShape>();
         IShapeDrawer nullShapeDrawer = null!;
         var mockMovable = new Mock<IMovable>();
+        var mockDestructable = new Mock<IDestructable>();
 
-        Action act = () => new BattleStar(mockShape.Object, nullShapeDrawer, mockMovable.Object);
+        Action act = () => new BattleStar(mockShape.Object, nullShapeDrawer, mockMovable.Object, mockDestructable.Object);
 
         // Act & Assert
         act.Should().Throw<ArgumentNullException>();
@@ -82,8 +89,24 @@ public class BattleStarTest : IClassFixture<TestBattleStarFixture>
         var mockShape = new Mock<IShape>();
         var mockShapeDrawer = new Mock<IShapeDrawer>();
         IMovable nullMovable = null!;
+        var mockDestructable = new Mock<IDestructable>();
 
-        Action act = () => new BattleStar(mockShape.Object, mockShapeDrawer.Object, nullMovable);
+        Action act = () => new BattleStar(mockShape.Object, mockShapeDrawer.Object, nullMovable, mockDestructable.Object);
+
+        // Act & Assert
+        act.Should().Throw<ArgumentNullException>();
+    }
+
+    [Fact]
+    public void GivenNullDestructable_WhenConstructed_ThenThrowsArgumentNullException()
+    {
+        // Arrange
+        var mockShape = new Mock<IShape>();
+        var mockShapeDrawer = new Mock<IShapeDrawer>();
+        var mockMovable = new Mock<IMovable>();
+        IDestructable nullDestructable = null!;
+
+        Action act = () => new BattleStar(mockShape.Object, mockShapeDrawer.Object, mockMovable.Object, nullDestructable);
 
         // Act & Assert
         act.Should().Throw<ArgumentNullException>();
@@ -96,8 +119,9 @@ public class BattleStarTest : IClassFixture<TestBattleStarFixture>
         var mockShape = new Mock<IShape>();
         var mockShapeDrawer = new Mock<IShapeDrawer>();
         var mockMovable = new Mock<IMovable>();
+        var mockDestructable = new Mock<IDestructable>();
 
-        Action act = () => new BattleStar(mockShape.Object, mockShapeDrawer.Object, mockMovable.Object);
+        Action act = () => new BattleStar(mockShape.Object, mockShapeDrawer.Object, mockMovable.Object, mockDestructable.Object);
 
         // Act & Assert
         act.Should().NotThrow();
@@ -171,5 +195,36 @@ public class BattleStarTest : IClassFixture<TestBattleStarFixture>
         // Assert
         result.Should().Be(expectedPosition);
     }
+
+    [Fact]
+    public void GivenBattleStar_WhenTakeDamageCalled_ThenDelegatesToDestructable()
+    {
+        // Arrange
+        var testBattleStar = _battleStarFixture;
+        var battleStar = testBattleStar.BattleStar;
+
+        float damageAmount = 25.0f;
+
+        // Act
+        battleStar.TakeDamage(damageAmount);
+
+        // Assert
+        testBattleStar.MockDestructable.Verify(d => d.TakeDamage(damageAmount), Times.Once);
+    }
+
+    [Fact]
+    public void GivenBattleStar_WhenIsDestroyedCalled_ThenDelegatesToDestructable()
+    {
+        // Arrange
+        var testBattleStar = _battleStarFixture;
+        var battleStar = testBattleStar.BattleStar;
+
+        // Act
+        bool isDestroyed = battleStar.IsDestroyed;
+
+        // Assert
+        testBattleStar.MockDestructable.Verify(d => d.IsDestroyed, Times.Once);
+    }
+
     #endregion
 }
