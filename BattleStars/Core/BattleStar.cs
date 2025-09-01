@@ -1,26 +1,29 @@
+using BattleStars.Shots;
 using BattleStars.Shapes;
 
 namespace BattleStars.Core;
 
 public class BattleStar
 {
-
     private readonly IShape _shape;
     private readonly IShapeDrawer _shapeDrawer;
     private readonly IMovable _movable;
     private readonly IDestructable _destructable;
+    private readonly IShooter _shooter;
 
-    public BattleStar(IShape shape, IShapeDrawer shapeDrawer, IMovable movable, IDestructable destructable)
+    public BattleStar(IShape shape, IShapeDrawer shapeDrawer, IMovable movable, IDestructable destructable, IShooter shooter)
     {
         ArgumentNullException.ThrowIfNull(shape, nameof(shape));
         ArgumentNullException.ThrowIfNull(shapeDrawer, nameof(shapeDrawer));
         ArgumentNullException.ThrowIfNull(movable, nameof(movable));
         ArgumentNullException.ThrowIfNull(destructable, nameof(destructable));
+        ArgumentNullException.ThrowIfNull(shooter, nameof(shooter));
 
         _shape = shape;
         _shapeDrawer = shapeDrawer;
         _movable = movable;
         _destructable = destructable;
+        _shooter = shooter;
     }
 
     public void Draw() => _shape.Draw(_movable.Position, _shapeDrawer);
@@ -32,5 +35,7 @@ public class BattleStar
     public void TakeDamage(float amount) => _destructable.TakeDamage(amount);
 
     public bool IsDestroyed => _destructable.IsDestroyed;
+
+    public IEnumerable<IShot> Shoot(IContext context) => _shooter.Shoot(context);
 
 }
