@@ -39,14 +39,13 @@ public class PlayerMovableTest
     [InlineData(float.NegativeInfinity)]
     public void GivenInvalidPositionInput_WhenConstructed_ThenThrowsException(float invalidPosition)
     {
-        //Arrange
+        // Arrange
         var invalidPositionVector = new Vector2(invalidPosition, 0);
         var mockBoundaryChecker = new Mock<IBoundaryChecker>();
         Action act = () => new PlayerMovable(invalidPositionVector, 1, mockBoundaryChecker.Object);
 
-        //Act/Assert
-        // TODO: Refactor to use FluentAssertions
-        Assert.Throws<ArgumentException>(act);
+        // Act/Assert
+        act.Should().Throw<ArgumentException>();
     }
 
     [Theory]
@@ -54,44 +53,40 @@ public class PlayerMovableTest
     [InlineData(-1)]
     public void GivenInvalidSpeedInput_WhenConstructed_ThenThrowsOutOfRangeException(float invalidSpeed)
     {
-        //Arrange
+        // Arrange
         var validPosition = new Vector2(0, 0);
         var mockBoundaryChecker = new Mock<IBoundaryChecker>();
         Action act = () => new PlayerMovable(validPosition, invalidSpeed, mockBoundaryChecker.Object);
 
-        //Act/Assert
-        // TODO: Refactor to use FluentAssertions
-        Assert.Throws<ArgumentOutOfRangeException>(act);
+        // Act/Assert
+        act.Should().Throw<ArgumentOutOfRangeException>();
     }
 
     [Theory]
-
     [InlineData(float.NaN)]
     [InlineData(float.PositiveInfinity)]
     [InlineData(float.NegativeInfinity)]
     public void GivenInvalidSpeedInput_WhenConstructed_ThenThrowsException(float invalidSpeed)
     {
-        //Arrange
+        // Arrange
         var validPosition = new Vector2(0, 0);
         var mockBoundaryChecker = new Mock<IBoundaryChecker>();
         Action act = () => new PlayerMovable(validPosition, invalidSpeed, mockBoundaryChecker.Object);
 
-        //Act/Assert
-        // TODO: Refactor to use FluentAssertions
-        Assert.Throws<ArgumentException>(act);
+        // Act/Assert
+        act.Should().Throw<ArgumentException>();
     }
 
     [Fact]
     public void GivenNullBoundaryChecker_WhenConstructed_ThenThrowsException()
     {
-        //Arrange
+        // Arrange
         var validPosition = new Vector2(0, 0);
         var validSpeed = 1;
         Action act = () => new PlayerMovable(validPosition, validSpeed, null!);
 
-        //Act/Assert
-        // TODO: Refactor to use FluentAssertions
-        Assert.Throws<ArgumentNullException>(act);
+        // Act/Assert
+        act.Should().Throw<ArgumentNullException>();
     }
 
 
@@ -106,8 +101,7 @@ public class PlayerMovableTest
         Action act = () => new PlayerMovable(validPosition, validSpeed, mockBoundaryChecker.Object);
 
         //Act/Assert
-        // TODO: Refactor remove var
-        var playerMovable = act.Should().NotThrow();
+        act.Should().NotThrow();
     }
 
     #endregion
@@ -126,14 +120,13 @@ public class PlayerMovableTest
     [Fact]
     public void GivenNullContext_WhenMove_ThenThrowsException()
     {
-        //Arrange
+        // Arrange
         var mockBoundaryChecker = new Mock<IBoundaryChecker>();
         var playerMovable = new PlayerMovable(new Vector2(0, 0), 1, mockBoundaryChecker.Object);
         Action act = () => playerMovable.Move(null!);
 
-        //Act/Assert
-        // TODO: Refactor to use FluentAssertions
-        Assert.Throws<ArgumentNullException>(act);
+        // Act/Assert
+        act.Should().Throw<ArgumentNullException>();
     }
 
     [Theory]
@@ -142,7 +135,7 @@ public class PlayerMovableTest
     [InlineData(float.NegativeInfinity)]
     public void GivenInvalidDirection_WhenMove_ThenThrowsException(float invalidDirection)
     {
-        //Arrange
+        // Arrange
         var mockBoundaryChecker = new Mock<IBoundaryChecker>();
         var playerMovable = new PlayerMovable(new Vector2(0, 0), 1, mockBoundaryChecker.Object);
         var invalidDirectionVector = new Vector2(invalidDirection, 0);
@@ -150,15 +143,14 @@ public class PlayerMovableTest
 
         Action act = () => playerMovable.Move(context);
 
-        //Act/Assert
-        // TODO: Refactor to use FluentAssertions
-        Assert.Throws<ArgumentException>(act);
+        // Act/Assert
+        act.Should().Throw<ArgumentException>();
     }
 
     [Fact]
     public void GivenNonNormalizedDirection_WhenMove_ThenThrowsException()
     {
-        //Arrange
+        // Arrange
         var mockBoundaryChecker = new Mock<IBoundaryChecker>();
         var playerMovable = new PlayerMovable(new Vector2(0, 0), 1, mockBoundaryChecker.Object);
         var nonNormalizedDirection = new Vector2(1, 1);
@@ -166,9 +158,8 @@ public class PlayerMovableTest
 
         Action act = () => playerMovable.Move(context);
 
-        //Act/Assert
-        // TODO: Refactor to use FluentAssertions
-        Assert.Throws<ArgumentException>(act);
+        // Act/Assert
+        act.Should().Throw<ArgumentException>();
     }
 
     [Fact]
@@ -230,14 +221,17 @@ public class PlayerMovableTest
     [Fact]
     public void GivenPlayerMovable_WhenMovedMultipleTimes_PositionAccumulatesCorrectly()
     {
+        // Arrange
         var noBoundaryEnforced = new Mock<IBoundaryChecker>();
         var playerMovable = new PlayerMovable(new Vector2(0, 0), 1, noBoundaryEnforced.Object);
         var contextRight = new TestContextFixture(Vector2.UnitX);
         var contextUp = new TestContextFixture(Vector2.UnitY);
 
+        // Act
         playerMovable.Move(contextRight);
         playerMovable.Move(contextUp);
 
+        // Assert
         playerMovable.Position.Should().Be(new Vector2(1, 1));
     }
 
@@ -269,6 +263,7 @@ public class PlayerMovableTest
     [InlineData(1, -1, 0.7, 0)] // Move diagonally right-up across Y boundary only
     public void GivenPlayerMovable_WhenCrossingMultipleBoundaries_ThenPositionIsProjected(float directionX, float directionY, float expectedX, float expectedY)
     {
+        // Arrange
         var boundaryChecker = new Mock<IBoundaryChecker>();
         boundaryChecker.Setup(b => b.IsOutsideXBounds(It.IsAny<float>())).Returns<float>(x => x < 0);
         boundaryChecker.Setup(b => b.XDistanceToBoundary(It.IsAny<float>())).Returns<float>(x => -x);
@@ -278,17 +273,19 @@ public class PlayerMovableTest
         var playerMovable = new PlayerMovable(new Vector2(0, 0), 1, boundaryChecker.Object);
         var context = new TestContextFixture(Vector2.Normalize(new Vector2(directionX, directionY)));
 
+        // Act
         playerMovable.Move(context);
 
+        // Assert
         playerMovable.Position.X.Should().BeApproximately(expectedX, 0.01f);
         playerMovable.Position.Y.Should().BeApproximately(expectedY, 0.01f);
     }
 
     [Theory]
-    [InlineData( 0, -1,    0, 0)] // Move up across boundary
-    [InlineData( 0,  1,    0, 1)]   // Move down away from boundary
+    [InlineData(0, -1, 0, 0)] // Move up across boundary
+    [InlineData(0, 1, 0, 1)]   // Move down away from boundary
     [InlineData(-1, -1, -0.7, 0)] // Move left and up across boundary
-    [InlineData( 1, -1,  0.7, 0)]   // Move right and up across boundary
+    [InlineData(1, -1, 0.7, 0)]   // Move right and up across boundary
     public void GivenPlayerMovable_WhenCrossingYBoundary_ThenPositionIsProjected(float directionX, float directionY, float expectedX, float expectedY)
     {
         // Arrange
@@ -304,8 +301,7 @@ public class PlayerMovableTest
         // Assert
         playerMovable.Position.X.Should().BeApproximately(expectedX, 0.01f);
         playerMovable.Position.Y.Should().BeApproximately(expectedY, 0.01f);
-
-
     }
+    
     #endregion
 }
