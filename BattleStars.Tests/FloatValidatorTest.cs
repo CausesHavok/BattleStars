@@ -1,4 +1,3 @@
-using System.Numerics;
 using FluentAssertions;
 using BattleStars.Utility;
 
@@ -108,5 +107,30 @@ public class FloatValidatorTest
         act.Should().Throw<ArgumentOutOfRangeException>()
             .WithMessage("test cannot be zero.*")
             .WithParameterName("test");
+    }
+
+    [Fact]
+    public void GivenNegative_WhenValidatedAgainstNegativeOrZero_ThenThrowsArgumentOutOfRangeException()
+    {
+        Action act = () => FloatValidator.ThrowIfNegativeOrZero(-1f, "test");
+        act.Should().Throw<ArgumentOutOfRangeException>()
+            .WithMessage("test cannot be negative.*")
+            .WithParameterName("test");
+    }
+
+    [Fact]
+    public void GivenZero_WhenValidatedAgainstNegativeOrZero_ThenThrowsArgumentOutOfRangeException()
+    {
+        Action act = () => FloatValidator.ThrowIfNegativeOrZero(0f, "test");
+        act.Should().Throw<ArgumentOutOfRangeException>()
+            .WithMessage("test cannot be zero.*")
+            .WithParameterName("test");
+    }
+
+    [Fact]
+    public void GivenPositive_WhenValidatedAgainstNegativeOrZero_ThenDoesNotThrow()
+    {
+        Action act = () => FloatValidator.ThrowIfNegativeOrZero(1f, "test");
+        act.Should().NotThrow();
     }
 }
