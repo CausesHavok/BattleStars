@@ -36,6 +36,10 @@ public class BattleStar
 
     public bool IsDestroyed => _destructable.IsDestroyed;
 
-    public IEnumerable<IShot> Shoot(IContext context) => _shooter.Shoot(context);
+    public IEnumerable<IShot> Shoot(IContext context)
+    {
+        context.ShooterPosition = _movable.Position;
+        return _shooter.Shoot(context);
+    }
 
 }

@@ -31,6 +31,8 @@ public class TestContextFixture : IContext
 {
     public Vector2 PlayerDirection { get; private set; }
 
+    public Vector2 ShooterPosition { get; set; }
+
     public TestContextFixture(Vector2 playerDirection)
     {
         PlayerDirection = playerDirection;
@@ -283,6 +285,25 @@ public class BattleStarTest : IClassFixture<TestBattleStarFixture>
 
         // Assert
         result.Should().BeEquivalentTo(expectedShots);
+    }
+
+    [Fact]
+    public void GivenBattleStar_WhenShootCalled_ThenContextShooterPositionIsSet()
+    {
+        // Arrange
+        var testBattleStar = _battleStarFixture;
+        var battleStar = testBattleStar.BattleStar;
+
+        var context = _contextFixture;
+
+        var expectedPosition = new Vector2(15, 30);
+        testBattleStar.MockMovable.Setup(m => m.Position).Returns(expectedPosition);
+
+        // Act
+        battleStar.Shoot(context);
+
+        // Assert
+        context.ShooterPosition.Should().Be(expectedPosition);
     }
 
     #endregion

@@ -15,6 +15,8 @@ public class PlayerMovableTest
     {
         public Vector2 PlayerDirection { get; private set; }
 
+        public Vector2 ShooterPosition { get; set; }
+
         public TestContextFixture(Vector2 playerDirection)
         {
             PlayerDirection = playerDirection;
@@ -41,8 +43,8 @@ public class PlayerMovableTest
     {
         // Arrange
         var invalidPositionVector = new Vector2(invalidPosition, 0);
-        var mockBoundaryChecker = new Mock<IBoundaryChecker>();
-        Action act = () => new PlayerMovable(invalidPositionVector, 1, mockBoundaryChecker.Object);
+        var defaultBoundaryCheckerMock = new Mock<IBoundaryChecker>();
+        Action act = () => new PlayerMovable(invalidPositionVector, 1, defaultBoundaryCheckerMock.Object);
 
         // Act/Assert
         act.Should().Throw<ArgumentException>();
@@ -55,8 +57,8 @@ public class PlayerMovableTest
     {
         // Arrange
         var validPosition = new Vector2(0, 0);
-        var mockBoundaryChecker = new Mock<IBoundaryChecker>();
-        Action act = () => new PlayerMovable(validPosition, invalidSpeed, mockBoundaryChecker.Object);
+        var defaultBoundaryCheckerMock = new Mock<IBoundaryChecker>();
+        Action act = () => new PlayerMovable(validPosition, invalidSpeed, defaultBoundaryCheckerMock.Object);
 
         // Act/Assert
         act.Should().Throw<ArgumentOutOfRangeException>();
@@ -70,8 +72,8 @@ public class PlayerMovableTest
     {
         // Arrange
         var validPosition = new Vector2(0, 0);
-        var mockBoundaryChecker = new Mock<IBoundaryChecker>();
-        Action act = () => new PlayerMovable(validPosition, invalidSpeed, mockBoundaryChecker.Object);
+        var defaultBoundaryCheckerMock = new Mock<IBoundaryChecker>();
+        Action act = () => new PlayerMovable(validPosition, invalidSpeed, defaultBoundaryCheckerMock.Object);
 
         // Act/Assert
         act.Should().Throw<ArgumentException>();
@@ -96,9 +98,9 @@ public class PlayerMovableTest
         //Arrange
         var validPosition = new Vector2(0, 0);
         var validSpeed = 1;
-        var mockBoundaryChecker = new Mock<IBoundaryChecker>();
+        var defaultBoundaryCheckerMock = new Mock<IBoundaryChecker>();
 
-        Action act = () => new PlayerMovable(validPosition, validSpeed, mockBoundaryChecker.Object);
+        Action act = () => new PlayerMovable(validPosition, validSpeed, defaultBoundaryCheckerMock.Object);
 
         //Act/Assert
         act.Should().NotThrow();
@@ -121,9 +123,9 @@ public class PlayerMovableTest
     public void GivenNullContext_WhenMove_ThenThrowsException()
     {
         // Arrange
-        var mockBoundaryChecker = new Mock<IBoundaryChecker>();
-        var playerMovable = new PlayerMovable(new Vector2(0, 0), 1, mockBoundaryChecker.Object);
-        Action act = () => playerMovable.Move(null!);
+        var defaultBoundaryCheckerMock = new Mock<IBoundaryChecker>();
+        var sut = new PlayerMovable(new Vector2(0, 0), 1, defaultBoundaryCheckerMock.Object);
+        Action act = () => sut.Move(null!);
 
         // Act/Assert
         act.Should().Throw<ArgumentNullException>();
@@ -136,12 +138,12 @@ public class PlayerMovableTest
     public void GivenInvalidDirection_WhenMove_ThenThrowsException(float invalidDirection)
     {
         // Arrange
-        var mockBoundaryChecker = new Mock<IBoundaryChecker>();
-        var playerMovable = new PlayerMovable(new Vector2(0, 0), 1, mockBoundaryChecker.Object);
+        var defaultBoundaryCheckerMock = new Mock<IBoundaryChecker>();
+        var sut = new PlayerMovable(new Vector2(0, 0), 1, defaultBoundaryCheckerMock.Object);
         var invalidDirectionVector = new Vector2(invalidDirection, 0);
-        var context = new TestContextFixture(invalidDirectionVector);
+        var invalidDirectionContext = new TestContextFixture(invalidDirectionVector);
 
-        Action act = () => playerMovable.Move(context);
+        Action act = () => sut.Move(invalidDirectionContext);
 
         // Act/Assert
         act.Should().Throw<ArgumentException>();
@@ -151,12 +153,12 @@ public class PlayerMovableTest
     public void GivenNonNormalizedDirection_WhenMove_ThenThrowsException()
     {
         // Arrange
-        var mockBoundaryChecker = new Mock<IBoundaryChecker>();
-        var playerMovable = new PlayerMovable(new Vector2(0, 0), 1, mockBoundaryChecker.Object);
+        var defaultBoundaryCheckerMock = new Mock<IBoundaryChecker>();
+        var sut = new PlayerMovable(new Vector2(0, 0), 1, defaultBoundaryCheckerMock.Object);
         var nonNormalizedDirection = new Vector2(1, 1);
-        var context = new TestContextFixture(nonNormalizedDirection);
+        var nonNormalizedDirectionContext = new TestContextFixture(nonNormalizedDirection);
 
-        Action act = () => playerMovable.Move(context);
+        Action act = () => sut.Move(nonNormalizedDirectionContext);
 
         // Act/Assert
         act.Should().Throw<ArgumentException>();
@@ -166,12 +168,12 @@ public class PlayerMovableTest
     public void GivenValidInput_WhenMove_ThenSucceeds()
     {
         //Arrange
-        var mockBoundaryChecker = new Mock<IBoundaryChecker>();
-        var playerMovable = new PlayerMovable(new Vector2(0, 0), 1, mockBoundaryChecker.Object);
+        var defaultBoundaryCheckerMock = new Mock<IBoundaryChecker>();
+        var sut = new PlayerMovable(new Vector2(0, 0), 1, defaultBoundaryCheckerMock.Object);
         var validDirection = new Vector2(1, 0);
-        var context = new TestContextFixture(validDirection);
+        var validDirectionContext = new TestContextFixture(validDirection);
 
-        Action act = () => playerMovable.Move(context);
+        Action act = () => sut.Move(validDirectionContext);
 
         //Act/Assert
         act.Should().NotThrow();
@@ -199,40 +201,40 @@ public class PlayerMovableTest
     public void GivenValidInput_WhenMove_ThenPositionIsUpdated(float PX, float PY, float DX, float DY, float expectedX, float expectedY)
     {
         //Arrange
-        var mockBoundaryChecker = new Mock<IBoundaryChecker>();
-        var playerMovable = new PlayerMovable(new Vector2(PX, PY), 1, mockBoundaryChecker.Object);
+        var defaultBoundaryCheckerMock = new Mock<IBoundaryChecker>();
+        var sut = new PlayerMovable(new Vector2(PX, PY), 1, defaultBoundaryCheckerMock.Object);
 
         var direction = new Vector2(DX, DY);
         if (DX != 0 && DY != 0)
         {
             direction = Vector2.Normalize(direction);
         }
-        var context = new TestContextFixture(direction);
+        var inputDirectedContext = new TestContextFixture(direction);
 
 
-        Action act = () => playerMovable.Move(context);
+        Action act = () => sut.Move(inputDirectedContext);
 
         //Act/Assert
         act.Should().NotThrow();
-        playerMovable.Position.X.Should().BeApproximately(expectedX, 0.01f);
-        playerMovable.Position.Y.Should().BeApproximately(expectedY, 0.01f);
+        sut.Position.X.Should().BeApproximately(expectedX, 0.01f);
+        sut.Position.Y.Should().BeApproximately(expectedY, 0.01f);
     }
 
     [Fact]
     public void GivenPlayerMovable_WhenMovedMultipleTimes_PositionAccumulatesCorrectly()
     {
         // Arrange
-        var noBoundaryEnforced = new Mock<IBoundaryChecker>();
-        var playerMovable = new PlayerMovable(new Vector2(0, 0), 1, noBoundaryEnforced.Object);
-        var contextRight = new TestContextFixture(Vector2.UnitX);
-        var contextUp = new TestContextFixture(Vector2.UnitY);
+        var noBoundaryCheckerMock = new Mock<IBoundaryChecker>();
+        var sut = new PlayerMovable(new Vector2(0, 0), 1, noBoundaryCheckerMock.Object);
+        var rightDirectionContext = new TestContextFixture(Vector2.UnitX);
+        var upDirectionContext = new TestContextFixture(Vector2.UnitY);
 
         // Act
-        playerMovable.Move(contextRight);
-        playerMovable.Move(contextUp);
+        sut.Move(rightDirectionContext);
+        sut.Move(upDirectionContext);
 
         // Assert
-        playerMovable.Position.Should().Be(new Vector2(1, 1));
+        sut.Position.Should().Be(new Vector2(1, 1));
     }
 
     [Theory]
@@ -243,18 +245,18 @@ public class PlayerMovableTest
     public void GivenPlayerMovable_WhenCrossingLeftBoundary_ThenPositionIsProjected(float directionX, float directionY, float expectedX, float expectedY)
     {
         // Arrange
-        var leftOnlyBoundaryChecker = new Mock<IBoundaryChecker>();
-        leftOnlyBoundaryChecker.Setup(b => b.IsOutsideXBounds(It.IsAny<float>())).Returns<float>(x => x < 0);
-        leftOnlyBoundaryChecker.Setup(b => b.XDistanceToBoundary(It.IsAny<float>())).Returns<float>(x => -x);
-        var playerMovable = new PlayerMovable(new Vector2(0, 0), 1, leftOnlyBoundaryChecker.Object);
-        var context = new TestContextFixture(Vector2.Normalize(new Vector2(directionX, directionY)));
+        var leftBoundaryCheckerMock = new Mock<IBoundaryChecker>();
+        leftBoundaryCheckerMock.Setup(b => b.IsOutsideXBounds(It.IsAny<float>())).Returns<float>(x => x < 0);
+        leftBoundaryCheckerMock.Setup(b => b.XDistanceToBoundary(It.IsAny<float>())).Returns<float>(x => -x);
+        var sut = new PlayerMovable(new Vector2(0, 0), 1, leftBoundaryCheckerMock.Object);
+        var inputDirectedContext = new TestContextFixture(Vector2.Normalize(new Vector2(directionX, directionY)));
 
         // Act
-        playerMovable.Move(context);
+        sut.Move(inputDirectedContext);
 
         // Assert
-        playerMovable.Position.X.Should().BeApproximately(expectedX, 0.01f);
-        playerMovable.Position.Y.Should().BeApproximately(expectedY, 0.01f);
+        sut.Position.X.Should().BeApproximately(expectedX, 0.01f);
+        sut.Position.Y.Should().BeApproximately(expectedY, 0.01f);
     }
 
     [Theory]
@@ -264,21 +266,21 @@ public class PlayerMovableTest
     public void GivenPlayerMovable_WhenCrossingMultipleBoundaries_ThenPositionIsProjected(float directionX, float directionY, float expectedX, float expectedY)
     {
         // Arrange
-        var boundaryChecker = new Mock<IBoundaryChecker>();
-        boundaryChecker.Setup(b => b.IsOutsideXBounds(It.IsAny<float>())).Returns<float>(x => x < 0);
-        boundaryChecker.Setup(b => b.XDistanceToBoundary(It.IsAny<float>())).Returns<float>(x => -x);
-        boundaryChecker.Setup(b => b.IsOutsideYBounds(It.IsAny<float>())).Returns<float>(y => y < 0);
-        boundaryChecker.Setup(b => b.YDistanceToBoundary(It.IsAny<float>())).Returns<float>(y => -y);
+        var leftAndUpBoundaryCheckerMock = new Mock<IBoundaryChecker>();
+        leftAndUpBoundaryCheckerMock.Setup(b => b.IsOutsideXBounds(It.IsAny<float>())).Returns<float>(x => x < 0);
+        leftAndUpBoundaryCheckerMock.Setup(b => b.XDistanceToBoundary(It.IsAny<float>())).Returns<float>(x => -x);
+        leftAndUpBoundaryCheckerMock.Setup(b => b.IsOutsideYBounds(It.IsAny<float>())).Returns<float>(y => y < 0);
+        leftAndUpBoundaryCheckerMock.Setup(b => b.YDistanceToBoundary(It.IsAny<float>())).Returns<float>(y => -y);
 
-        var playerMovable = new PlayerMovable(new Vector2(0, 0), 1, boundaryChecker.Object);
-        var context = new TestContextFixture(Vector2.Normalize(new Vector2(directionX, directionY)));
+        var sut = new PlayerMovable(new Vector2(0, 0), 1, leftAndUpBoundaryCheckerMock.Object);
+        var inputDirectedContext = new TestContextFixture(Vector2.Normalize(new Vector2(directionX, directionY)));
 
         // Act
-        playerMovable.Move(context);
+        sut.Move(inputDirectedContext);
 
         // Assert
-        playerMovable.Position.X.Should().BeApproximately(expectedX, 0.01f);
-        playerMovable.Position.Y.Should().BeApproximately(expectedY, 0.01f);
+        sut.Position.X.Should().BeApproximately(expectedX, 0.01f);
+        sut.Position.Y.Should().BeApproximately(expectedY, 0.01f);
     }
 
     [Theory]
@@ -289,18 +291,18 @@ public class PlayerMovableTest
     public void GivenPlayerMovable_WhenCrossingYBoundary_ThenPositionIsProjected(float directionX, float directionY, float expectedX, float expectedY)
     {
         // Arrange
-        var leftOnlyBoundaryChecker = new Mock<IBoundaryChecker>();
-        leftOnlyBoundaryChecker.Setup(b => b.IsOutsideYBounds(It.IsAny<float>())).Returns<float>(y => y < 0);
-        leftOnlyBoundaryChecker.Setup(b => b.YDistanceToBoundary(It.IsAny<float>())).Returns<float>(y => -y);
-        var playerMovable = new PlayerMovable(new Vector2(0, 0), 1, leftOnlyBoundaryChecker.Object);
-        var context = new TestContextFixture(Vector2.Normalize(new Vector2(directionX, directionY)));
+        var upBoundaryCheckerMock = new Mock<IBoundaryChecker>();
+        upBoundaryCheckerMock.Setup(b => b.IsOutsideYBounds(It.IsAny<float>())).Returns<float>(y => y < 0);
+        upBoundaryCheckerMock.Setup(b => b.YDistanceToBoundary(It.IsAny<float>())).Returns<float>(y => -y);
+        var sut = new PlayerMovable(new Vector2(0, 0), 1, upBoundaryCheckerMock.Object);
+        var inputDirectedContext = new TestContextFixture(Vector2.Normalize(new Vector2(directionX, directionY)));
 
         // Act
-        playerMovable.Move(context);
+        sut.Move(inputDirectedContext);
 
         // Assert
-        playerMovable.Position.X.Should().BeApproximately(expectedX, 0.01f);
-        playerMovable.Position.Y.Should().BeApproximately(expectedY, 0.01f);
+        sut.Position.X.Should().BeApproximately(expectedX, 0.01f);
+        sut.Position.Y.Should().BeApproximately(expectedY, 0.01f);
     }
     
     #endregion
