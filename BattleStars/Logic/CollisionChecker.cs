@@ -1,13 +1,9 @@
 using BattleStars.Shots;
+using BattleStars.Core;
 namespace BattleStars.Logic;
 
 public static class CollisionChecker
 {
-    public static bool CheckEntityEntityCollision(Entity entity1, Entity entity2)
-    {
-        return false; // Placeholder for actual collision logic
-    }
-
     public static bool CheckEntityShotCollision(Entity entity, IShot shot)
     {
         ArgumentNullException.ThrowIfNull(entity);
@@ -16,8 +12,11 @@ public static class CollisionChecker
         return entity.Shape.Contains(adjustedPosition);
     }
 
-    public static bool CheckShotShotCollision(IShot shot1, IShot shot2)
+    public static bool CheckBattleStarShotCollision(BattleStar battleStar, IShot shot)
     {
-        return false; // Placeholder for actual collision logic
+        ArgumentNullException.ThrowIfNull(battleStar);
+        ArgumentNullException.ThrowIfNull(shot);
+ 
+        return battleStar.Contains(shot.Position);
     }
 }
