@@ -1,5 +1,6 @@
 using BattleStars.Shots;
 using BattleStars.Shapes;
+using System.Numerics;
 
 namespace BattleStars.Core;
 
@@ -30,6 +31,12 @@ public class BattleStar
 
     public BoundingBox GetBoundingBox() => _shape.BoundingBox;
 
+    public bool Contains(Vector2 point)
+    {
+        var adjustedPoint = point - _movable.Position;
+        return _shape.Contains(adjustedPoint);
+    }
+
     public void Move(IContext context) => _movable.Move(context);
 
     public void TakeDamage(float amount) => _destructable.TakeDamage(amount);
@@ -41,5 +48,6 @@ public class BattleStar
         context.ShooterPosition = _movable.Position;
         return _shooter.Shoot(context);
     }
+    
 
 }
