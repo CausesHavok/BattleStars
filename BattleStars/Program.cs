@@ -79,6 +79,8 @@ var enemyShots = new List<IShot>();
 
 var context = new BasicContext();
 
+var rnd = new Random();
+
 while (!Raylib.WindowShouldClose())
 {
     // Movement input
@@ -108,7 +110,7 @@ while (!Raylib.WindowShouldClose())
     foreach (var enemy in enemies)
     {
         enemy.Move(context);
-        if (new Random().NextDouble() < 0.01) // 10% chance to shoot each frame
+        if (rnd.NextDouble() < 0.01) // 10% chance to shoot each frame
         {
             enemyShots.AddRange(enemy.Shoot(context));
         }
