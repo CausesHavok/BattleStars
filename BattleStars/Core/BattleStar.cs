@@ -4,7 +4,7 @@ using System.Numerics;
 
 namespace BattleStars.Core;
 
-public class BattleStar
+public class BattleStar : IBattleStar
 {
     private readonly IShape _shape;
     private readonly IShapeDrawer _shapeDrawer;
@@ -48,6 +48,6 @@ public class BattleStar
         context.ShooterPosition = _movable.Position;
         return _shooter.Shoot(context);
     }
-    
+
 
 }

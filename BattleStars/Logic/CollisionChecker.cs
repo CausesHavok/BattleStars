@@ -4,7 +4,7 @@ namespace BattleStars.Logic;
 
 public static class CollisionChecker
 {
-    public static bool CheckBattleStarShotCollision(BattleStar battleStar, IShot shot)
+    public static bool CheckBattleStarShotCollision(IBattleStar battleStar, IShot shot)
     {
         ArgumentNullException.ThrowIfNull(battleStar);
         ArgumentNullException.ThrowIfNull(shot);

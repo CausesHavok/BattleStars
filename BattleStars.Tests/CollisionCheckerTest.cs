@@ -10,6 +10,8 @@ namespace BattleStars.Tests.Logic;
 
 public class CollisionCheckerTest
 {
+
+
     [Fact]
     public void GivenNullBattleStar_WhenCheckBattleStarShotCollision_ThenThrowsArgumentNullException()
     {
@@ -21,7 +23,7 @@ public class CollisionCheckerTest
     [Fact]
     public void GivenNullShot_WhenCheckBattleStarShotCollision_ThenThrowsArgumentNullException()
     {
-        var battleStarMock = new Mock<BattleStar>(MockBehavior.Strict, null!, null!, null!, null!, null!).Object;
+        var battleStarMock = new Mock<IBattleStar>().Object;
         Action act = () => CollisionChecker.CheckBattleStarShotCollision(battleStarMock, null!);
         act.Should().Throw<ArgumentNullException>();
     }
@@ -29,7 +31,7 @@ public class CollisionCheckerTest
     [Fact]
     public void GivenBattleStarAndShot_WhenContainsReturnsTrue_ThenReturnsTrue()
     {
-        var battleStarMock = new Mock<BattleStar>(MockBehavior.Strict, null!, null!, null!, null!, null!);
+        var battleStarMock = new Mock<IBattleStar>(MockBehavior.Strict);
         var shotMock = new Mock<IShot>();
 
         var shotPosition = new Vector2(3, 4);
@@ -45,7 +47,7 @@ public class CollisionCheckerTest
     [Fact]
     public void GivenBattleStarAndShot_WhenContainsReturnsFalse_ThenReturnsFalse()
     {
-        var battleStarMock = new Mock<BattleStar>(MockBehavior.Strict, null!, null!, null!, null!, null!);
+        var battleStarMock = new Mock<IBattleStar>(MockBehavior.Strict);
         var shotMock = new Mock<IShot>();
 
         var shotPosition = new Vector2(10, 10);
@@ -57,4 +59,6 @@ public class CollisionCheckerTest
         result.Should().BeFalse();
         battleStarMock.Verify(bs => bs.Contains(shotPosition), Times.Once);
     }
+
 }
+
