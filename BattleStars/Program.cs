@@ -100,7 +100,12 @@ while (!Raylib.WindowShouldClose())
     if (Raylib.IsKeyDown(KeyboardKey.Escape)) break;
     if (Raylib.IsKeyPressed(KeyboardKey.Space))
     {
-        playerShots.AddRange(playerBattleStar.Shoot(context));
+        // Guard against shoot returning null
+        var shots = playerBattleStar.Shoot(context);
+        if (shots != null)
+        {
+            playerShots.AddRange(shots);
+        }
     }
 
     playerBattleStar.Move(context);
@@ -112,7 +117,12 @@ while (!Raylib.WindowShouldClose())
         enemy.Move(context);
         if (rnd.NextDouble() < 0.01) // 1% chance to shoot each frame
         {
-            enemyShots.AddRange(enemy.Shoot(context));
+            // Guard against shoot returning null
+            var shots = enemy.Shoot(context);
+            if (shots != null)
+            {
+                enemyShots.AddRange(shots);
+            }
         }
     }
 
