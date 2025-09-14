@@ -30,7 +30,7 @@ public class PlayerMovable : IMovable
 
         var direction = context.PlayerDirection;
         VectorValidator.ThrowIfNaNOrInfinity(direction, nameof(direction));
-        if (direction.LengthSquared() == 0)
+        if (direction == Vector2.Zero)
             return;
             
         VectorValidator.ThrowIfNotNormalized(direction, nameof(direction));
