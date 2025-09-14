@@ -8,7 +8,7 @@ public static class CollisionChecker
     {
         ArgumentNullException.ThrowIfNull(battleStar);
         ArgumentNullException.ThrowIfNull(shot);
- 
+
         return battleStar.Contains(shot.Position);
     }
 }

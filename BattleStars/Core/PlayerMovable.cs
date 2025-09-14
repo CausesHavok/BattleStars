@@ -32,7 +32,7 @@ public class PlayerMovable : IMovable
         VectorValidator.ThrowIfNaNOrInfinity(direction, nameof(direction));
         if (direction == Vector2.Zero)
             return;
-            
+
         VectorValidator.ThrowIfNotNormalized(direction, nameof(direction));
 
         var newPosition = _position + direction * _speed;

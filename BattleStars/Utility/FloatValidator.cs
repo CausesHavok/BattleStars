@@ -37,5 +37,5 @@ public static class FloatValidator
         ThrowIfNaN(value, paramName);
         ThrowIfInfinity(value, paramName);
     }
-    
+
 }

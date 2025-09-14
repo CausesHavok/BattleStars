@@ -304,6 +304,6 @@ public class PlayerMovableTest
         sut.Position.X.Should().BeApproximately(expectedX, 0.01f);
         sut.Position.Y.Should().BeApproximately(expectedY, 0.01f);
     }
-    
+
     #endregion
 }
