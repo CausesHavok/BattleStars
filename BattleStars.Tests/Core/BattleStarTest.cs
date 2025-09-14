@@ -306,23 +306,26 @@ public class BattleStarTest : IClassFixture<TestBattleStarFixture>
         context.ShooterPosition.Should().Be(expectedPosition);
     }
 
-    [Fact]
-    public void GivenBattleStar_WhenContainsCalled_ThenDelegatesToShape()
+    [Theory]
+    [InlineData(5, 5)]
+    [InlineData(10, 10)]
+    [InlineData(-5, -5)]
+    [InlineData(0, 0)]
+    public void GivenBattleStar_WhenContainsCalled_ThenDelegatesToShapeWithAdjustedPoint(float x, float y)
     {
         // Arrange
         var testBattleStar = _battleStarFixture;
         var battleStar = testBattleStar.BattleStar;
 
+        testBattleStar.MockMovable.Setup(m => m.Position).Returns(new Vector2(x, y));
         var point = new Vector2(5, 5);
-        var expectedResult = true;
-        testBattleStar.MockShape.Setup(s => s.Contains(point)).Returns(expectedResult);
+        var adjustedPoint = point - new Vector2(x, y);
 
         // Act
-        var result = battleStar.Contains(point);
+        battleStar.Contains(point);
 
         // Assert
-        result.Should().Be(expectedResult);
-        testBattleStar.MockShape.Verify(s => s.Contains(point), Times.Once);
+        testBattleStar.MockShape.Verify(s => s.Contains(adjustedPoint), Times.Once);
     }
 
     #endregion
