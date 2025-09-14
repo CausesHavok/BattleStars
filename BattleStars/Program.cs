@@ -110,7 +110,7 @@ while (!Raylib.WindowShouldClose())
     foreach (var enemy in enemies)
     {
         enemy.Move(context);
-        if (rnd.NextDouble() < 0.01) // 10% chance to shoot each frame
+        if (rnd.NextDouble() < 0.01) // 1% chance to shoot each frame
         {
             enemyShots.AddRange(enemy.Shoot(context));
         }
