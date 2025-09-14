@@ -48,6 +48,4 @@ public class BattleStar : IBattleStar
         context.ShooterPosition = _movable.Position;
         return _shooter.Shoot(context);
     }
-
-
 }
