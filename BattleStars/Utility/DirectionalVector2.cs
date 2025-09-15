@@ -5,7 +5,7 @@ namespace BattleStars.Utility;
 public struct DirectionalVector2
 {
     private Vector2 _direction;
-    
+
     public readonly float X => _direction.X;
     public readonly float Y => _direction.Y;
 
@@ -34,4 +34,9 @@ public struct DirectionalVector2
 
     public static implicit operator Vector2(DirectionalVector2 directionalVector) => directionalVector.Direction;
     public static implicit operator DirectionalVector2(Vector2 vector) => new(vector);
+    
+    public static Vector2 operator *(DirectionalVector2 directional, float scalar)
+    {
+        return directional.Direction * scalar;
+    }
 }

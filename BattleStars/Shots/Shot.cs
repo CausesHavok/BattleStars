@@ -19,7 +19,7 @@ public class Shot : IShot
         FloatValidator.ThrowIfNaNOrInfinity(damage, nameof(damage));
 
         Position = position;
-        Direction = Vector2.Normalize(direction);
+        Direction = direction;
         Speed = speed;
         Damage = damage;
     }
@@ -32,7 +32,7 @@ public class Shot : IShot
         if (Speed == 0)
             return;
 
-        Position += Direction.Direction * Speed;
+        Position += Direction * Speed;
 
     }
 
