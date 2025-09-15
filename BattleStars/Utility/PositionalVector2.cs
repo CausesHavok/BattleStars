@@ -4,23 +4,30 @@ namespace BattleStars.Utility;
 
 public struct PositionalVector2
 {
-    private Vector2 _value;
+    private Vector2 _position;
 
-    public Vector2 Value
+    public readonly float X => _position.X;
+    public readonly float Y => _position.Y;
+
+    public Vector2 Position
     {
-        get => _value;
+        get => _position;
         set
         {
-            VectorValidator.ThrowIfNaNOrInfinity(value, nameof(value));
-            _value = value;
+            VectorValidator.ThrowIfNaNOrInfinity(value, nameof(Position));
+            _position = value;
         }
     }
 
-    public PositionalVector2(Vector2 value)
+    public PositionalVector2(Vector2 position)
     {
-        Value = value;
+        Position = position;
     }
 
-    public static implicit operator Vector2(PositionalVector2 positionalVector) => positionalVector.Value;
+    public PositionalVector2(float x, float y) : this(new Vector2(x, y))
+    {
+    }
+
+    public static implicit operator Vector2(PositionalVector2 positionalVector) => positionalVector.Position;
     public static implicit operator PositionalVector2(Vector2 vector) => new(vector);
 }

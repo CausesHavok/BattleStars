@@ -16,7 +16,7 @@ public class PositionalVector2Test
         var positional = new PositionalVector2(vector);
 
         // Assert
-        positional.Value.Should().Be(vector);
+        positional.Position.Should().Be(vector);
     }
 
     [Theory]
@@ -46,10 +46,10 @@ public class PositionalVector2Test
         var newVector = new Vector2(3, 4);
 
         // Act
-        positional.Value = newVector;
+        positional.Position = newVector;
 
         // Assert
-        positional.Value.Should().Be(newVector);
+        positional.Position.Should().Be(newVector);
     }
 
     [Fact]
@@ -60,7 +60,7 @@ public class PositionalVector2Test
         var invalidVector = new Vector2(float.NaN, 0);
 
         // Act
-        Action act = () => positional.Value = invalidVector;
+        Action act = () => positional.Position = invalidVector;
 
         // Assert
         act.Should().Throw<ArgumentException>();
@@ -90,6 +90,6 @@ public class PositionalVector2Test
         PositionalVector2 positional = vector;
 
         // Assert
-        positional.Value.Should().Be(vector);
+        positional.Position.Should().Be(vector);
     }
 }

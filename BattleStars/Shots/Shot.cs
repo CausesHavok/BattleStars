@@ -5,17 +5,14 @@ namespace BattleStars.Shots;
 
 public class Shot : IShot
 {
-    public Vector2 Position { get; private set; }
-    public Vector2 Direction { get; private set; }
+    public PositionalVector2 Position { get; private set; }
+    public DirectionalVector2 Direction { get; private set; }
     public float Speed { get; private set; }
     public float Damage { get; private set; }
     public bool IsActive { get; private set; } = true;
 
-    public Shot(Vector2 position, Vector2 direction, float speed, float damage)
+    public Shot(PositionalVector2 position, DirectionalVector2 direction, float speed, float damage)
     {
-        VectorValidator.ThrowIfNaNOrInfinity(direction, nameof(direction));
-        VectorValidator.ThrowIfNotNormalized(direction, nameof(direction));
-        VectorValidator.ThrowIfNaNOrInfinity(position, nameof(position));
         FloatValidator.ThrowIfNegative(speed, nameof(speed));
         FloatValidator.ThrowIfNaNOrInfinity(speed, nameof(speed));
         FloatValidator.ThrowIfNegative(damage, nameof(damage));
@@ -35,7 +32,7 @@ public class Shot : IShot
         if (Speed == 0)
             return;
 
-        Position += Direction * Speed;
+        Position += Direction.Direction * Speed;
 
     }
 

@@ -3,6 +3,7 @@ using FluentAssertions;
 using Moq;
 using BattleStars.Core;
 using BattleStars.Shots;
+using BattleStars.Utility;
 
 namespace BattleStars.Tests.Core;
 
@@ -21,7 +22,7 @@ public class BasicShooterTest
     [Fact] // 1
     public void GivenNullShotFactory_WhenConstructed_ThenThrowsArgumentNullException()
     {
-        Func<Vector2, Vector2, IShot> shotFactory = null!;
+        Func<PositionalVector2, DirectionalVector2, IShot> shotFactory = null!;
         var direction = Vector2.UnitY;
         Action act = () => new BasicShooter(shotFactory, direction);
         act.Should().Throw<ArgumentNullException>();
@@ -36,7 +37,7 @@ public class BasicShooterTest
     [InlineData(0, float.NegativeInfinity)]
     public void GivenDirectionIsNaNOrInfinity_WhenConstructed_ThenThrowsArgumentException(float x, float y)
     {
-        var shotFactory = new Mock<Func<Vector2, Vector2, IShot>>().Object;
+        var shotFactory = new Mock<Func<PositionalVector2, DirectionalVector2, IShot>>().Object;
         var direction = new Vector2(x, y);
         Action act = () => new BasicShooter(shotFactory, direction);
         act.Should().Throw<ArgumentException>();
@@ -47,7 +48,7 @@ public class BasicShooterTest
     [InlineData(0, -2)]
     public void GivenNonZeroNonNormalizedDirection_WhenConstructed_ThenThrowsArgumentException(float x, float y)
     {
-        var shotFactory = new Mock<Func<Vector2, Vector2, IShot>>().Object;
+        var shotFactory = new Mock<Func<PositionalVector2, DirectionalVector2, IShot>>().Object;
         var direction = new Vector2(x, y);
         Action act = () => new BasicShooter(shotFactory, direction);
         act.Should().Throw<ArgumentException>();
@@ -60,7 +61,7 @@ public class BasicShooterTest
     [InlineData(0, 0)] // Added to cover zero direction case
     public void GivenValidDirection_WhenConstructed_ThenDoesNotThrow(float x, float y)
     {
-        var shotFactory = new Mock<Func<Vector2, Vector2, IShot>>().Object;
+        var shotFactory = new Mock<Func<PositionalVector2, DirectionalVector2, IShot>>().Object;
         var direction = new Vector2(x, y);
         Action act = () => new BasicShooter(shotFactory, direction);
         act.Should().NotThrow();
@@ -100,7 +101,7 @@ public class BasicShooterTest
         var expectedDirection = new Vector2(dx, dy);
         var expectedShot = new Mock<IShot>().Object;
 
-        var shotFactoryMock = new Mock<Func<Vector2, Vector2, IShot>>();
+        var shotFactoryMock = new Mock<Func<PositionalVector2, DirectionalVector2, IShot>>();
         shotFactoryMock.Setup(f => f(expectedPosition, expectedDirection)).Returns(expectedShot);
 
         var shooter = new BasicShooter(shotFactoryMock.Object, expectedDirection);
@@ -121,7 +122,7 @@ public class BasicShooterTest
     [Fact] // 8
     public void GivenNullContext_WhenShoot_ThenThrowsArgumentNullException()
     {
-        var shotFactory = new Mock<Func<Vector2, Vector2, IShot>>().Object;
+        var shotFactory = new Mock<Func<PositionalVector2, DirectionalVector2, IShot>>().Object;
         var direction = Vector2.UnitY;
         var shooter = new BasicShooter(shotFactory, direction);
         Action act = () => shooter.Shoot(null!);
@@ -136,7 +137,7 @@ public class BasicShooterTest
         var expectedDirection = Vector2.Zero;
         var expectedShot = new Mock<IShot>().Object;
 
-        var shotFactoryMock = new Mock<Func<Vector2, Vector2, IShot>>();
+        var shotFactoryMock = new Mock<Func<PositionalVector2, DirectionalVector2, IShot>>();
         shotFactoryMock.Setup(f => f(expectedPosition, expectedDirection)).Returns(expectedShot);
 
         var shooter = new BasicShooter(shotFactoryMock.Object, expectedDirection);
@@ -157,7 +158,7 @@ public class BasicShooterTest
         // Arrange
         var expectedPosition = new Vector2(2, 2);
         var expectedDirection = Vector2.UnitY;
-        var shotFactoryMock = new Mock<Func<Vector2, Vector2, IShot>>();
+        var shotFactoryMock = new Mock<Func<PositionalVector2, DirectionalVector2, IShot>>();
         shotFactoryMock.Setup(f => f(expectedPosition, expectedDirection)).Returns(new Mock<IShot>().Object);
 
         var shooter = new BasicShooter(shotFactoryMock.Object, expectedDirection);
@@ -180,8 +181,8 @@ public class BasicShooterTest
     {
         // Arrange
         var expectedDirection = Vector2.UnitY;
-        var shotFactoryMock = new Mock<Func<Vector2, Vector2, IShot>>();
-        shotFactoryMock.Setup(f => f(It.IsAny<Vector2>(), expectedDirection)).Returns(new Mock<IShot>().Object);
+        var shotFactoryMock = new Mock<Func<PositionalVector2, DirectionalVector2, IShot>>();
+        shotFactoryMock.Setup(f => f(It.IsAny<PositionalVector2>(), expectedDirection)).Returns(new Mock<IShot>().Object);
 
         var shooter = new BasicShooter(shotFactoryMock.Object, expectedDirection);
 
@@ -204,8 +205,8 @@ public class BasicShooterTest
     {
         // Arrange
         var expectedDirection = Vector2.UnitY;
-        var shotFactoryMock = new Mock<Func<Vector2, Vector2, IShot>>();
-        shotFactoryMock.Setup(f => f(It.IsAny<Vector2>(), expectedDirection)).Throws(new InvalidOperationException());
+        var shotFactoryMock = new Mock<Func<PositionalVector2, DirectionalVector2, IShot>>();
+        shotFactoryMock.Setup(f => f(It.IsAny<PositionalVector2>(), expectedDirection)).Throws(new InvalidOperationException());
 
         var shooter = new BasicShooter(shotFactoryMock.Object, expectedDirection);
 
@@ -226,7 +227,7 @@ public class BasicShooterTest
         var expectedDirection = Vector2.UnitY;
         var expectedShot = new Mock<IShot>().Object;
 
-        var shotFactoryMock = new Mock<Func<Vector2, Vector2, IShot>>();
+        var shotFactoryMock = new Mock<Func<PositionalVector2, DirectionalVector2, IShot>>();
         shotFactoryMock.Setup(f => f(expectedPosition, expectedDirection)).Returns(expectedShot);
 
         var shooter = new BasicShooter(shotFactoryMock.Object, expectedDirection);
@@ -249,7 +250,7 @@ public class BasicShooterTest
         var expectedDirection = Vector2.UnitY;
         var expectedShot = new Mock<IShot>().Object;
 
-        var shotFactoryMock = new Mock<Func<Vector2, Vector2, IShot>>();
+        var shotFactoryMock = new Mock<Func<PositionalVector2, DirectionalVector2, IShot>>();
         shotFactoryMock.Setup(f => f(expectedPosition, expectedDirection)).Returns(expectedShot);
 
         var shooter = new BasicShooter(shotFactoryMock.Object, expectedDirection);
@@ -276,7 +277,7 @@ public class BasicShooterTest
         var expectedDirection = Vector2.UnitY;
         var expectedShot = new Mock<IShot>().Object;
 
-        var shotFactoryMock = new Mock<Func<Vector2, Vector2, IShot>>();
+        var shotFactoryMock = new Mock<Func<PositionalVector2, DirectionalVector2, IShot>>();
         shotFactoryMock.Setup(f => f(expectedPosition, expectedDirection)).Returns(expectedShot);
 
         var shooter = new BasicShooter(shotFactoryMock.Object, expectedDirection);
@@ -299,7 +300,7 @@ public class BasicShooterTest
         var expectedDirection = Vector2.UnitY;
         var expectedShot = new Mock<IShot>().Object;
 
-        var shotFactoryMock = new Mock<Func<Vector2, Vector2, IShot>>();
+        var shotFactoryMock = new Mock<Func<PositionalVector2, DirectionalVector2, IShot>>();
         shotFactoryMock.Setup(f => f(expectedPosition, expectedDirection)).Returns(expectedShot);
 
         var shooter = new BasicShooter(shotFactoryMock.Object, expectedDirection);
