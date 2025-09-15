@@ -4,6 +4,7 @@ using BattleStars.Core;
 using BattleStars.Shapes;
 using BattleStars.Shots;
 using FluentAssertions;
+using BattleStars.Utility;
 
 namespace BattleStars.Tests.Core;
 
@@ -169,7 +170,7 @@ public class BattleStarTest : IClassFixture<TestBattleStarFixture>
         battleStar.Draw();
 
         // Assert
-        testBattleStar.MockShape.Verify(s => s.Draw(It.IsAny<Vector2>(), testBattleStar.MockShapeDrawer.Object), Times.Once);
+        testBattleStar.MockShape.Verify(s => s.Draw(It.IsAny<PositionalVector2>(), testBattleStar.MockShapeDrawer.Object), Times.Once);
     }
 
     [Fact]

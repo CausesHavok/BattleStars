@@ -2,6 +2,7 @@ using BattleStars.Shapes;
 using System.Drawing;
 using System.Numerics;
 using FluentAssertions;
+using BattleStars.Utility;
 
 namespace BattleStars.Tests.Shapes;
 
@@ -11,12 +12,12 @@ public class TriangleTest
     {
         public bool DrawCalled { get; private set; }
 
-        public void DrawRectangle(Vector2 v1, Vector2 v2, Color color) { }
-        public void DrawTriangle(Vector2 Point1, Vector2 Point2, Vector2 Point3, Color color)
+        public void DrawRectangle(PositionalVector2 v1, PositionalVector2 v2, Color color) { }
+        public void DrawTriangle(PositionalVector2 Point1, PositionalVector2 Point2, PositionalVector2 Point3, Color color)
         {
             DrawCalled = true;
         }
-        public void DrawCircle(Vector2 center, float radius, Color color) { }
+        public void DrawCircle(PositionalVector2 center, float radius, Color color) { }
     }
 
     #region Constructor Tests
@@ -30,18 +31,18 @@ public class TriangleTest
     */
 
     [Theory]
-    [InlineData(float.NaN, 0f, 0f, 1f, 1f, 2f, "point1.X")]
-    [InlineData(0f, float.NaN, 0f, 1f, 1f, 2f, "point1.Y")]
-    [InlineData(0f, 0f, float.NaN, 1f, 1f, 2f, "point2.X")]
-    [InlineData(0f, 0f, 1f, float.NaN, 1f, 2f, "point2.Y")]
-    [InlineData(0f, 0f, 1f, 1f, float.NaN, 2f, "point3.X")]
-    [InlineData(0f, 0f, 1f, 1f, 2f, float.NaN, "point3.Y")]
-    [InlineData(float.PositiveInfinity, 0f, 0f, 1f, 1f, 2f, "point1.X")]
-    [InlineData(0f, float.NegativeInfinity, 0f, 1f, 1f, 2f, "point1.Y")]
-    [InlineData(0f, 0f, float.NegativeInfinity, 1f, 1f, 2f, "point2.X")]
-    [InlineData(0f, 0f, 1f, float.PositiveInfinity, 1f, 2f, "point2.Y")]
-    [InlineData(0f, 0f, 1f, 1f, float.PositiveInfinity, 2f, "point3.X")]
-    [InlineData(0f, 0f, 1f, 1f, 2f, float.NegativeInfinity, "point3.Y")]
+    [InlineData(float.NaN, 0f, 0f, 1f, 1f, 2f, "Position.X")]
+    [InlineData(0f, float.NaN, 0f, 1f, 1f, 2f, "Position.Y")]
+    [InlineData(0f, 0f, float.NaN, 1f, 1f, 2f, "Position.X")]
+    [InlineData(0f, 0f, 1f, float.NaN, 1f, 2f, "Position.Y")]
+    [InlineData(0f, 0f, 1f, 1f, float.NaN, 2f, "Position.X")]
+    [InlineData(0f, 0f, 1f, 1f, 2f, float.NaN, "Position.Y")]
+    [InlineData(float.PositiveInfinity, 0f, 0f, 1f, 1f, 2f, "Position.X")]
+    [InlineData(0f, float.NegativeInfinity, 0f, 1f, 1f, 2f, "Position.Y")]
+    [InlineData(0f, 0f, float.NegativeInfinity, 1f, 1f, 2f, "Position.X")]
+    [InlineData(0f, 0f, 1f, float.PositiveInfinity, 1f, 2f, "Position.Y")]
+    [InlineData(0f, 0f, 1f, 1f, float.PositiveInfinity, 2f, "Position.X")]
+    [InlineData(0f, 0f, 1f, 1f, 2f, float.NegativeInfinity, "Position.Y")]
     public void GivenInvalidCorner_WhenConstructingTriangle_ThenThrowsArgumentException(float point1x, float point1y, float point2x, float point2y, float point3x, float point3y, string paramName)
     {
         var point1 = new Vector2(point1x, point1y);
@@ -73,9 +74,9 @@ public class TriangleTest
     [Fact]
     public void GivenValidCorners_WhenConstructingTriangle_ThenSetsProperties()
     {
-        var Point1 = new Vector2(0, 0);
-        var Point2 = new Vector2(1, 0);
-        var Point3 = new Vector2(0, 1);
+        var Point1 = new PositionalVector2(0, 0);
+        var Point2 = new PositionalVector2(1, 0);
+        var Point3 = new PositionalVector2(0, 1);
         var color = Color.Blue;
         var tri = new Triangle(Point1, Point2, Point3, color);
 
@@ -117,10 +118,10 @@ public class TriangleTest
     }
 
     [Theory]
-    [InlineData(             float.NaN,                     0f, "point.X")]
-    [InlineData(                    0f,              float.NaN, "point.Y")]
-    [InlineData(float.PositiveInfinity,                     0f, "point.X")]
-    [InlineData(                    0f, float.NegativeInfinity, "point.Y")]
+    [InlineData(             float.NaN,                     0f, "Position.X")]
+    [InlineData(                    0f,              float.NaN, "Position.Y")]
+    [InlineData(float.PositiveInfinity,                     0f, "Position.X")]
+    [InlineData(                    0f, float.NegativeInfinity, "Position.Y")]
     public void GivenTriangle_WhenTestingContains_WithInvalidPointOrEntity_ThenThrowsArgumentException(float px, float py, string paramName)
     {
         var tri = new Triangle(new Vector2(0, 0), new Vector2(1, 0), new Vector2(0, 1), Color.Red);
@@ -153,10 +154,10 @@ public class TriangleTest
     }
 
     [Theory]
-    [InlineData(float.NaN, 0f, "entityPosition.X")]
-    [InlineData(0f, float.NaN, "entityPosition.Y")]
-    [InlineData(float.PositiveInfinity, 0f, "entityPosition.X")]
-    [InlineData(0f, float.NegativeInfinity, "entityPosition.Y")]
+    [InlineData(float.NaN, 0f, "Position.X")]
+    [InlineData(0f, float.NaN, "Position.Y")]
+    [InlineData(float.PositiveInfinity, 0f, "Position.X")]
+    [InlineData(0f, float.NegativeInfinity, "Position.Y")]
     public void GivenTriangle_WhenDrawCalled_WithInvalidPosition_ThenThrowsArgumentException(float px, float py, string paramName)
     {
         var drawer = new MockShapeDrawer();

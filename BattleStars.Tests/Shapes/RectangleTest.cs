@@ -2,6 +2,7 @@ using BattleStars.Shapes;
 using System.Drawing;
 using System.Numerics;
 using FluentAssertions;
+using BattleStars.Utility;
 
 namespace BattleStars.Tests.Shapes;
 
@@ -11,13 +12,13 @@ public class RectangleTest
     {
         public bool DrawCalled { get; private set; }
 
-        public void DrawRectangle(Vector2 v1, Vector2 v2, Color color)
+        public void DrawRectangle(PositionalVector2 v1, PositionalVector2 v2, Color color)
         {
             DrawCalled = true;
         }
 
-        public void DrawTriangle(Vector2 p1, Vector2 p2, Vector2 p3, Color color) { }
-        public void DrawCircle(Vector2 center, float radius, Color color) { }
+        public void DrawTriangle(PositionalVector2 p1, PositionalVector2 p2, PositionalVector2 p3, Color color) { }
+        public void DrawCircle(PositionalVector2 center, float radius, Color color) { }
     }
 
     #region Constructor Tests
@@ -30,14 +31,14 @@ public class RectangleTest
     */
 
     [Theory]
-    [InlineData(float.NaN, 0f, 0f, 1f, "v1.X")]
-    [InlineData(0f, float.NaN, 0f, 1f, "v1.Y")]
-    [InlineData(0f, 0f, float.NaN, 1f, "v2.X")]
-    [InlineData(0f, 0f, 1f, float.NaN, "v2.Y")]
-    [InlineData(float.PositiveInfinity, 0f, 0f, 1f, "v1.X")]
-    [InlineData(0f, float.PositiveInfinity, 0f, 1f, "v1.Y")]
-    [InlineData(0f, 0f, float.PositiveInfinity, 1f, "v2.X")]
-    [InlineData(0f, 0f, 1f, float.PositiveInfinity, "v2.Y")]
+    [InlineData(float.NaN, 0f, 0f, 1f, "Position.X")]
+    [InlineData(0f, float.NaN, 0f, 1f, "Position.Y")]
+    [InlineData(0f, 0f, float.NaN, 1f, "Position.X")]
+    [InlineData(0f, 0f, 1f, float.NaN, "Position.Y")]
+    [InlineData(float.PositiveInfinity, 0f, 0f, 1f, "Position.X")]
+    [InlineData(0f, float.PositiveInfinity, 0f, 1f, "Position.Y")]
+    [InlineData(0f, 0f, float.PositiveInfinity, 1f, "Position.X")]
+    [InlineData(0f, 0f, 1f, float.PositiveInfinity, "Position.Y")]
     public void GivenInvalidCorner_WhenConstructingRectangle_ThenThrowsArgumentException(float v1x, float v1y, float v2x, float v2y, string paramName)
     {
         var v1 = new Vector2(v1x, v1y);
@@ -91,14 +92,14 @@ public class RectangleTest
 
     [Theory]
     [InlineData(0.5f, 0.5f, true)]  // inside
-    [InlineData(1f,     0f, true)]  // on edge
-    [InlineData(1f,     1f, true)]  // on corner
-    [InlineData(3f,     3f, false)] // outside
-    [InlineData(0f,     0f, true)]  // point on origin
+    [InlineData(1f, 0f, true)]  // on edge
+    [InlineData(1f, 1f, true)]  // on corner
+    [InlineData(3f, 3f, false)] // outside
+    [InlineData(0f, 0f, true)]  // point on origin
     public void GivenRectangle_WhenTestingContains_ThenReturnsExpected(float pointX, float pointY, bool expected)
     {
         var vec1 = new Vector2(-1, -1);
-        var vec2 = new Vector2( 1,  1);
+        var vec2 = new Vector2(1, 1);
         var rect = new BattleStars.Shapes.Rectangle(vec1, vec2, Color.Red);
         var point = new Vector2(pointX, pointY);
 
@@ -106,10 +107,10 @@ public class RectangleTest
     }
 
     [Theory]
-    [InlineData(             float.NaN,                     0f, "point.X")]
-    [InlineData(                    0f,              float.NaN, "point.Y")]
-    [InlineData(float.PositiveInfinity,                     0f, "point.X")]
-    [InlineData(                    0f, float.NegativeInfinity, "point.Y")]
+    [InlineData(float.NaN, 0f, "Position.X")]
+    [InlineData(0f, float.NaN, "Position.Y")]
+    [InlineData(float.PositiveInfinity, 0f, "Position.X")]
+    [InlineData(0f, float.NegativeInfinity, "Position.Y")]
 
     public void GivenRectangle_WhenTestingContains_WithInvalidPointOrEntity_ThenThrowsArgumentException(float px, float py, string paramName)
     {
@@ -143,10 +144,10 @@ public class RectangleTest
     }
 
     [Theory]
-    [InlineData(float.NaN, 0f, "position.X")]
-    [InlineData(0f, float.NaN, "position.Y")]
-    [InlineData(float.PositiveInfinity, 0f, "position.X")]
-    [InlineData(0f, float.PositiveInfinity, "position.Y")]
+    [InlineData(float.NaN, 0f, "Position.X")]
+    [InlineData(0f, float.NaN, "Position.Y")]
+    [InlineData(float.PositiveInfinity, 0f, "Position.X")]
+    [InlineData(0f, float.PositiveInfinity, "Position.Y")]
     public void GivenRectangle_WhenDrawCalled_WithInvalidPosition_ThenThrowsArgumentException(float px, float py, string paramName)
     {
         var drawer = new MockShapeDrawer();

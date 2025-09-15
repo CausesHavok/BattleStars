@@ -17,20 +17,18 @@ public class Circle : IShape
 
         _radius = radius;
         _color = color;
-        BoundingBox = new BoundingBox(new Vector2(-_radius, -_radius), new Vector2(_radius, _radius));
+        BoundingBox = new BoundingBox(new PositionalVector2(-_radius, -_radius), new PositionalVector2(_radius, _radius));
     }
 
-    public bool Contains(Vector2 point)
+    public bool Contains(PositionalVector2 point)
     {
         VectorValidator.ThrowIfNaNOrInfinity(point, nameof(point));
 
-        return point.LengthSquared() <= _radius * _radius;
+        return point.Position.LengthSquared() <= _radius * _radius;
     }
 
-    public void Draw(Vector2 position, IShapeDrawer drawer)
+    public void Draw(PositionalVector2 position, IShapeDrawer drawer)
     {
-        VectorValidator.ThrowIfNaNOrInfinity(position, nameof(position));
-        FloatValidator.ThrowIfNaNOrInfinity(_radius, nameof(_radius));
         ArgumentNullException.ThrowIfNull(drawer);
 
         drawer.DrawCircle(position, _radius, _color);

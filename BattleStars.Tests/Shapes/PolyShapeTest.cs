@@ -2,6 +2,7 @@ using BattleStars.Shapes;
 using System.Drawing;
 using System.Numerics;
 using FluentAssertions;
+using BattleStars.Utility;
 
 namespace BattleStars.Tests.Shapes;
 
@@ -12,13 +13,13 @@ public class PolyShapeTest
         public int TimesCalled { get; private set; }
         public bool DrawCalled { get; private set; }
 
-        public void DrawRectangle(Vector2 v1, Vector2 v2, Color color) { }
-        public void DrawTriangle(Vector2 p1, Vector2 p2, Vector2 p3, Color color)
+        public void DrawRectangle(PositionalVector2 v1, PositionalVector2 v2, Color color) { }
+        public void DrawTriangle(PositionalVector2 p1, PositionalVector2 p2, PositionalVector2 p3, Color color)
         {
             TimesCalled++;
             DrawCalled = true;
         }
-        public void DrawCircle(Vector2 center, float radius, Color color) { }
+        public void DrawCircle(PositionalVector2 center, float radius, Color color) { }
     }
 
     #region Constructor Tests
@@ -116,10 +117,10 @@ public class PolyShapeTest
     }
 
     [Theory]
-    [InlineData(             float.NaN,                     0f, "point.X")]
-    [InlineData(                    0f,              float.NaN, "point.Y")]
-    [InlineData(float.PositiveInfinity,                     0f, "point.X")]
-    [InlineData(                    0f, float.NegativeInfinity, "point.Y")]
+    [InlineData(             float.NaN,                     0f, "Position.X")]
+    [InlineData(                    0f,              float.NaN, "Position.Y")]
+    [InlineData(float.PositiveInfinity,                     0f, "Position.X")]
+    [InlineData(                    0f, float.NegativeInfinity, "Position.Y")]
     public void GivenPolygon_WhenTestingContains_WithInvalidPointOrEntity_ThenThrowsArgumentException(float px, float py, string paramName)
     {
         var t1 = new Triangle(new Vector2(0, 0), new Vector2(1, 0), new Vector2(0, 1), Color.Red);
@@ -159,10 +160,10 @@ public class PolyShapeTest
     }
 
     [Theory]
-    [InlineData(float.NaN,              0f,                     "entityPosition.X")]
-    [InlineData(0f,                     float.NaN,              "entityPosition.Y")]
-    [InlineData(float.PositiveInfinity, 0f,                     "entityPosition.X")]
-    [InlineData(0f,                     float.NegativeInfinity, "entityPosition.Y")]
+    [InlineData(float.NaN,              0f,                     "Position.X")]
+    [InlineData(0f,                     float.NaN,              "Position.Y")]
+    [InlineData(float.PositiveInfinity, 0f,                     "Position.X")]
+    [InlineData(0f,                     float.NegativeInfinity, "Position.Y")]
     public void GivenPolygon_WhenDrawCalled_WithInvalidPosition_ThenThrowsArgumentException(float px, float py, string paramName)
     {
         var drawer = new MockShapeDrawer();

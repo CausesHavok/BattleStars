@@ -38,8 +38,8 @@ public class ShapeFactory
     private Rectangle CreateSquare()
     {
         float halfSize = _scale * _defaultSize / 2;
-        Vector2 topLeft = new(-halfSize, -halfSize);
-        Vector2 bottomRight = new(halfSize, halfSize);
+        PositionalVector2 topLeft = new(-halfSize, -halfSize);
+        PositionalVector2 bottomRight = new(halfSize, halfSize);
         return new Rectangle(topLeft, bottomRight, _color);
     }
 
@@ -49,9 +49,9 @@ public class ShapeFactory
         float height = (float)(Math.Sqrt(3) * halfSize);
 
         // Center the centroid at (0,0)
-        Vector2 point1 = new(-halfSize, height / 3f);
-        Vector2 point2 = new(halfSize, height / 3f);
-        Vector2 point3 = new(0, -2f * height / 3f);
+        PositionalVector2 point1 = new(-halfSize, height / 3f);
+        PositionalVector2 point2 = new(halfSize, height / 3f);
+        PositionalVector2 point3 = new(0, -2f * height / 3f);
 
         return new Triangle(point1, point2, point3, _color);
     }
@@ -59,11 +59,11 @@ public class ShapeFactory
     private PolyShape CreateHexagon()
     {
         float radius = _scale * _defaultSize / 2f;
-        Vector2[] outerPoints = new Vector2[6];
+        PositionalVector2[] outerPoints = new PositionalVector2[6];
         for (int i = 0; i < 6; i++)
         {
             float angle = MathF.PI / 3 * i; // 60 degrees in radians
-            outerPoints[i] = new Vector2(
+            outerPoints[i] = new PositionalVector2(
                 radius * MathF.Cos(angle),
                 radius * MathF.Sin(angle)
             );
@@ -73,9 +73,9 @@ public class ShapeFactory
         Triangle[] triangles = new Triangle[6];
         for (int i = 0; i < 6; i++)
         {
-            Vector2 p1 = Vector2.Zero;
-            Vector2 p2 = outerPoints[i];
-            Vector2 p3 = outerPoints[(i + 1) % 6];
+            PositionalVector2 p1 = Vector2.Zero;
+            PositionalVector2 p2 = outerPoints[i];
+            PositionalVector2 p3 = outerPoints[(i + 1) % 6];
             triangles[i] = new Triangle(p1, p2, p3, _color);
         }
 

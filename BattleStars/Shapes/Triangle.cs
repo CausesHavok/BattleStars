@@ -6,9 +6,9 @@ namespace BattleStars.Shapes;
 
 public class Triangle : IShape
 {
-    public Vector2 Point1 { get; private set; }
-    public Vector2 Point2 { get; private set; }
-    public Vector2 Point3 { get; private set; }
+    public PositionalVector2 Point1 { get; private set; }
+    public PositionalVector2 Point2 { get; private set; }
+    public PositionalVector2 Point3 { get; private set; }
     public BoundingBox BoundingBox { get; }
     public Color Color { get; private set; }
 
@@ -21,12 +21,8 @@ public class Triangle : IShape
     /// <param name="point1">The first point of the triangle.</param>
     /// <param name="point2">The second point of the triangle.</param>
     /// <param name="point3">The third point of the triangle.</param>
-    public Triangle(Vector2 point1, Vector2 point2, Vector2 point3, Color color)
+    public Triangle(PositionalVector2 point1, PositionalVector2 point2, PositionalVector2 point3, Color color)
     {
-        VectorValidator.ThrowIfNaNOrInfinity(point1, nameof(point1));
-        VectorValidator.ThrowIfNaNOrInfinity(point2, nameof(point2));
-        VectorValidator.ThrowIfNaNOrInfinity(point3, nameof(point3));
-
         Point1 = point1;
         Point2 = point2;
         Point3 = point3;
@@ -57,7 +53,7 @@ public class Triangle : IShape
         return area > 0;
     }
 
-    public bool Contains(Vector2 point)
+    public bool Contains(PositionalVector2 point)
     {
         VectorValidator.ThrowIfNaNOrInfinity(point, nameof(point));
         // Check bounding box first for quick rejection;
@@ -86,7 +82,7 @@ public class Triangle : IShape
         return (u >= 0) && (v >= 0) && (u + v <= 1);
     }
 
-    public void Draw(Vector2 entityPosition, IShapeDrawer drawer)
+    public void Draw(PositionalVector2 entityPosition, IShapeDrawer drawer)
     {
         VectorValidator.ThrowIfNaNOrInfinity(entityPosition, nameof(entityPosition));
         ArgumentNullException.ThrowIfNull(drawer);

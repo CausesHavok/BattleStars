@@ -41,14 +41,12 @@ public class PolyShape : IShape
             maxY = Math.Max(maxY, box.BottomRight.Y);
         }
 
-        return new BoundingBox(new Vector2(minX, minY), new Vector2(maxX, maxY));
+        return new BoundingBox(new PositionalVector2(minX, minY), new PositionalVector2(maxX, maxY));
     }
  
 
-    public bool Contains(Vector2 point)
+    public bool Contains(PositionalVector2 point)
     {
-        VectorValidator.ThrowIfNaNOrInfinity(point, nameof(point));
-
         // Check bounding box first for quick rejection
         if (!BoundingBox.Contains(point)) return false;
 
@@ -61,9 +59,8 @@ public class PolyShape : IShape
         return false;
     }
 
-    public void Draw(Vector2 entityPosition, IShapeDrawer drawer)
+    public void Draw(PositionalVector2 entityPosition, IShapeDrawer drawer)
     {
-        VectorValidator.ThrowIfNaNOrInfinity(entityPosition, nameof(entityPosition));
         ArgumentNullException.ThrowIfNull(drawer);
         foreach (var shape in _shapes)
         {

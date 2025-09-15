@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Numerics;
 using FluentAssertions;
+using BattleStars.Utility;
 
 namespace BattleStars.Tests.Shapes;
 
@@ -12,17 +13,17 @@ public class CircleTest
     {
         public bool DrawCalled { get; private set; }
 
-        public void DrawRectangle(Vector2 v1, Vector2 v2, Color color)
+        public void DrawRectangle(PositionalVector2 v1, PositionalVector2 v2, Color color)
         {
             DrawCalled = true;
         }
 
-        public void DrawTriangle(Vector2 p1, Vector2 p2, Vector2 p3, Color color)
+        public void DrawTriangle(PositionalVector2 p1, PositionalVector2 p2, PositionalVector2 p3, Color color)
         {
             DrawCalled = true;
         }
 
-        public void DrawCircle(Vector2 center, float radius, Color color)
+        public void DrawCircle(PositionalVector2 center, float radius, Color color)
         {
             DrawCalled = true;
         }
@@ -100,12 +101,12 @@ public class CircleTest
     }
 
     [Theory]
-    [InlineData(             float.NaN,                     0f,      "NaN", "point.X")]
-    [InlineData(                    0f,              float.NaN,      "NaN", "point.Y")]
-    [InlineData(float.PositiveInfinity,                     0f, "Infinity", "point.X")]
-    [InlineData(                    0f, float.PositiveInfinity, "Infinity", "point.Y")]
-    [InlineData(float.NegativeInfinity,                     0f, "Infinity", "point.X")]
-    [InlineData(                    0f, float.NegativeInfinity, "Infinity", "point.Y")]
+    [InlineData(             float.NaN,                     0f,      "NaN", "Position.X")]
+    [InlineData(                    0f,              float.NaN,      "NaN", "Position.Y")]
+    [InlineData(float.PositiveInfinity,                     0f, "Infinity", "Position.X")]
+    [InlineData(                    0f, float.PositiveInfinity, "Infinity", "Position.Y")]
+    [InlineData(float.NegativeInfinity,                     0f, "Infinity", "Position.X")]
+    [InlineData(                    0f, float.NegativeInfinity, "Infinity", "Position.Y")]
     public void GivenCircle_WhenTestingContains_WithInvalidPosition_ThenThrowsArgumentException(float pointX, float pointY, string expectedException, string paramName)
     {
         var circle = new Circle(5.0f, Color.Red);
@@ -161,8 +162,8 @@ public class CircleTest
 
         // Assert
         act.Should().Throw<ArgumentException>()
-            .WithMessage("position.X cannot be " + expectedException + ".*")
-            .And.ParamName.Should().Be("position.X");
+            .WithMessage("Position.X cannot be " + expectedException + ".*")
+            .And.ParamName.Should().Be("Position.X");
     }
 
     [Fact]
