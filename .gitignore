@@ -19,6 +19,10 @@ BattleStars.Tests/*.suo
 BattleStars.Tests/*.userosscache
 BattleStars.Tests/*.sln.docstates
 
+# Coverage reports
+CoverageReport/
+TestResults/
+
 # User-specific files
 *.rsuser
 *.suo
