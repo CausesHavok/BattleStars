@@ -54,9 +54,9 @@ public class PolyShapeTest
     {
         Action act = () => new PolyShape(
         [
-            new Triangle(new Vector2(0, 0), new Vector2(1, 0), new Vector2(0, 1), Color.Red),
-            new Triangle(new Vector2(1, 0), new Vector2(1, 1), new Vector2(0, 1), Color.Red),
-            new Triangle(new Vector2(0, 0), new Vector2(0, 0), new Vector2(0, 0), Color.Red) // Malformed triangle
+            new Triangle(new PositionalVector2(0, 0), new PositionalVector2(1, 0), new PositionalVector2(0, 1), Color.Red),
+            new Triangle(new PositionalVector2(1, 0), new PositionalVector2(1, 1), new PositionalVector2(0, 1), Color.Red),
+            new Triangle(new PositionalVector2(0, 0), new PositionalVector2(0, 0), new PositionalVector2(0, 0), Color.Red) // Malformed triangle
         ]);
 
         act.Should().Throw<ArgumentException>();
@@ -65,7 +65,7 @@ public class PolyShapeTest
     [Fact]
     public void GivenSingleTriangle_WhenConstructingPolygon_ThenDoesNotThrowArgumentException()
     {
-        var triangle = new Triangle(new Vector2(0, 0), new Vector2(1, 0), new Vector2(0, 1), Color.Red);
+        var triangle = new Triangle(new PositionalVector2(0, 0), new PositionalVector2(1, 0), new PositionalVector2(0, 1), Color.Red);
         Action act = () => new PolyShape([triangle]);
 
         act.Should().NotThrow<ArgumentException>();
@@ -74,8 +74,8 @@ public class PolyShapeTest
     [Fact]
     public void GivenMultipleTriangles_WhenConstructingPolygon_ThenDoesNotThrowArgumentException()
     {
-        var t1 = new Triangle(new Vector2(0, 0), new Vector2(1, 0), new Vector2(0, 1), Color.Red);
-        var t2 = new Triangle(new Vector2(1, 0), new Vector2(1, 1), new Vector2(0, 1), Color.Red);
+        var t1 = new Triangle(new PositionalVector2(0, 0), new PositionalVector2(1, 0), new PositionalVector2(0, 1), Color.Red);
+        var t2 = new Triangle(new PositionalVector2(1, 0), new PositionalVector2(1, 1), new PositionalVector2(0, 1), Color.Red);
         Action act = () => new PolyShape([t1, t2]);
 
         act.Should().NotThrow<ArgumentException>();
@@ -108,10 +108,10 @@ public class PolyShapeTest
     [InlineData(0.8f,  0.8f, false)] // Inside bounding box but outside triangles
     public void GivenPolygon_WhenTestingContains_ThenReturnsExpected(float pointX, float pointY, bool expected)
     {
-        var t1 = new Triangle(new Vector2(0, 0), new Vector2(1, 0), new Vector2(0, 1), Color.Red);
-        var t2 = new Triangle(new Vector2(0, 0), new Vector2(1, 0), new Vector2(0, -1), Color.Red);
+        var t1 = new Triangle(new PositionalVector2(0, 0), new PositionalVector2(1, 0), new PositionalVector2(0, 1), Color.Red);
+        var t2 = new Triangle(new PositionalVector2(0, 0), new PositionalVector2(1, 0), new PositionalVector2(0, -1), Color.Red);
         var poly = new PolyShape([t1, t2]);
-        var point = new Vector2(pointX, pointY);
+        var point = new PositionalVector2(pointX, pointY);
 
         poly.Contains(point).Should().Be(expected);
     }
@@ -123,8 +123,8 @@ public class PolyShapeTest
     [InlineData(                    0f, float.NegativeInfinity, "Position.Y")]
     public void GivenPolygon_WhenTestingContains_WithInvalidPointOrEntity_ThenThrowsArgumentException(float px, float py, string paramName)
     {
-        var t1 = new Triangle(new Vector2(0, 0), new Vector2(1, 0), new Vector2(0, 1), Color.Red);
-        var t2 = new Triangle(new Vector2(1, 0), new Vector2(1, 1), new Vector2(0, 1), Color.Red);
+        var t1 = new Triangle(new PositionalVector2(0, 0), new PositionalVector2(1, 0), new PositionalVector2(0, 1), Color.Red);
+        var t2 = new Triangle(new PositionalVector2(1, 0), new PositionalVector2(1, 1), new PositionalVector2(0, 1), Color.Red);
         var poly = new PolyShape([t1, t2]);
         var point = new Vector2(px, py);
 
@@ -148,11 +148,11 @@ public class PolyShapeTest
     public void GivenPolygon_WhenDrawCalled_ThenDrawerIsCalledForEachTriangle()
     {
         var drawer = new MockShapeDrawer();
-        var t1 = new Triangle(new Vector2(0, 0), new Vector2(1, 0), new Vector2(0, 1), Color.Red);
-        var t2 = new Triangle(new Vector2(1, 0), new Vector2(1, 1), new Vector2(0, 1), Color.Red);
+        var t1 = new Triangle(new PositionalVector2(0, 0), new PositionalVector2(1, 0), new PositionalVector2(0, 1), Color.Red);
+        var t2 = new Triangle(new PositionalVector2(1, 0), new PositionalVector2(1, 1), new PositionalVector2(0, 1), Color.Red);
         var poly = new PolyShape([t1, t2]);
 
-        poly.Draw(new Vector2(1, 1), drawer);
+        poly.Draw(new PositionalVector2(1, 1), drawer);
         var TimesCalled = drawer.TimesCalled;
 
         drawer.DrawCalled.Should().BeTrue();
@@ -167,8 +167,8 @@ public class PolyShapeTest
     public void GivenPolygon_WhenDrawCalled_WithInvalidPosition_ThenThrowsArgumentException(float px, float py, string paramName)
     {
         var drawer = new MockShapeDrawer();
-        var t1 = new Triangle(new Vector2(0, 0), new Vector2(1, 0), new Vector2(0, 1), Color.Red);
-        var t2 = new Triangle(new Vector2(1, 0), new Vector2(1, 1), new Vector2(0, 1), Color.Red);
+        var t1 = new Triangle(new PositionalVector2(0, 0), new PositionalVector2(1, 0), new PositionalVector2(0, 1), Color.Red);
+        var t2 = new Triangle(new PositionalVector2(1, 0), new PositionalVector2(1, 1), new PositionalVector2(0, 1), Color.Red);
         var poly = new PolyShape([t1, t2]);
         var position = new Vector2(px, py);
 
@@ -181,10 +181,10 @@ public class PolyShapeTest
     [Fact]
     public void GivenPolygon_WhenDrawCalled_WithNullDrawer_ThenThrowsArgumentNullException()
     {
-        var t1 = new Triangle(new Vector2(0, 0), new Vector2(1, 0), new Vector2(0, 1), Color.Red);
-        var t2 = new Triangle(new Vector2(1, 0), new Vector2(1, 1), new Vector2(0, 1), Color.Red);
+        var t1 = new Triangle(new PositionalVector2(0, 0), new PositionalVector2(1, 0), new PositionalVector2(0, 1), Color.Red);
+        var t2 = new Triangle(new PositionalVector2(1, 0), new PositionalVector2(1, 1), new PositionalVector2(0, 1), Color.Red);
         var poly = new PolyShape([t1, t2]);
-        var position = new Vector2(1, 1);
+        var position = new PositionalVector2(1, 1);
 
         Action act = () => poly.Draw(position, null!);
 

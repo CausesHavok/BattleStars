@@ -62,9 +62,9 @@ public class TriangleTest
     [InlineData(0f, 0f, 1f, 0f, 2f, 0f)] // All Points on a line
     public void GivenThreePoints_WhenTheyDoNotFormTriangle_ThenThrowsArgumentException(float Point1x, float Point1y, float Point2x, float Point2y, float Point3x, float Point3y)
     {
-        var Point1 = new Vector2(Point1x, Point1y);
-        var Point2 = new Vector2(Point2x, Point2y);
-        var Point3 = new Vector2(Point3x, Point3y);
+        var Point1 = new PositionalVector2(Point1x, Point1y);
+        var Point2 = new PositionalVector2(Point2x, Point2y);
+        var Point3 = new PositionalVector2(Point3x, Point3y);
         Action act = () => new Triangle(Point1, Point2, Point3, Color.Red);
 
         act.Should().Throw<ArgumentException>()
@@ -108,11 +108,11 @@ public class TriangleTest
     [InlineData(0.8f, 0.8f, false)]  // Inside Bounding Box, but outside Triangle
     public void GivenTriangle_WhenTestingContains_ThenReturnsExpected(float pointX, float pointY, bool expected)
     {
-        var Point1 = new Vector2(0, 0);
-        var Point2 = new Vector2(1, 0);
-        var Point3 = new Vector2(0, 1);
+        var Point1 = new PositionalVector2(0, 0);
+        var Point2 = new PositionalVector2(1, 0);
+        var Point3 = new PositionalVector2(0, 1);
         var tri = new Triangle(Point1, Point2, Point3, Color.Red);
-        var point = new Vector2(pointX, pointY);
+        var point = new PositionalVector2(pointX, pointY);
 
         tri.Contains(point).Should().Be(expected);
     }
@@ -124,7 +124,7 @@ public class TriangleTest
     [InlineData(                    0f, float.NegativeInfinity, "Position.Y")]
     public void GivenTriangle_WhenTestingContains_WithInvalidPointOrEntity_ThenThrowsArgumentException(float px, float py, string paramName)
     {
-        var tri = new Triangle(new Vector2(0, 0), new Vector2(1, 0), new Vector2(0, 1), Color.Red);
+        var tri = new Triangle(new PositionalVector2(0, 0), new PositionalVector2(1, 0), new PositionalVector2(0, 1), Color.Red);
         var point = new Vector2(px, py);
 
         Action act = () => tri.Contains(point);
@@ -147,8 +147,8 @@ public class TriangleTest
     public void GivenTriangle_WhenDrawCalled_ThenDrawerIsCalled()
     {
         var drawer = new MockShapeDrawer();
-        var tri = new Triangle(new Vector2(0, 0), new Vector2(1, 0), new Vector2(0, 1), Color.Red);
-        tri.Draw(new Vector2(1, 1), drawer);
+        var tri = new Triangle(new PositionalVector2(0, 0), new PositionalVector2(1, 0), new PositionalVector2(0, 1), Color.Red);
+        tri.Draw(new PositionalVector2(1, 1), drawer);
 
         drawer.DrawCalled.Should().BeTrue();
     }
@@ -161,7 +161,7 @@ public class TriangleTest
     public void GivenTriangle_WhenDrawCalled_WithInvalidPosition_ThenThrowsArgumentException(float px, float py, string paramName)
     {
         var drawer = new MockShapeDrawer();
-        var tri = new Triangle(new Vector2(0, 0), new Vector2(1, 0), new Vector2(0, 1), Color.Red);
+        var tri = new Triangle(new PositionalVector2(0, 0), new PositionalVector2(1, 0), new PositionalVector2(0, 1), Color.Red);
         var position = new Vector2(px, py);
 
         Action act = () => tri.Draw(position, drawer);
@@ -173,8 +173,8 @@ public class TriangleTest
     [Fact]
     public void GivenTriangle_WhenDrawCalled_WithNullDrawer_ThenThrowsArgumentNullException()
     {
-        var tri = new Triangle(new Vector2(0, 0), new Vector2(1, 0), new Vector2(0, 1), Color.Red);
-        var position = new Vector2(1, 1);
+        var tri = new Triangle(new PositionalVector2(0, 0), new PositionalVector2(1, 0), new PositionalVector2(0, 1), Color.Red);
+        var position = new PositionalVector2(1, 1);
 
         Action act = () => tri.Draw(position, null!);
 

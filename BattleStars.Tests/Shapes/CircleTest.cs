@@ -79,7 +79,6 @@ public class CircleTest
         - Test that point outside zero centered circle yields false
         - Test that point outside offset circle yields false
         - Test that invalid point (NaN or Infinity) throws ArgumentException
-        - Test that invalid offset point (NaN or Infinity) throws ArgumentException
     */
 
     [Theory]
@@ -91,7 +90,7 @@ public class CircleTest
     {
         // Arrange
         var circle = new Circle(5.0f, Color.Red);
-        var point = new Vector2(pointX, pointY);
+        var point = new PositionalVector2(pointX, pointY);
 
         // Act
         bool result = circle.Contains(point);

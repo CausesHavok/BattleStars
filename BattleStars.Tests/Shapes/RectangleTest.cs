@@ -55,8 +55,8 @@ public class RectangleTest
     [InlineData(1f, 1f, 1f, 1f)] // zero width and height
     public void GivenZeroWidthOrHeight_WhenConstructingRectangle_ThenThrowsArgumentException(float v1x, float v1y, float v2x, float v2y)
     {
-        var v1 = new Vector2(v1x, v1y);
-        var v2 = new Vector2(v2x, v2y);
+        var v1 = new PositionalVector2(v1x, v1y);
+        var v2 = new PositionalVector2(v2x, v2y);
         Action act = () => new BattleStars.Shapes.Rectangle(v1, v2, Color.Red);
 
         act.Should().Throw<ArgumentException>()
@@ -66,13 +66,13 @@ public class RectangleTest
     [Fact]
     public void GivenValidCorners_WhenConstructingRectangle_ThenSetsProperties()
     {
-        var v1 = new Vector2(0, 0);
-        var v2 = new Vector2(2, 3);
+        var v1 = new PositionalVector2(0, 0);
+        var v2 = new PositionalVector2(2, 3);
         var color = Color.Blue;
         var rect = new BattleStars.Shapes.Rectangle(v1, v2, color);
 
-        rect.BoundingBox.TopLeft.Should().Be(new Vector2(0, 0));
-        rect.BoundingBox.BottomRight.Should().Be(new Vector2(2, 3));
+        rect.BoundingBox.TopLeft.Should().Be(new PositionalVector2(0, 0));
+        rect.BoundingBox.BottomRight.Should().Be(new PositionalVector2(2, 3));
         rect.Color.Should().Be(color);
     }
 
@@ -98,10 +98,10 @@ public class RectangleTest
     [InlineData(0f, 0f, true)]  // point on origin
     public void GivenRectangle_WhenTestingContains_ThenReturnsExpected(float pointX, float pointY, bool expected)
     {
-        var vec1 = new Vector2(-1, -1);
-        var vec2 = new Vector2(1, 1);
+        var vec1 = new PositionalVector2(-1, -1);
+        var vec2 = new PositionalVector2(1, 1);
         var rect = new BattleStars.Shapes.Rectangle(vec1, vec2, Color.Red);
-        var point = new Vector2(pointX, pointY);
+        var point = new PositionalVector2(pointX, pointY);
 
         rect.Contains(point).Should().Be(expected);
     }
@@ -114,7 +114,7 @@ public class RectangleTest
 
     public void GivenRectangle_WhenTestingContains_WithInvalidPointOrEntity_ThenThrowsArgumentException(float px, float py, string paramName)
     {
-        var rect = new BattleStars.Shapes.Rectangle(new Vector2(0, 0), new Vector2(2, 2), Color.Red);
+        var rect = new BattleStars.Shapes.Rectangle(new PositionalVector2(0, 0), new PositionalVector2(2, 2), Color.Red);
         var point = new Vector2(px, py);
 
         Action act = () => rect.Contains(point);
@@ -137,8 +137,8 @@ public class RectangleTest
     public void GivenRectangle_WhenDrawCalled_ThenDrawerIsCalled()
     {
         var drawer = new MockShapeDrawer();
-        var rect = new BattleStars.Shapes.Rectangle(new Vector2(0, 0), new Vector2(2, 2), Color.Red);
-        rect.Draw(new Vector2(1, 1), drawer);
+        var rect = new BattleStars.Shapes.Rectangle(new PositionalVector2(0, 0), new PositionalVector2(2, 2), Color.Red);
+        rect.Draw(new PositionalVector2(1, 1), drawer);
 
         drawer.DrawCalled.Should().BeTrue();
     }
@@ -151,7 +151,7 @@ public class RectangleTest
     public void GivenRectangle_WhenDrawCalled_WithInvalidPosition_ThenThrowsArgumentException(float px, float py, string paramName)
     {
         var drawer = new MockShapeDrawer();
-        var rect = new BattleStars.Shapes.Rectangle(new Vector2(0, 0), new Vector2(2, 2), Color.Red);
+        var rect = new BattleStars.Shapes.Rectangle(new PositionalVector2(0, 0), new PositionalVector2(2, 2), Color.Red);
         var position = new Vector2(px, py);
 
         Action act = () => rect.Draw(position, drawer);
@@ -163,8 +163,8 @@ public class RectangleTest
     [Fact]
     public void GivenRectangle_WhenDrawCalled_WithNullDrawer_ThenThrowsArgumentNullException()
     {
-        var rect = new BattleStars.Shapes.Rectangle(new Vector2(0, 0), new Vector2(2, 2), Color.Red);
-        var position = new Vector2(1, 1);
+        var rect = new BattleStars.Shapes.Rectangle(new PositionalVector2(0, 0), new PositionalVector2(2, 2), Color.Red);
+        var position = new PositionalVector2(1, 1);
 
         Action act = () => rect.Draw(position, null!);
 
