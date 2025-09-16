@@ -55,7 +55,6 @@ public class Triangle : IShape
 
     public bool Contains(PositionalVector2 point)
     {
-        VectorValidator.ThrowIfNaNOrInfinity(point, nameof(point));
         // Check bounding box first for quick rejection;
         if (!BoundingBox.Contains(point)) return false;
 
