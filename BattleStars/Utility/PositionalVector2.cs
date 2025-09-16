@@ -17,7 +17,8 @@ public struct PositionalVector2
     }
     public float Y
     {
-        get => _position.Y; set
+        get => _position.Y;
+        set
         {
             FloatValidator.ThrowIfNaNOrInfinity(value, nameof(Y));
             _position.Y = value;
