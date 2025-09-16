@@ -59,7 +59,7 @@ for (int i = 0; i < enemyCount; i++)
 
     var enemyMovable = new BasicMovable(enemyPosition, enemyDirection, enemySpeed);
     var enemyDestructable = new BasicDestructable(1f);
-    var enemyShooter = new BasicShooter(ShotFactory.CreateCannonShot, DirectionalVector2.UnitX); // Shoot left
+    var enemyShooter = new BasicShooter(ShotFactory.CreateCannonShot, -DirectionalVector2.UnitX); // Shoot left
 
     var enemyBattleStar = new BattleStar(
         enemyShape,
