@@ -8,7 +8,8 @@ public struct PositionalVector2
 
     public float X
     {
-        get => _position.X; set
+        get => _position.X;
+        set
         {
             FloatValidator.ThrowIfNaNOrInfinity(value, nameof(X));
             _position.X = value;
