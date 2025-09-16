@@ -54,7 +54,7 @@ for (int i = 0; i < enemyCount; i++)
     });
 
     var enemyPosition = new PositionalVector2(700, i * 100 + 50);
-    var enemyDirection = DirectionalVector2.UnitX;
+    var enemyDirection = -DirectionalVector2.UnitX;
     var enemySpeed = 1f;
 
     var enemyMovable = new BasicMovable(enemyPosition, enemyDirection, enemySpeed);
