@@ -28,7 +28,7 @@ public class Rectangle : IShape
         if (minX == maxX || minY == maxY)
             throw new ArgumentException("Rectangle must have non-zero width and height.");
 
-        BoundingBox = new BoundingBox(new Vector2(minX, minY), new Vector2(maxX, maxY));
+        BoundingBox = new BoundingBox(new PositionalVector2(minX, minY), new PositionalVector2(maxX, maxY));
         Color = color;
     }
 

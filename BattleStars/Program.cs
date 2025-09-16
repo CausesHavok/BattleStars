@@ -1,10 +1,10 @@
 ﻿using Raylib_cs;
 using System.Numerics;
-using BattleStars;
 using BattleStars.Shapes;
 using BattleStars.Logic;
 using BattleStars.Shots;
 using BattleStars.Core;
+using BattleStars.Utility;
 
 Raylib.InitWindow(800, 600, "BattleStars - Square Test");
 Raylib.SetTargetFPS(60);
@@ -25,11 +25,11 @@ var playershape = shapeFactory.CreateShape(new ShapeDescriptor
     Color = System.Drawing.Color.Blue
 });
 
-var playerMovable = new PlayerMovable(new Vector2(100, 100), 5f, boundaryChecker);
+var playerMovable = new PlayerMovable(new PositionalVector2(100, 100), 5f, boundaryChecker);
 
 var playerDestructable = new BasicDestructable(100f);
 
-var playerShooter = new BasicShooter(ShotFactory.CreateLaserShot, new Vector2(1, 0)); // Default direction to the right
+var playerShooter = new BasicShooter(ShotFactory.CreateLaserShot, DirectionalVector2.UnitX); // Default direction to the right
 
 var playerBattleStar = new BattleStar(
     playershape,
@@ -53,13 +53,13 @@ for (int i = 0; i < enemyCount; i++)
         Color = System.Drawing.Color.Red
     });
 
-    var enemyPosition = new Vector2(700, i * 100 + 50);
-    var enemyDirection = Vector2.Normalize(new Vector2(-1, 0)); // Move left
+    var enemyPosition = new PositionalVector2(700, i * 100 + 50);
+    var enemyDirection = DirectionalVector2.UnitX;
     var enemySpeed = 1f;
 
     var enemyMovable = new BasicMovable(enemyPosition, enemyDirection, enemySpeed);
     var enemyDestructable = new BasicDestructable(1f);
-    var enemyShooter = new BasicShooter(ShotFactory.CreateCannonShot, new Vector2(-1, 0)); // Shoot left
+    var enemyShooter = new BasicShooter(ShotFactory.CreateCannonShot, DirectionalVector2.UnitX); // Shoot left
 
     var enemyBattleStar = new BattleStar(
         enemyShape,
@@ -84,7 +84,7 @@ var rnd = new Random();
 while (!Raylib.WindowShouldClose())
 {
     // Movement input
-    Vector2 move = Vector2.Zero;
+    var move = Vector2.Zero;
     if (Raylib.IsKeyDown(KeyboardKey.Right)) move.X += 1;
     if (Raylib.IsKeyDown(KeyboardKey.Left)) move.X -= 1;
     if (Raylib.IsKeyDown(KeyboardKey.Up)) move.Y -= 1;
@@ -95,7 +95,7 @@ while (!Raylib.WindowShouldClose())
         move = Vector2.Normalize(move);
     }
 
-    context.PlayerDirection = move;
+    context.PlayerDirection = new DirectionalVector2(move);
 
     if (Raylib.IsKeyDown(KeyboardKey.Escape)) break;
     if (Raylib.IsKeyPressed(KeyboardKey.Space))
@@ -145,12 +145,12 @@ while (!Raylib.WindowShouldClose())
     foreach (var shot in playerShots)
     {
         shot.Update();
-        drawer.DrawRectangle(shot.Position, new Vector2(10 + shot.Position.X, 5 + shot.Position.Y), System.Drawing.Color.Yellow);
+        drawer.DrawRectangle(shot.Position, new PositionalVector2(10 + shot.Position.X, 5 + shot.Position.Y), System.Drawing.Color.Yellow);
     }
     foreach (var shot in enemyShots)
     {
         shot.Update();
-        drawer.DrawRectangle(shot.Position, new Vector2(10 + shot.Position.X, 5 + shot.Position.Y), System.Drawing.Color.Orange);
+        drawer.DrawRectangle(shot.Position, new PositionalVector2(10 + shot.Position.X, 5 + shot.Position.Y), System.Drawing.Color.Orange);
     }
 
     // Check for collisions

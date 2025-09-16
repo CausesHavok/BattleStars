@@ -80,16 +80,4 @@ public class PositionalVector2Test
         result.Should().Be(vector);
     }
 
-    [Fact]
-    public void GivenVector2_WhenImplicitlyConvertedToPositionalVector2_ThenValueIsSet()
-    {
-        // Arrange
-        var vector = new Vector2(7, 8);
-
-        // Act
-        PositionalVector2 positional = vector;
-
-        // Assert
-        positional.Position.Should().Be(vector);
-    }
 }

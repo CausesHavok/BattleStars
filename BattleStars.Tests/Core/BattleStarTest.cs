@@ -39,7 +39,7 @@ public class TestContextFixture : IContext
         PlayerDirection = playerDirection;
     }
 
-    public TestContextFixture() : this(new DirectionalVector2(1, 0)) { }
+    public TestContextFixture() : this(DirectionalVector2.UnitX) { }
 }
 
 

@@ -106,16 +106,4 @@ public class DirectionalVector2Test
         result.Should().Be(vector);
     }
 
-    [Fact]
-    public void GivenVector2_WhenImplicitlyConvertedToDirectionalVector2_ThenValueIsSetIfNormalized()
-    {
-        // Arrange
-        var vector = Vector2.Normalize(new Vector2(1, 1));
-
-        // Act
-        DirectionalVector2 directional = vector;
-
-        // Assert
-        directional.Direction.Should().Be(vector);
-    }
 }

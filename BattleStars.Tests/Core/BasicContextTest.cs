@@ -11,7 +11,7 @@ public class BasicContextTest
     {
         // Arrange
         var context = new BasicContext();
-        var expectedDirection = new DirectionalVector2(1, 0);
+        var expectedDirection = DirectionalVector2.UnitX;
         context.PlayerDirection = expectedDirection;
 
         // Act
@@ -26,7 +26,7 @@ public class BasicContextTest
     {
         // Arrange
         var context = new BasicContext();
-        var expectedPosition = new PositionalVector2(0, 1);
+        var expectedPosition = PositionalVector2.Zero;
         context.ShooterPosition = expectedPosition;
 
         // Act

@@ -40,7 +40,7 @@ public class Triangle : IShape
         var minY = Math.Min(Point1.Y, Math.Min(Point2.Y, Point3.Y));
         var maxX = Math.Max(Point1.X, Math.Max(Point2.X, Point3.X));
         var maxY = Math.Max(Point1.Y, Math.Max(Point2.Y, Point3.Y));
-        return new BoundingBox(new Vector2(minX, minY), new Vector2(maxX, maxY));
+        return new BoundingBox(new PositionalVector2(minX, minY), new PositionalVector2(maxX, maxY));
     }
 
     private bool IsValidTriangle()

@@ -33,10 +33,13 @@ public struct DirectionalVector2
     }
 
     public static implicit operator Vector2(DirectionalVector2 directionalVector) => directionalVector.Direction;
-    public static implicit operator DirectionalVector2(Vector2 vector) => new(vector);
-    
+    //public static implicit operator DirectionalVector2(Vector2 vector) => new(vector);
+
     public static Vector2 operator *(DirectionalVector2 directional, float scalar)
     {
         return directional.Direction * scalar;
     }
+    public static readonly DirectionalVector2 Zero = new(Vector2.Zero);
+    public static readonly DirectionalVector2 UnitX = new(Vector2.UnitX);
+    public static readonly DirectionalVector2 UnitY = new(Vector2.UnitY);
 }

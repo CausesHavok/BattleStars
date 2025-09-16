@@ -73,7 +73,7 @@ public class ShapeFactory
         Triangle[] triangles = new Triangle[6];
         for (int i = 0; i < 6; i++)
         {
-            PositionalVector2 p1 = Vector2.Zero;
+            PositionalVector2 p1 = PositionalVector2.Zero;
             PositionalVector2 p2 = outerPoints[i];
             PositionalVector2 p3 = outerPoints[(i + 1) % 6];
             triangles[i] = new Triangle(p1, p2, p3, _color);

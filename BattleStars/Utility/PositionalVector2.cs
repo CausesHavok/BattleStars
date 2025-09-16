@@ -7,14 +7,16 @@ public struct PositionalVector2
     private Vector2 _position;
 
     public float X
-    { get => _position.X; set
+    {
+        get => _position.X; set
         {
             FloatValidator.ThrowIfNaNOrInfinity(value, nameof(X));
             _position.X = value;
         }
     }
     public float Y
-    { get => _position.Y; set
+    {
+        get => _position.Y; set
         {
             FloatValidator.ThrowIfNaNOrInfinity(value, nameof(Y));
             _position.Y = value;
@@ -41,7 +43,7 @@ public struct PositionalVector2
     }
 
     public static implicit operator Vector2(PositionalVector2 positionalVector) => positionalVector.Position;
-    public static implicit operator PositionalVector2(Vector2 vector) => new(vector);
+    //public static implicit operator PositionalVector2(Vector2 vector) => new(vector);
 
     public static PositionalVector2 operator +(PositionalVector2 positional, Vector2 vector)
     {
@@ -51,5 +53,12 @@ public struct PositionalVector2
     {
         return new PositionalVector2(positional.Position - vector);
     }
+    public static PositionalVector2 operator -(PositionalVector2 v)
+    {
+        return new PositionalVector2(-v.X, -v.Y);
+    }
 
+    public static readonly PositionalVector2 Zero = new(Vector2.Zero);
+    public static readonly PositionalVector2 UnitX = new(Vector2.UnitX);
+    public static readonly PositionalVector2 UnitY = new(Vector2.UnitY);
 }
