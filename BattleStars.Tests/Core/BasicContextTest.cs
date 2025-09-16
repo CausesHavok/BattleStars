@@ -1,6 +1,7 @@
 using System.Numerics;
 using BattleStars.Core;
 using FluentAssertions;
+using BattleStars.Utility;
 namespace BattleStars.Tests.Core;
 
 public class BasicContextTest
@@ -10,7 +11,7 @@ public class BasicContextTest
     {
         // Arrange
         var context = new BasicContext();
-        var expectedDirection = new Vector2(1, 0);
+        var expectedDirection = new DirectionalVector2(1, 0);
         context.PlayerDirection = expectedDirection;
 
         // Act
@@ -25,7 +26,7 @@ public class BasicContextTest
     {
         // Arrange
         var context = new BasicContext();
-        var expectedPosition = new Vector2(0, 1);
+        var expectedPosition = new PositionalVector2(0, 1);
         context.ShooterPosition = expectedPosition;
 
         // Act

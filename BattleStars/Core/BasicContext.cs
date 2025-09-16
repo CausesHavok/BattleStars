@@ -1,13 +1,14 @@
 using System.Numerics;
+using BattleStars.Utility;
 
 namespace BattleStars.Core;
 
 public class BasicContext : IContext
 {
 
-    public Vector2 PlayerDirection { get; set; }
+    public DirectionalVector2 PlayerDirection { get; set; }
 
     /// <inheritdoc/>
-    public Vector2 ShooterPosition { get; set; }
+    public PositionalVector2 ShooterPosition { get; set; }
 
 }

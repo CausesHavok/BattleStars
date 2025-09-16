@@ -1,6 +1,7 @@
 using System.Numerics;
 using BattleStars.Shapes;
 using BattleStars.Shots;
+using BattleStars.Utility;
 
 namespace BattleStars.Core;
 
@@ -8,7 +9,7 @@ public interface IBattleStar
 {
     bool IsDestroyed { get; }
 
-    bool Contains(Vector2 point);
+    bool Contains(PositionalVector2 point);
     void Draw();
     BoundingBox GetBoundingBox();
     void Move(IContext context);

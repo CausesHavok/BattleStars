@@ -97,8 +97,8 @@ public class BasicShooterTest
         float px, float py, float dx, float dy)
     {
         // Arrange
-        var expectedPosition = new Vector2(px, py);
-        var expectedDirection = new Vector2(dx, dy);
+        var expectedPosition = new PositionalVector2(px, py);
+        var expectedDirection = new DirectionalVector2(dx, dy);
         var expectedShot = new Mock<IShot>().Object;
 
         var shotFactoryMock = new Mock<Func<PositionalVector2, DirectionalVector2, IShot>>();
@@ -133,7 +133,7 @@ public class BasicShooterTest
     public void GivenValidContext_WhenShoot_ThenReturnsSingleNonNullShot()
     {
         // Arrange
-        var expectedPosition = new Vector2(5, 5);
+        var expectedPosition = new PositionalVector2(5, 5);
         var expectedDirection = Vector2.Zero;
         var expectedShot = new Mock<IShot>().Object;
 
@@ -156,7 +156,7 @@ public class BasicShooterTest
     public void GivenMultipleCallsToShoot_WhenCalled_ThenProducesNewShotsEachTime()
     {
         // Arrange
-        var expectedPosition = new Vector2(2, 2);
+        var expectedPosition = new PositionalVector2(2, 2);
         var expectedDirection = Vector2.UnitY;
         var shotFactoryMock = new Mock<Func<PositionalVector2, DirectionalVector2, IShot>>();
         shotFactoryMock.Setup(f => f(expectedPosition, expectedDirection)).Returns(new Mock<IShot>().Object);
@@ -188,16 +188,16 @@ public class BasicShooterTest
 
         var contextMock = new Mock<IContext>();
         contextMock.SetupSequence(c => c.ShooterPosition)
-            .Returns(new Vector2(1, 1))
-            .Returns(new Vector2(2, 2));
+            .Returns(new PositionalVector2(1, 1))
+            .Returns(new PositionalVector2(2, 2));
 
         // Act
         shooter.Shoot(contextMock.Object);
         shooter.Shoot(contextMock.Object);
 
         // Assert
-        shotFactoryMock.Verify(f => f(new Vector2(1, 1), expectedDirection), Times.Once);
-        shotFactoryMock.Verify(f => f(new Vector2(2, 2), expectedDirection), Times.Once);
+        shotFactoryMock.Verify(f => f(new PositionalVector2(1, 1), expectedDirection), Times.Once);
+        shotFactoryMock.Verify(f => f(new PositionalVector2(2, 2), expectedDirection), Times.Once);
     }
 
     [Fact] // 16
@@ -211,7 +211,7 @@ public class BasicShooterTest
         var shooter = new BasicShooter(shotFactoryMock.Object, expectedDirection);
 
         var contextMock = new Mock<IContext>();
-        contextMock.Setup(c => c.ShooterPosition).Returns(new Vector2(0, 0));
+        contextMock.Setup(c => c.ShooterPosition).Returns(new PositionalVector2(0, 0));
 
         Action act = () => shooter.Shoot(contextMock.Object);
 
@@ -223,8 +223,8 @@ public class BasicShooterTest
     public void GivenContext_WhenShoot_ThenContextIsNotMutated()
     {
         // Arrange
-        var expectedPosition = new Vector2(1, 1);
-        var expectedDirection = Vector2.UnitY;
+        var expectedPosition = new PositionalVector2(1, 1);
+        var expectedDirection = new DirectionalVector2(Vector2.UnitY);
         var expectedShot = new Mock<IShot>().Object;
 
         var shotFactoryMock = new Mock<Func<PositionalVector2, DirectionalVector2, IShot>>();
@@ -246,7 +246,7 @@ public class BasicShooterTest
     public void GivenShootCalled_WhenShoot_ThenDirectionIsNotMutated()
     {
         // Arrange
-        var expectedPosition = new Vector2(1, 1);
+        var expectedPosition = new PositionalVector2(1, 1);
         var expectedDirection = Vector2.UnitY;
         var expectedShot = new Mock<IShot>().Object;
 
@@ -273,7 +273,7 @@ public class BasicShooterTest
     public void GivenEdgeCasePositions_WhenShoot_ThenShotPositionIsCorrect(float x, float y)
     {
         // Arrange
-        var expectedPosition = new Vector2(x, y);
+        var expectedPosition = new PositionalVector2(x, y);
         var expectedDirection = Vector2.UnitY;
         var expectedShot = new Mock<IShot>().Object;
 
@@ -296,7 +296,7 @@ public class BasicShooterTest
     public void GivenCustomContextImplementation_WhenShoot_ThenWorksCorrectly()
     {
         // Arrange
-        var expectedPosition = new Vector2(7, 8);
+        var expectedPosition = new PositionalVector2(7, 8);
         var expectedDirection = Vector2.UnitY;
         var expectedShot = new Mock<IShot>().Object;
 
@@ -316,12 +316,12 @@ public class BasicShooterTest
 
     private class CustomContext : IContext
     {
-        public CustomContext(Vector2 shooterPosition)
+        public CustomContext(PositionalVector2 shooterPosition)
         {
             ShooterPosition = shooterPosition;
         }
-        public Vector2 ShooterPosition { get; set; }
-        public Vector2 PlayerDirection => Vector2.UnitX; // Arbitrary implementation
+        public PositionalVector2 ShooterPosition { get; set; }
+        public DirectionalVector2 PlayerDirection => Vector2.UnitX; // Arbitrary implementation
     }
 
     #endregion

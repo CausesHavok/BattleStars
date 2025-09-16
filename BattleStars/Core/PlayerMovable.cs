@@ -6,12 +6,12 @@ namespace BattleStars.Core;
 
 public class PlayerMovable : IMovable
 {
-    private Vector2 _position;
-    public Vector2 Position => _position;
+    private PositionalVector2 _position;
+    public PositionalVector2 Position => _position;
     private readonly float _speed;
     private readonly IBoundaryChecker _boundaryChecker;
 
-    public PlayerMovable(Vector2 initialPosition, float speed, IBoundaryChecker boundaryChecker)
+    public PlayerMovable(PositionalVector2 initialPosition, float speed, IBoundaryChecker boundaryChecker)
     {
         VectorValidator.ThrowIfNaNOrInfinity(initialPosition, nameof(initialPosition));
         FloatValidator.ThrowIfNaNOrInfinity(speed, nameof(speed));

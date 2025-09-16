@@ -6,8 +6,20 @@ public struct PositionalVector2
 {
     private Vector2 _position;
 
-    public readonly float X => _position.X;
-    public readonly float Y => _position.Y;
+    public float X
+    { get => _position.X; set
+        {
+            FloatValidator.ThrowIfNaNOrInfinity(value, nameof(X));
+            _position.X = value;
+        }
+    }
+    public float Y
+    { get => _position.Y; set
+        {
+            FloatValidator.ThrowIfNaNOrInfinity(value, nameof(Y));
+            _position.Y = value;
+        }
+    }
 
     public Vector2 Position
     {

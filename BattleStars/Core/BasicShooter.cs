@@ -15,7 +15,7 @@ public class BasicShooter : IShooter
     private readonly Func<PositionalVector2, DirectionalVector2, IShot> _shotFactory;
     private readonly DirectionalVector2 _direction;
 
-    public BasicShooter(Func<PositionalVector2, DirectionalVector2, IShot> shotFactory, Vector2 direction)
+    public BasicShooter(Func<PositionalVector2, DirectionalVector2, IShot> shotFactory, DirectionalVector2 direction)
     {
         ArgumentNullException.ThrowIfNull(shotFactory, nameof(shotFactory));
 

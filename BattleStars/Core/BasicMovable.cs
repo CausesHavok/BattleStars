@@ -5,8 +5,8 @@ namespace BattleStars.Core;
 
 public class BasicMovable : IMovable
 {
-    private Vector2 _position;
-    public Vector2 Position
+    private PositionalVector2 _position;
+    public PositionalVector2 Position
     {
         get => _position;
         private set
@@ -16,14 +16,11 @@ public class BasicMovable : IMovable
         }
     }
 
-    private readonly Vector2 _direction;
+    private readonly DirectionalVector2 _direction;
     private readonly float _speed;
 
-    public BasicMovable(Vector2 initialPosition, Vector2 direction, float speed)
+    public BasicMovable(PositionalVector2 initialPosition, DirectionalVector2 direction, float speed)
     {
-        VectorValidator.ThrowIfNaNOrInfinity(initialPosition, nameof(initialPosition));
-        VectorValidator.ThrowIfNaNOrInfinity(direction, nameof(direction));
-        if (direction != Vector2.Zero) VectorValidator.ThrowIfNotNormalized(direction, nameof(direction));
         FloatValidator.ThrowIfNaNOrInfinity(speed, nameof(speed));
         FloatValidator.ThrowIfNegativeOrZero(speed, nameof(speed));
 
