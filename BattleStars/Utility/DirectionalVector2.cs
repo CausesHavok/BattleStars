@@ -39,6 +39,10 @@ public struct DirectionalVector2
     {
         return directional.Direction * scalar;
     }
+    public static DirectionalVector2 operator -(DirectionalVector2 v)
+    {
+        return new DirectionalVector2(-v.X, -v.Y);
+    }
     public static readonly DirectionalVector2 Zero = new(Vector2.Zero);
     public static readonly DirectionalVector2 UnitX = new(Vector2.UnitX);
     public static readonly DirectionalVector2 UnitY = new(Vector2.UnitY);
