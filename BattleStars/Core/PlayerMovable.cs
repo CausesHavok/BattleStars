@@ -13,7 +13,7 @@ public class PlayerMovable : IMovable
 
     public PlayerMovable(PositionalVector2 initialPosition, float speed, IBoundaryChecker boundaryChecker)
     {
-        VectorValidator.ThrowIfNaNOrInfinity(initialPosition, nameof(initialPosition));
+        // Removed redundant validation: PositionalVector2 already validates during construction.
         FloatValidator.ThrowIfNaNOrInfinity(speed, nameof(speed));
         FloatValidator.ThrowIfNegative(speed, nameof(speed));
         FloatValidator.ThrowIfZero(speed, nameof(speed));
