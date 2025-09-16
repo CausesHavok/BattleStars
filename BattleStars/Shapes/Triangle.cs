@@ -83,7 +83,6 @@ public class Triangle : IShape
 
     public void Draw(PositionalVector2 entityPosition, IShapeDrawer drawer)
     {
-        VectorValidator.ThrowIfNaNOrInfinity(entityPosition, nameof(entityPosition));
         ArgumentNullException.ThrowIfNull(drawer);
         drawer.DrawTriangle(entityPosition + Point1, entityPosition + Point2, entityPosition + Point3, Color);
     }
