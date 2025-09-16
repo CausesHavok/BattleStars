@@ -95,7 +95,9 @@ while (!Raylib.WindowShouldClose())
         move = Vector2.Normalize(move);
     }
 
-    context.PlayerDirection = new DirectionalVector2(move);
+    context.PlayerDirection = (move == Vector2.Zero)
+        ? DirectionalVector2.Zero
+        : new DirectionalVector2(move);
 
     if (Raylib.IsKeyDown(KeyboardKey.Escape)) break;
     if (Raylib.IsKeyPressed(KeyboardKey.Space))
