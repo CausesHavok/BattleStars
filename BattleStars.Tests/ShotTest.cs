@@ -200,7 +200,7 @@ public class ShotTest
     {
         // Arrange
         var position = new PositionalVector2(5, 5);
-        var direction = new DirectionalVector2(-Vector2.UnitY); // Up
+        var direction = new DirectionalVector2(-Vector2.UnitY); // Down
         float speed = 3f;
         float damage = 10f;
         var shot = new Shot(position, direction, speed, damage);
