@@ -33,7 +33,7 @@ public struct DirectionalVector2
     }
 
     public static implicit operator Vector2(DirectionalVector2 directionalVector) => directionalVector.Direction;
-    //public static implicit operator DirectionalVector2(Vector2 vector) => new(vector);
+    // Implicit conversion from Vector2 to DirectionalVector2 is intentionally disabled to avoid accidental creation of non-normalized directional vectors.
 
     public static Vector2 operator *(DirectionalVector2 directional, float scalar)
     {
