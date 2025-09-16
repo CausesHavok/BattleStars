@@ -45,7 +45,6 @@ public struct PositionalVector2
     }
 
     public static implicit operator Vector2(PositionalVector2 positionalVector) => positionalVector.Position;
-    //public static implicit operator PositionalVector2(Vector2 vector) => new(vector);
 
     public static PositionalVector2 operator +(PositionalVector2 positional, Vector2 vector)
     {
