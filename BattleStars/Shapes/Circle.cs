@@ -22,7 +22,6 @@ public class Circle : IShape
 
     public bool Contains(PositionalVector2 point)
     {
-        VectorValidator.ThrowIfNaNOrInfinity(point, nameof(point));
 
         return point.Position.LengthSquared() <= _radius * _radius;
     }
