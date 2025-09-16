@@ -10,7 +10,6 @@ public readonly struct BoundingBox(PositionalVector2 topLeft, PositionalVector2 
 
     public bool Contains(PositionalVector2 point)
     {
-        VectorValidator.ThrowIfNaNOrInfinity(point, nameof(point));
         return point.X >= TopLeft.X && point.X <= BottomRight.X &&
                point.Y >= TopLeft.Y && point.Y <= BottomRight.Y;
     }
