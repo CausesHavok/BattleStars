@@ -3,8 +3,8 @@ using FluentAssertions;
 using Moq;
 using BattleStars.Logic;
 using BattleStars.Core;
-using BattleStars.Shapes;
 using BattleStars.Shots;
+using BattleStars.Utility;
 
 namespace BattleStars.Tests.Logic;
 
@@ -34,7 +34,7 @@ public class CollisionCheckerTest
         var battleStarMock = new Mock<IBattleStar>(MockBehavior.Strict);
         var shotMock = new Mock<IShot>();
 
-        var shotPosition = new Vector2(3, 4);
+        var shotPosition = new PositionalVector2(3, 4);
         shotMock.Setup(s => s.Position).Returns(shotPosition);
         battleStarMock.Setup(bs => bs.Contains(shotPosition)).Returns(true);
 
@@ -50,7 +50,7 @@ public class CollisionCheckerTest
         var battleStarMock = new Mock<IBattleStar>(MockBehavior.Strict);
         var shotMock = new Mock<IShot>();
 
-        var shotPosition = new Vector2(10, 10);
+        var shotPosition = new PositionalVector2(10, 10);
         shotMock.Setup(s => s.Position).Returns(shotPosition);
         battleStarMock.Setup(bs => bs.Contains(shotPosition)).Returns(false);
 
