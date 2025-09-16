@@ -17,10 +17,8 @@ public class Rectangle : IShape
     /// </summary>
     /// <param name="v1"></param>
     /// <param name="v2"></param>
-    public Rectangle(Vector2 v1, Vector2 v2, Color color)
+    public Rectangle(PositionalVector2 v1, PositionalVector2 v2, Color color)
     {
-        VectorValidator.ThrowIfNaNOrInfinity(v1, nameof(v1));
-        VectorValidator.ThrowIfNaNOrInfinity(v2, nameof(v2));
 
         float minX = Math.Min(v1.X, v2.X);
         float minY = Math.Min(v1.Y, v2.Y);
@@ -30,19 +28,17 @@ public class Rectangle : IShape
         if (minX == maxX || minY == maxY)
             throw new ArgumentException("Rectangle must have non-zero width and height.");
 
-        BoundingBox = new BoundingBox(new Vector2(minX, minY), new Vector2(maxX, maxY));
+        BoundingBox = new BoundingBox(new PositionalVector2(minX, minY), new PositionalVector2(maxX, maxY));
         Color = color;
     }
 
-    public bool Contains(Vector2 point)
+    public bool Contains(PositionalVector2 point)
     {
-        VectorValidator.ThrowIfNaNOrInfinity(point, nameof(point));
         return BoundingBox.Contains(point);
     }
 
-    public void Draw(Vector2 position, IShapeDrawer drawer)
+    public void Draw(PositionalVector2 position, IShapeDrawer drawer)
     {
-        VectorValidator.ThrowIfNaNOrInfinity(position, nameof(position));
         ArgumentNullException.ThrowIfNull(drawer);
         drawer.DrawRectangle(position + BoundingBox.TopLeft, position + BoundingBox.BottomRight, Color);
     }

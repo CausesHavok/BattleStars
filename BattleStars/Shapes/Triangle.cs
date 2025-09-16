@@ -6,9 +6,9 @@ namespace BattleStars.Shapes;
 
 public class Triangle : IShape
 {
-    public Vector2 Point1 { get; private set; }
-    public Vector2 Point2 { get; private set; }
-    public Vector2 Point3 { get; private set; }
+    public PositionalVector2 Point1 { get; private set; }
+    public PositionalVector2 Point2 { get; private set; }
+    public PositionalVector2 Point3 { get; private set; }
     public BoundingBox BoundingBox { get; }
     public Color Color { get; private set; }
 
@@ -21,12 +21,8 @@ public class Triangle : IShape
     /// <param name="point1">The first point of the triangle.</param>
     /// <param name="point2">The second point of the triangle.</param>
     /// <param name="point3">The third point of the triangle.</param>
-    public Triangle(Vector2 point1, Vector2 point2, Vector2 point3, Color color)
+    public Triangle(PositionalVector2 point1, PositionalVector2 point2, PositionalVector2 point3, Color color)
     {
-        VectorValidator.ThrowIfNaNOrInfinity(point1, nameof(point1));
-        VectorValidator.ThrowIfNaNOrInfinity(point2, nameof(point2));
-        VectorValidator.ThrowIfNaNOrInfinity(point3, nameof(point3));
-
         Point1 = point1;
         Point2 = point2;
         Point3 = point3;
@@ -44,7 +40,7 @@ public class Triangle : IShape
         var minY = Math.Min(Point1.Y, Math.Min(Point2.Y, Point3.Y));
         var maxX = Math.Max(Point1.X, Math.Max(Point2.X, Point3.X));
         var maxY = Math.Max(Point1.Y, Math.Max(Point2.Y, Point3.Y));
-        return new BoundingBox(new Vector2(minX, minY), new Vector2(maxX, maxY));
+        return new BoundingBox(new PositionalVector2(minX, minY), new PositionalVector2(maxX, maxY));
     }
 
     private bool IsValidTriangle()
@@ -57,9 +53,8 @@ public class Triangle : IShape
         return area > 0;
     }
 
-    public bool Contains(Vector2 point)
+    public bool Contains(PositionalVector2 point)
     {
-        VectorValidator.ThrowIfNaNOrInfinity(point, nameof(point));
         // Check bounding box first for quick rejection;
         if (!BoundingBox.Contains(point)) return false;
 
@@ -86,9 +81,8 @@ public class Triangle : IShape
         return (u >= 0) && (v >= 0) && (u + v <= 1);
     }
 
-    public void Draw(Vector2 entityPosition, IShapeDrawer drawer)
+    public void Draw(PositionalVector2 entityPosition, IShapeDrawer drawer)
     {
-        VectorValidator.ThrowIfNaNOrInfinity(entityPosition, nameof(entityPosition));
         ArgumentNullException.ThrowIfNull(drawer);
         drawer.DrawTriangle(entityPosition + Point1, entityPosition + Point2, entityPosition + Point3, Color);
     }

@@ -2,6 +2,7 @@ using BattleStars.Shapes;
 using System.Drawing;
 using System.Numerics;
 using FluentAssertions;
+using BattleStars.Utility;
 
 namespace BattleStars.Tests.Shapes;
 
@@ -11,47 +12,21 @@ public class TriangleTest
     {
         public bool DrawCalled { get; private set; }
 
-        public void DrawRectangle(Vector2 v1, Vector2 v2, Color color) { }
-        public void DrawTriangle(Vector2 Point1, Vector2 Point2, Vector2 Point3, Color color)
+        public void DrawRectangle(PositionalVector2 v1, PositionalVector2 v2, Color color) { }
+        public void DrawTriangle(PositionalVector2 Point1, PositionalVector2 Point2, PositionalVector2 Point3, Color color)
         {
             DrawCalled = true;
         }
-        public void DrawCircle(Vector2 center, float radius, Color color) { }
+        public void DrawCircle(PositionalVector2 center, float radius, Color color) { }
     }
 
     #region Constructor Tests
     /*
         Tests for the Triangle constructor.
-        - Validates that the constructor throws an ArgumentException when the points contain NaN.
-        - Validates that the constructor throws an ArgumentException when the points contain infinity.
         - Validates that the constructor throws an ArgumentException when the points do not form a valid triangle.
         - Validates that a Triangle can be constructed with valid points.
 
     */
-
-    [Theory]
-    [InlineData(float.NaN, 0f, 0f, 1f, 1f, 2f, "point1.X")]
-    [InlineData(0f, float.NaN, 0f, 1f, 1f, 2f, "point1.Y")]
-    [InlineData(0f, 0f, float.NaN, 1f, 1f, 2f, "point2.X")]
-    [InlineData(0f, 0f, 1f, float.NaN, 1f, 2f, "point2.Y")]
-    [InlineData(0f, 0f, 1f, 1f, float.NaN, 2f, "point3.X")]
-    [InlineData(0f, 0f, 1f, 1f, 2f, float.NaN, "point3.Y")]
-    [InlineData(float.PositiveInfinity, 0f, 0f, 1f, 1f, 2f, "point1.X")]
-    [InlineData(0f, float.NegativeInfinity, 0f, 1f, 1f, 2f, "point1.Y")]
-    [InlineData(0f, 0f, float.NegativeInfinity, 1f, 1f, 2f, "point2.X")]
-    [InlineData(0f, 0f, 1f, float.PositiveInfinity, 1f, 2f, "point2.Y")]
-    [InlineData(0f, 0f, 1f, 1f, float.PositiveInfinity, 2f, "point3.X")]
-    [InlineData(0f, 0f, 1f, 1f, 2f, float.NegativeInfinity, "point3.Y")]
-    public void GivenInvalidCorner_WhenConstructingTriangle_ThenThrowsArgumentException(float point1x, float point1y, float point2x, float point2y, float point3x, float point3y, string paramName)
-    {
-        var point1 = new Vector2(point1x, point1y);
-        var point2 = new Vector2(point2x, point2y);
-        var point3 = new Vector2(point3x, point3y);
-        Action act = () => new Triangle(point1, point2, point3, Color.Red);
-
-        act.Should().Throw<ArgumentException>()
-            .And.ParamName.Should().Be(paramName);
-    }
 
     [Theory]
     [InlineData(1f, 1f, 1f, 1f, 1f, 1f)] // All points the same
@@ -61,9 +36,9 @@ public class TriangleTest
     [InlineData(0f, 0f, 1f, 0f, 2f, 0f)] // All Points on a line
     public void GivenThreePoints_WhenTheyDoNotFormTriangle_ThenThrowsArgumentException(float Point1x, float Point1y, float Point2x, float Point2y, float Point3x, float Point3y)
     {
-        var Point1 = new Vector2(Point1x, Point1y);
-        var Point2 = new Vector2(Point2x, Point2y);
-        var Point3 = new Vector2(Point3x, Point3y);
+        var Point1 = new PositionalVector2(Point1x, Point1y);
+        var Point2 = new PositionalVector2(Point2x, Point2y);
+        var Point3 = new PositionalVector2(Point3x, Point3y);
         Action act = () => new Triangle(Point1, Point2, Point3, Color.Red);
 
         act.Should().Throw<ArgumentException>()
@@ -73,9 +48,9 @@ public class TriangleTest
     [Fact]
     public void GivenValidCorners_WhenConstructingTriangle_ThenSetsProperties()
     {
-        var Point1 = new Vector2(0, 0);
-        var Point2 = new Vector2(1, 0);
-        var Point3 = new Vector2(0, 1);
+        var Point1 = PositionalVector2.Zero;
+        var Point2 = PositionalVector2.UnitX;
+        var Point3 = PositionalVector2.UnitY;
         var color = Color.Blue;
         var tri = new Triangle(Point1, Point2, Point3, color);
 
@@ -95,8 +70,6 @@ public class TriangleTest
     - Validates that the Contains method returns true for points on the edges of the triangle.
     - Validates that the Contains method returns true for points on the vertices of the triangle.
     - Validates that the Contains method returns false for points inside the bounding box but outside the triangle.
-    - Validates that the Contains method throws an ArgumentException when the point is invalid.
-    - Validates that the Contains method throws an ArgumentException when the entity position is invalid.
     */
 
     [Theory]
@@ -107,29 +80,13 @@ public class TriangleTest
     [InlineData(0.8f, 0.8f, false)]  // Inside Bounding Box, but outside Triangle
     public void GivenTriangle_WhenTestingContains_ThenReturnsExpected(float pointX, float pointY, bool expected)
     {
-        var Point1 = new Vector2(0, 0);
-        var Point2 = new Vector2(1, 0);
-        var Point3 = new Vector2(0, 1);
+        var Point1 = PositionalVector2.Zero;
+        var Point2 = PositionalVector2.UnitX;
+        var Point3 = PositionalVector2.UnitY;
         var tri = new Triangle(Point1, Point2, Point3, Color.Red);
-        var point = new Vector2(pointX, pointY);
+        var point = new PositionalVector2(pointX, pointY);
 
         tri.Contains(point).Should().Be(expected);
-    }
-
-    [Theory]
-    [InlineData(             float.NaN,                     0f, "point.X")]
-    [InlineData(                    0f,              float.NaN, "point.Y")]
-    [InlineData(float.PositiveInfinity,                     0f, "point.X")]
-    [InlineData(                    0f, float.NegativeInfinity, "point.Y")]
-    public void GivenTriangle_WhenTestingContains_WithInvalidPointOrEntity_ThenThrowsArgumentException(float px, float py, string paramName)
-    {
-        var tri = new Triangle(new Vector2(0, 0), new Vector2(1, 0), new Vector2(0, 1), Color.Red);
-        var point = new Vector2(px, py);
-
-        Action act = () => tri.Contains(point);
-
-        act.Should().Throw<ArgumentException>()
-            .And.ParamName.Should().Be(paramName);
     }
 
     #endregion
@@ -139,41 +96,23 @@ public class TriangleTest
         Tests for the Draw method of the Triangle class.
         - Validates that the Draw method calls the drawer.
         - Validates that the Draw method throws an ArgumentNullException when the drawer is null.
-        - Validates that the Draw method throws an ArgumentException when the position is NaN or Infinity.
     */
 
     [Fact]
     public void GivenTriangle_WhenDrawCalled_ThenDrawerIsCalled()
     {
         var drawer = new MockShapeDrawer();
-        var tri = new Triangle(new Vector2(0, 0), new Vector2(1, 0), new Vector2(0, 1), Color.Red);
-        tri.Draw(new Vector2(1, 1), drawer);
+        var tri = new Triangle(PositionalVector2.Zero, PositionalVector2.UnitX, PositionalVector2.UnitY, Color.Red);
+        tri.Draw(new PositionalVector2(1, 1), drawer);
 
         drawer.DrawCalled.Should().BeTrue();
-    }
-
-    [Theory]
-    [InlineData(float.NaN, 0f, "entityPosition.X")]
-    [InlineData(0f, float.NaN, "entityPosition.Y")]
-    [InlineData(float.PositiveInfinity, 0f, "entityPosition.X")]
-    [InlineData(0f, float.NegativeInfinity, "entityPosition.Y")]
-    public void GivenTriangle_WhenDrawCalled_WithInvalidPosition_ThenThrowsArgumentException(float px, float py, string paramName)
-    {
-        var drawer = new MockShapeDrawer();
-        var tri = new Triangle(new Vector2(0, 0), new Vector2(1, 0), new Vector2(0, 1), Color.Red);
-        var position = new Vector2(px, py);
-
-        Action act = () => tri.Draw(position, drawer);
-
-        act.Should().Throw<ArgumentException>()
-            .And.ParamName.Should().Be(paramName);
     }
 
     [Fact]
     public void GivenTriangle_WhenDrawCalled_WithNullDrawer_ThenThrowsArgumentNullException()
     {
-        var tri = new Triangle(new Vector2(0, 0), new Vector2(1, 0), new Vector2(0, 1), Color.Red);
-        var position = new Vector2(1, 1);
+        var tri = new Triangle(PositionalVector2.Zero, PositionalVector2.UnitX, PositionalVector2.UnitY, Color.Red);
+        var position = new PositionalVector2(1, 1);
 
         Action act = () => tri.Draw(position, null!);
 

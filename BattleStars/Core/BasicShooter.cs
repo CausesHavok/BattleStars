@@ -12,14 +12,12 @@ namespace BattleStars.Core;
 /// </remarks>
 public class BasicShooter : IShooter
 {
-    private readonly Func<Vector2, Vector2, IShot> _shotFactory;
-    private readonly Vector2 _direction;
+    private readonly Func<PositionalVector2, DirectionalVector2, IShot> _shotFactory;
+    private readonly DirectionalVector2 _direction;
 
-    public BasicShooter(Func<Vector2, Vector2, IShot> shotFactory, Vector2 direction)
+    public BasicShooter(Func<PositionalVector2, DirectionalVector2, IShot> shotFactory, DirectionalVector2 direction)
     {
         ArgumentNullException.ThrowIfNull(shotFactory, nameof(shotFactory));
-        VectorValidator.ThrowIfNaNOrInfinity(direction, nameof(direction));
-        if (direction != Vector2.Zero) VectorValidator.ThrowIfNotNormalized(direction, nameof(direction));
 
         _shotFactory = shotFactory;
         _direction = direction;

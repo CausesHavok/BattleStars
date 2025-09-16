@@ -16,7 +16,7 @@ public class DirectionalVector2Test
         var directional = new DirectionalVector2(vector);
 
         // Assert
-        directional.Value.Should().Be(vector);
+        directional.Direction.Should().Be(vector);
     }
 
     [Fact]
@@ -29,7 +29,7 @@ public class DirectionalVector2Test
         var directional = new DirectionalVector2(vector);
 
         // Assert
-        directional.Value.Should().Be(vector);
+        directional.Direction.Should().Be(vector);
     }
 
     [Fact]
@@ -72,10 +72,10 @@ public class DirectionalVector2Test
         var newVector = Vector2.Normalize(new Vector2(1, 1));
 
         // Act
-        directional.Value = newVector;
+        directional.Direction = newVector;
 
         // Assert
-        directional.Value.Should().Be(newVector);
+        directional.Direction.Should().Be(newVector);
     }
 
     [Fact]
@@ -86,7 +86,7 @@ public class DirectionalVector2Test
         var invalidVector = new Vector2(2, 0); // Not normalized
 
         // Act
-        Action act = () => directional.Value = invalidVector;
+        Action act = () => directional.Direction = invalidVector;
 
         // Assert
         act.Should().Throw<ArgumentException>();
@@ -106,16 +106,4 @@ public class DirectionalVector2Test
         result.Should().Be(vector);
     }
 
-    [Fact]
-    public void GivenVector2_WhenImplicitlyConvertedToDirectionalVector2_ThenValueIsSetIfNormalized()
-    {
-        // Arrange
-        var vector = Vector2.Normalize(new Vector2(1, 1));
-
-        // Act
-        DirectionalVector2 directional = vector;
-
-        // Assert
-        directional.Value.Should().Be(vector);
-    }
 }

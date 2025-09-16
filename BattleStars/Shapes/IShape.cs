@@ -1,9 +1,10 @@
 using System.Numerics;
+using BattleStars.Utility;
 namespace BattleStars.Shapes;
 
-public interface IShape : IContains<Vector2>
+public interface IShape : IContains<PositionalVector2>
 {
     BoundingBox BoundingBox { get; }
 
-    void Draw(Vector2 position, IShapeDrawer drawer);
+    void Draw(PositionalVector2 position, IShapeDrawer drawer);
 }

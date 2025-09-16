@@ -2,68 +2,18 @@ using System.Numerics;
 using FluentAssertions;
 using Moq;
 using BattleStars.Core;
+using BattleStars.Utility;
 
 namespace BattleStars.Tests.Core;
 
 public class BasicMovableTest
 {
     #region Constructor Tests
-    // 1. Throws if initialPosition is NaN or Infinity.
-    // 2. Throws if direction is NaN or Infinity.
-    // 3. Throws if direction is non-zero and not normalized.
     // 4. Throws if speed is NaN or Infinity.
     // 5. Throws if speed is negative or zero.
     // 6. Does not throw for valid inputs.
     // 7. Sets initial position correctly.
     // 8. Sets direction and speed correctly (indirectly tested via movement).
-
-    [Theory] // 1
-    [InlineData(float.NaN, 0)]
-    [InlineData(0, float.NaN)]
-    [InlineData(float.PositiveInfinity, 0)]
-    [InlineData(0, float.PositiveInfinity)]
-    [InlineData(float.NegativeInfinity, 0)]
-    [InlineData(0, float.NegativeInfinity)]
-    public void GivenInvalidInitialPosition_WhenConstructed_ThenThrowsArgumentException(float x, float y)
-    {
-        var direction = Vector2.UnitY;
-        var speed = 1f;
-        var initialPosition = new Vector2(x, y);
-
-        Action act = () => new BasicMovable(initialPosition, direction, speed);
-
-        act.Should().Throw<ArgumentException>();
-    }
-
-    [Theory] // 2
-    [InlineData(float.NaN, 0)]
-    [InlineData(0, float.NaN)]
-    [InlineData(float.PositiveInfinity, 0)]
-    [InlineData(0, float.PositiveInfinity)]
-    [InlineData(float.NegativeInfinity, 0)]
-    [InlineData(0, float.NegativeInfinity)]
-    public void GivenInvalidDirection_WhenConstructed_ThenThrowsArgumentException(float x, float y)
-    {
-        var initialPosition = Vector2.Zero;
-        var speed = 1f;
-        var direction = new Vector2(x, y);
-
-        Action act = () => new BasicMovable(initialPosition, direction, speed);
-
-        act.Should().Throw<ArgumentException>();
-    }
-
-    [Fact] // 3
-    public void GivenNonZeroNonNormalizedDirection_WhenConstructed_ThenThrowsArgumentException()
-    {
-        var initialPosition = Vector2.Zero;
-        var direction = new Vector2(2, 0); // Not normalized
-        var speed = 1f;
-
-        Action act = () => new BasicMovable(initialPosition, direction, speed);
-
-        act.Should().Throw<ArgumentException>();
-    }
 
     [Theory] // 4
     [InlineData(float.NaN)]
@@ -71,8 +21,8 @@ public class BasicMovableTest
     [InlineData(float.NegativeInfinity)]
     public void GivenInvalidSpeed_WhenConstructed_ThenThrowsArgumentException(float speed)
     {
-        var initialPosition = Vector2.Zero;
-        var direction = Vector2.UnitY;
+        var initialPosition = PositionalVector2.Zero;
+        var direction = DirectionalVector2.UnitY;
 
         Action act = () => new BasicMovable(initialPosition, direction, speed);
 
@@ -84,8 +34,8 @@ public class BasicMovableTest
     [InlineData(-1)]
     public void GivenNegativeOrZeroSpeed_WhenConstructed_ThenThrowsArgumentException(float speed)
     {
-        var initialPosition = Vector2.Zero;
-        var direction = Vector2.UnitY;
+        var initialPosition = PositionalVector2.Zero;
+        var direction = DirectionalVector2.UnitY;
 
         Action act = () => new BasicMovable(initialPosition, direction, speed);
 
@@ -95,8 +45,8 @@ public class BasicMovableTest
     [Fact] // 6 & 7
     public void GivenValidInputs_WhenConstructed_ThenDoesNotThrowAndSetsInitialPosition()
     {
-        var initialPosition = new Vector2(1, 2);
-        var direction = Vector2.UnitY;
+        var initialPosition = new PositionalVector2(1, 2);
+        var direction = DirectionalVector2.UnitY;
         var speed = 1f;
 
         var movable = new BasicMovable(initialPosition, direction, speed);
@@ -116,7 +66,11 @@ public class BasicMovableTest
     [Fact] // 9
     public void GivenNullContext_WhenMove_ThenThrowsArgumentNullException()
     {
-        var movable = new BasicMovable(Vector2.Zero, Vector2.UnitY, 1f);
+        var initialPosition = new PositionalVector2(1, 2);
+        var direction = DirectionalVector2.UnitY;
+        var speed = 1f;
+
+        var movable = new BasicMovable(initialPosition, direction, speed);
 
         Action act = () => movable.Move(null!);
 
@@ -126,8 +80,8 @@ public class BasicMovableTest
     [Fact] // 10 (and 8 indirectly)
     public void GivenValidContext_WhenMove_ThenUpdatesPositionAsExpected()
     {
-        var initialPosition = new Vector2(0, 0);
-        var direction = Vector2.UnitX;
+        var initialPosition = PositionalVector2.Zero;
+        var direction = DirectionalVector2.UnitX;
         var speed = 2f;
         var movable = new BasicMovable(initialPosition, direction, speed);
 
@@ -141,13 +95,13 @@ public class BasicMovableTest
     [Fact] // 11 & 12
     public void GivenMultipleMoves_WhenMove_ThenPositionAccumulatesCorrectly_AndContextIsNotMutated()
     {
-        var initialPosition = new Vector2(1, 1);
-        var direction = Vector2.UnitY;
+        var initialPosition = new PositionalVector2(1, 1);
+        var direction = DirectionalVector2.UnitY;
         var speed = 3f;
         var movable = new BasicMovable(initialPosition, direction, speed);
 
         var contextMock = new Mock<IContext>();
-        var originalShooterPosition = new Vector2(99, 99);
+        var originalShooterPosition = new PositionalVector2(99, 99);
         contextMock.SetupProperty(c => c.ShooterPosition, originalShooterPosition);
 
         movable.Move(contextMock.Object);
@@ -161,8 +115,8 @@ public class BasicMovableTest
     [Fact] // 13
     public void GivenZeroDirection_WhenMove_ThenPositionDoesNotChange()
     {
-        var initialPosition = new Vector2(5, 5);
-        var direction = Vector2.Zero;
+        var initialPosition = new PositionalVector2(5, 5);
+        var direction = DirectionalVector2.Zero;
         var speed = 2f;
         var movable = new BasicMovable(initialPosition, direction, speed);
 
@@ -178,9 +132,8 @@ public class BasicMovableTest
     [InlineData(-1000, -1000, 0, 1, 5)]
     public void GivenEdgeCasePositions_WhenMove_ThenPositionUpdatesCorrectly(float px, float py, float dx, float dy, float speed)
     {
-        var initialPosition = new Vector2(px, py);
-        var direction = new Vector2(dx, dy);
-        if (direction != Vector2.Zero) direction = Vector2.Normalize(direction);
+        var initialPosition = new PositionalVector2(px, py);
+        var direction = new DirectionalVector2(dx, dy);
         var movable = new BasicMovable(initialPosition, direction, speed);
 
         var contextMock = new Mock<IContext>().Object;

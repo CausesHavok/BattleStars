@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Numerics;
 using FluentAssertions;
+using BattleStars.Utility;
 
 namespace BattleStars.Tests.Shapes;
 
@@ -12,17 +13,17 @@ public class CircleTest
     {
         public bool DrawCalled { get; private set; }
 
-        public void DrawRectangle(Vector2 v1, Vector2 v2, Color color)
+        public void DrawRectangle(PositionalVector2 v1, PositionalVector2 v2, Color color)
         {
             DrawCalled = true;
         }
 
-        public void DrawTriangle(Vector2 p1, Vector2 p2, Vector2 p3, Color color)
+        public void DrawTriangle(PositionalVector2 p1, PositionalVector2 p2, PositionalVector2 p3, Color color)
         {
             DrawCalled = true;
         }
 
-        public void DrawCircle(Vector2 center, float radius, Color color)
+        public void DrawCircle(PositionalVector2 center, float radius, Color color)
         {
             DrawCalled = true;
         }
@@ -77,8 +78,6 @@ public class CircleTest
         - Test that point on offset circle yields true
         - Test that point outside zero centered circle yields false
         - Test that point outside offset circle yields false
-        - Test that invalid point (NaN or Infinity) throws ArgumentException
-        - Test that invalid offset point (NaN or Infinity) throws ArgumentException
     */
 
     [Theory]
@@ -90,34 +89,13 @@ public class CircleTest
     {
         // Arrange
         var circle = new Circle(5.0f, Color.Red);
-        var point = new Vector2(pointX, pointY);
+        var point = new PositionalVector2(pointX, pointY);
 
         // Act
         bool result = circle.Contains(point);
 
         // Assert
         result.Should().Be(expected);
-    }
-
-    [Theory]
-    [InlineData(             float.NaN,                     0f,      "NaN", "point.X")]
-    [InlineData(                    0f,              float.NaN,      "NaN", "point.Y")]
-    [InlineData(float.PositiveInfinity,                     0f, "Infinity", "point.X")]
-    [InlineData(                    0f, float.PositiveInfinity, "Infinity", "point.Y")]
-    [InlineData(float.NegativeInfinity,                     0f, "Infinity", "point.X")]
-    [InlineData(                    0f, float.NegativeInfinity, "Infinity", "point.Y")]
-    public void GivenCircle_WhenTestingContains_WithInvalidPosition_ThenThrowsArgumentException(float pointX, float pointY, string expectedException, string paramName)
-    {
-        var circle = new Circle(5.0f, Color.Red);
-        var point = new Vector2(pointX, pointY);
-
-        // Act
-        Action act = () => circle.Contains(point);
-
-        // Assert
-        act.Should().Throw<ArgumentException>()
-            .WithMessage(paramName + " cannot be " + expectedException + ".*")
-            .And.ParamName.Should().Be(paramName);
     }
 
     #endregion
@@ -136,7 +114,7 @@ public class CircleTest
         // Arrange
         var mockShapeDrawer = new MockShapeDrawer();
         var circle = new Circle(5.0f, Color.Red);
-        var vector = new Vector2(0, 0);
+        var vector = PositionalVector2.Zero;
 
         // Act
         circle.Draw(vector, mockShapeDrawer);
@@ -145,32 +123,12 @@ public class CircleTest
         mockShapeDrawer.DrawCalled.Should().BeTrue();
     }
 
-    [Theory]
-    [InlineData(float.NaN, "NaN")]
-    [InlineData(float.PositiveInfinity, "infinity")]
-    [InlineData(float.NegativeInfinity, "infinity")]
-    public void GivenCircle_WhenDrawCalled_WithInvalidPosition_ThenThrowsArgumentException(float positionX, string expectedException)
-    {
-        // Arrange
-        var mockShapeDrawer = new MockShapeDrawer();
-        var circle = new Circle(5.0f, Color.Red);
-        var position = new Vector2(positionX, 0);
-
-        // Act
-        Action act = () => circle.Draw(position, mockShapeDrawer);
-
-        // Assert
-        act.Should().Throw<ArgumentException>()
-            .WithMessage("position.X cannot be " + expectedException + ".*")
-            .And.ParamName.Should().Be("position.X");
-    }
-
     [Fact]
     public void GivenCircle_WhenDrawCalled_WithNullDrawer_ThenThrowsArgumentNullException()
     {
         // Arrange
         var circle = new Circle(5.0f, Color.Red);
-        var position = new Vector2(0, 0);
+        var position = PositionalVector2.Zero;
 
         // Act
         Action act = () => circle.Draw(position, null!);

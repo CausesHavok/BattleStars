@@ -4,6 +4,7 @@ using BattleStars.Core;
 using BattleStars.Shapes;
 using BattleStars.Shots;
 using FluentAssertions;
+using BattleStars.Utility;
 
 namespace BattleStars.Tests.Core;
 
@@ -29,16 +30,16 @@ public class TestBattleStarFixture
 
 public class TestContextFixture : IContext
 {
-    public Vector2 PlayerDirection { get; private set; }
+    public DirectionalVector2 PlayerDirection { get; private set; }
 
-    public Vector2 ShooterPosition { get; set; }
+    public PositionalVector2 ShooterPosition { get; set; }
 
-    public TestContextFixture(Vector2 playerDirection)
+    public TestContextFixture(DirectionalVector2 playerDirection)
     {
         PlayerDirection = playerDirection;
     }
 
-    public TestContextFixture() : this(new Vector2(1, 0)) { }
+    public TestContextFixture() : this(DirectionalVector2.UnitX) { }
 }
 
 
@@ -169,7 +170,7 @@ public class BattleStarTest : IClassFixture<TestBattleStarFixture>
         battleStar.Draw();
 
         // Assert
-        testBattleStar.MockShape.Verify(s => s.Draw(It.IsAny<Vector2>(), testBattleStar.MockShapeDrawer.Object), Times.Once);
+        testBattleStar.MockShape.Verify(s => s.Draw(It.IsAny<PositionalVector2>(), testBattleStar.MockShapeDrawer.Object), Times.Once);
     }
 
     [Fact]
@@ -212,7 +213,7 @@ public class BattleStarTest : IClassFixture<TestBattleStarFixture>
         var testBattleStar = _battleStarFixture;
         var battleStar = testBattleStar.BattleStar;
 
-        var expectedPosition = new Vector2(10, 20);
+        var expectedPosition = new PositionalVector2(10, 20);
         testBattleStar.MockMovable.Setup(m => m.Position).Returns(expectedPosition);
 
         // Act
@@ -296,7 +297,7 @@ public class BattleStarTest : IClassFixture<TestBattleStarFixture>
 
         var context = _contextFixture;
 
-        var expectedPosition = new Vector2(15, 30);
+        var expectedPosition = new PositionalVector2(15, 30);
         testBattleStar.MockMovable.Setup(m => m.Position).Returns(expectedPosition);
 
         // Act
@@ -317,9 +318,9 @@ public class BattleStarTest : IClassFixture<TestBattleStarFixture>
         var testBattleStar = _battleStarFixture;
         var battleStar = testBattleStar.BattleStar;
 
-        testBattleStar.MockMovable.Setup(m => m.Position).Returns(new Vector2(x, y));
-        var point = new Vector2(5, 5);
-        var adjustedPoint = point - new Vector2(x, y);
+        testBattleStar.MockMovable.Setup(m => m.Position).Returns(new PositionalVector2(x, y));
+        var point = new PositionalVector2(5, 5);
+        var adjustedPoint = point - new PositionalVector2(x, y);
 
         // Act
         battleStar.Contains(point);

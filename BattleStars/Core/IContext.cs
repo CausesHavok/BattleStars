@@ -1,10 +1,11 @@
 using System.Numerics;
+using BattleStars.Utility;
 
 namespace BattleStars.Core;
 
 public interface IContext
 {
-    Vector2 PlayerDirection { get; }
+    DirectionalVector2 PlayerDirection { get; }
 
     /// <summary>
     /// Position of the shooter in world coordinates.
@@ -13,5 +14,5 @@ public interface IContext
     /// Any concrete implementation must ensure that the ShooterPosition,
     /// is not NaN/Infinity and is a valid Vector2.
     /// </remarks>
-    Vector2 ShooterPosition { get; set; }
+    PositionalVector2 ShooterPosition { get; set; }
 }
