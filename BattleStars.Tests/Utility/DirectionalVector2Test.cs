@@ -106,4 +106,18 @@ public class DirectionalVector2Test
         result.Should().Be(vector);
     }
 
+    [Fact]
+    public void GivenDirectionalVector2_WhenUsingUnaryNegation_ThenReturnsNegatedValue()
+    {
+        // Arrange
+        var vector = Vector2.UnitX;
+        var directional = new DirectionalVector2(vector);
+
+        // Act
+        var negated = -directional;
+
+        // Assert
+        negated.Direction.Should().Be(-vector);
+    }
+
 }
