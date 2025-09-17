@@ -19,9 +19,6 @@ public class ShapeFactory
     public IShape CreateShape(ShapeDescriptor shapeDescriptor)
     {
         ArgumentNullException.ThrowIfNull(shapeDescriptor, nameof(shapeDescriptor));
-        FloatValidator.ThrowIfNaNOrInfinity(shapeDescriptor.Scale, nameof(shapeDescriptor.Scale));
-        FloatValidator.ThrowIfNegative(shapeDescriptor.Scale, nameof(shapeDescriptor.Scale));
-        FloatValidator.ThrowIfZero(shapeDescriptor.Scale, nameof(shapeDescriptor.Scale));
 
         _color = shapeDescriptor.Color;
         _scale = shapeDescriptor.Scale;
