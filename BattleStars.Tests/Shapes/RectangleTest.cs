@@ -3,7 +3,6 @@ using System.Drawing;
 using System.Numerics;
 using FluentAssertions;
 using BattleStars.Utility;
-
 namespace BattleStars.Tests.Shapes;
 
 public class RectangleTest
@@ -36,7 +35,8 @@ public class RectangleTest
     {
         var v1 = new PositionalVector2(v1x, v1y);
         var v2 = new PositionalVector2(v2x, v2y);
-        Action act = () => new BattleStars.Shapes.Rectangle(v1, v2, Color.Red);
+        var drawerMock = new MockShapeDrawer();
+        Action act = () => new BattleStars.Shapes.Rectangle(v1, v2, Color.Red, drawerMock);
 
         act.Should().Throw<ArgumentException>()
             .WithMessage("Rectangle must have non-zero width and height.*");
@@ -48,11 +48,22 @@ public class RectangleTest
         var v1 = PositionalVector2.Zero;
         var v2 = new PositionalVector2(2, 3);
         var color = Color.Blue;
-        var rect = new BattleStars.Shapes.Rectangle(v1, v2, color);
+        var drawerMock = new MockShapeDrawer();
+        var rect = new BattleStars.Shapes.Rectangle(v1, v2, color, drawerMock);
 
         rect.BoundingBox.TopLeft.Should().Be(PositionalVector2.Zero);
         rect.BoundingBox.BottomRight.Should().Be(new PositionalVector2(2, 3));
         rect.Color.Should().Be(color);
+    }
+
+    [Fact]
+    public void GivenNullDrawer_WhenConstructing_ThenThrowsNullArgumentException()
+    {
+        var v1 = new PositionalVector2(1, 0);
+        var v2 = new PositionalVector2(0, 1);
+        Action act = () => new BattleStars.Shapes.Rectangle(v1, v2, Color.Red, null!);
+
+        act.Should().Throw<ArgumentNullException>();
     }
 
     #endregion
@@ -79,7 +90,8 @@ public class RectangleTest
     {
         var vec1 = new PositionalVector2(-1, -1);
         var vec2 = new PositionalVector2(1, 1);
-        var rect = new BattleStars.Shapes.Rectangle(vec1, vec2, Color.Red);
+        var drawerMock = new MockShapeDrawer();
+        var rect = new BattleStars.Shapes.Rectangle(vec1, vec2, Color.Red, drawerMock);
         var point = new PositionalVector2(pointX, pointY);
 
         rect.Contains(point).Should().Be(expected);
@@ -98,22 +110,10 @@ public class RectangleTest
     public void GivenRectangle_WhenDrawCalled_ThenDrawerIsCalled()
     {
         var drawer = new MockShapeDrawer();
-        var rect = new BattleStars.Shapes.Rectangle(PositionalVector2.Zero, new PositionalVector2(2, 2), Color.Red);
-        rect.Draw(new PositionalVector2(1, 1), drawer);
+        var rect = new BattleStars.Shapes.Rectangle(PositionalVector2.Zero, new PositionalVector2(2, 2), Color.Red, drawer);
+        rect.Draw(new PositionalVector2(1, 1));
 
         drawer.DrawCalled.Should().BeTrue();
-    }
-
-    [Fact]
-    public void GivenRectangle_WhenDrawCalled_WithNullDrawer_ThenThrowsArgumentNullException()
-    {
-        var rect = new BattleStars.Shapes.Rectangle(PositionalVector2.Zero, new PositionalVector2(2, 2), Color.Red);
-        var position = new PositionalVector2(1, 1);
-
-        Action act = () => rect.Draw(position, null!);
-
-        act.Should().Throw<ArgumentNullException>()
-            .And.ParamName.Should().Be("drawer");
     }
 
     #endregion

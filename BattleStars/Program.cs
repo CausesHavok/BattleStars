@@ -14,7 +14,7 @@ var drawer = new RaylibShapeDrawer();
 var boundaryChecker = new BoundaryChecker(0 + 25, 800 - 25, 0 + 25, 600 - 25); // 50 is the player size
 
 // Create a shape factory
-var shapeFactory = new ShapeFactory();
+var shapeFactory = new ShapeFactory(drawer);
 
 
 // Create player BattleStar
@@ -33,7 +33,6 @@ var playerShooter = new BasicShooter(ShotFactory.CreateLaserShot, DirectionalVec
 
 var playerBattleStar = new BattleStar(
     playershape,
-    drawer,
     playerMovable,
     playerDestructable,
     playerShooter
@@ -63,7 +62,6 @@ for (int i = 0; i < enemyCount; i++)
 
     var enemyBattleStar = new BattleStar(
         enemyShape,
-        drawer,
         enemyMovable,
         enemyDestructable,
         enemyShooter

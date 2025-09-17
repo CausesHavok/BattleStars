@@ -39,7 +39,8 @@ public class TriangleTest
         var Point1 = new PositionalVector2(Point1x, Point1y);
         var Point2 = new PositionalVector2(Point2x, Point2y);
         var Point3 = new PositionalVector2(Point3x, Point3y);
-        Action act = () => new Triangle(Point1, Point2, Point3, Color.Red);
+        var drawerMock = new MockShapeDrawer();
+        Action act = () => new Triangle(Point1, Point2, Point3, Color.Red, drawerMock);
 
         act.Should().Throw<ArgumentException>()
             .WithMessage("The points do not form a valid triangle.*");
@@ -52,12 +53,25 @@ public class TriangleTest
         var Point2 = PositionalVector2.UnitX;
         var Point3 = PositionalVector2.UnitY;
         var color = Color.Blue;
-        var tri = new Triangle(Point1, Point2, Point3, color);
+        var drawerMock = new MockShapeDrawer();
+        var tri = new Triangle(Point1, Point2, Point3, color, drawerMock);
 
         tri.Point1.Should().Be(Point1);
         tri.Point2.Should().Be(Point2);
         tri.Point3.Should().Be(Point3);
         tri.Color.Should().Be(color);
+    }
+
+    [Fact]
+    public void GivenNullDrawer_WhenConstructing_ThenThrowsNullArgumentException()
+    {
+        var Point1 = new PositionalVector2(1, 0);
+        var Point2 = new PositionalVector2(0, 1);
+        var Point3 = new PositionalVector2(0, 0);
+        Action act = () => new Triangle(Point1, Point2, Point3, Color.Red, null!);
+
+        act.Should().Throw<ArgumentNullException>()
+            .WithMessage("*drawer*");
     }
 
     #endregion
@@ -83,7 +97,8 @@ public class TriangleTest
         var Point1 = PositionalVector2.Zero;
         var Point2 = PositionalVector2.UnitX;
         var Point3 = PositionalVector2.UnitY;
-        var tri = new Triangle(Point1, Point2, Point3, Color.Red);
+        var drawerMock = new MockShapeDrawer();
+        var tri = new Triangle(Point1, Point2, Point3, Color.Red, drawerMock);
         var point = new PositionalVector2(pointX, pointY);
 
         tri.Contains(point).Should().Be(expected);
@@ -102,22 +117,10 @@ public class TriangleTest
     public void GivenTriangle_WhenDrawCalled_ThenDrawerIsCalled()
     {
         var drawer = new MockShapeDrawer();
-        var tri = new Triangle(PositionalVector2.Zero, PositionalVector2.UnitX, PositionalVector2.UnitY, Color.Red);
-        tri.Draw(new PositionalVector2(1, 1), drawer);
+        var tri = new Triangle(PositionalVector2.Zero, PositionalVector2.UnitX, PositionalVector2.UnitY, Color.Red, drawer);
+        tri.Draw(new PositionalVector2(1, 1));
 
         drawer.DrawCalled.Should().BeTrue();
-    }
-
-    [Fact]
-    public void GivenTriangle_WhenDrawCalled_WithNullDrawer_ThenThrowsArgumentNullException()
-    {
-        var tri = new Triangle(PositionalVector2.Zero, PositionalVector2.UnitX, PositionalVector2.UnitY, Color.Red);
-        var position = new PositionalVector2(1, 1);
-
-        Action act = () => tri.Draw(position, null!);
-
-        act.Should().Throw<ArgumentNullException>()
-            .And.ParamName.Should().Be("drawer");
     }
 
     #endregion
