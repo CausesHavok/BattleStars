@@ -1,26 +1,29 @@
+// RaylibShapeDrawer.cs
+using System.Drawing;
 using BattleStars.Utility;
-using Raylib_cs;
-using System.Numerics;
-namespace BattleStars.Shapes;
 
-public class RaylibShapeDrawer : IShapeDrawer
+namespace BattleStars.Shapes
 {
-
-    private static Color ToRaylibColor(System.Drawing.Color color)
-        => new(color.R, color.G, color.B, color.A);
-    public void DrawRectangle(PositionalVector2 v1, PositionalVector2 v2, System.Drawing.Color color)
+    public class RaylibShapeDrawer : IShapeDrawer
     {
-        Raylib.DrawRectangle((int)v1.X, (int)v1.Y, (int)(v2.X - v1.X), (int)(v2.Y - v1.Y), ToRaylibColor(color));
-    }
+        private readonly IRaylibGraphics _graphics;
 
-    public void DrawTriangle(PositionalVector2 p1, PositionalVector2 p2, PositionalVector2 p3, System.Drawing.Color color)
-    {
-        Raylib.DrawTriangle(p1, p2, p3, ToRaylibColor(color));
-    }
+        public RaylibShapeDrawer(IRaylibGraphics graphics)
+        {
+            ArgumentNullException.ThrowIfNull(graphics);
+            _graphics = graphics;
+        }
 
-    public void DrawCircle(PositionalVector2 center, float radius, System.Drawing.Color color)
-    {
-        Raylib.DrawCircle((int)center.X, (int)center.Y, radius, ToRaylibColor(color));
-    }
+        public void DrawRectangle(PositionalVector2 topleft, PositionalVector2 bottomright, Color color)
+        {
+            PositionalVector2 size = bottomright - topleft;
+            _graphics.DrawRectangle(topleft, size, color);
+        }
 
+        public void DrawTriangle(PositionalVector2 p1, PositionalVector2 p2, PositionalVector2 p3, Color color) =>
+            _graphics.DrawTriangle(p1, p2, p3, color);
+
+        public void DrawCircle(PositionalVector2 center, float radius, Color color) =>
+            _graphics.DrawCircle(center, radius, color);
+    }
 }

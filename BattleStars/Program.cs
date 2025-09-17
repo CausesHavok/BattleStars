@@ -8,7 +8,9 @@ using BattleStars.Utility;
 
 Raylib.InitWindow(800, 600, "BattleStars - Square Test");
 Raylib.SetTargetFPS(60);
-var drawer = new RaylibShapeDrawer();
+var graphics = new RaylibGraphicsAdapter();
+var drawer = new RaylibShapeDrawer(graphics);
+
 
 // Create boundary checker for the window (player stays fully inside)
 var boundaryChecker = new BoundaryChecker(0 + 25, 800 - 25, 0 + 25, 600 - 25); // 50 is the player size
