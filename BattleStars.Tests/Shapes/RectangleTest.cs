@@ -3,8 +3,6 @@ using System.Drawing;
 using System.Numerics;
 using FluentAssertions;
 using BattleStars.Utility;
-using Moq;
-
 namespace BattleStars.Tests.Shapes;
 
 public class RectangleTest
