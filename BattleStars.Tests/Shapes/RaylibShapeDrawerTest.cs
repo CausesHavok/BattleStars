@@ -1,9 +1,7 @@
-using System.Collections.Generic;
 using System.Drawing;
 using BattleStars.Shapes;
 using BattleStars.Utility;
 using FluentAssertions;
-using Xunit;
 
 namespace BattleStars.Tests.Shapes
 {

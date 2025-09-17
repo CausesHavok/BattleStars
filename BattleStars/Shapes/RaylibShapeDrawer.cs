@@ -14,8 +14,8 @@ namespace BattleStars.Shapes
             _graphics = graphics;
         }
 
-        public void DrawRectangle(PositionalVector2 v1, PositionalVector2 v2, Color color) =>
-            _graphics.DrawRectangle(v1, v1 - v2, color);
+        public void DrawRectangle(PositionalVector2 topleft, PositionalVector2 bottomright, Color color) =>
+            _graphics.DrawRectangle(topleft, bottomright - topleft, color);
 
         public void DrawTriangle(PositionalVector2 p1, PositionalVector2 p2, PositionalVector2 p3, Color color) =>
             _graphics.DrawTriangle(p1, p2, p3, color);
