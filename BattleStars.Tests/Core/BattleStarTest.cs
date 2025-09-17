@@ -111,8 +111,6 @@ public class BattleStarTest : IClassFixture<TestBattleStarFixture>
         IShooter nullShooter = null!;
 
         Action act = () => new BattleStar(mockShape.Object, mockMovable.Object, mockDestructable.Object, nullShooter);
-
-
         // Act & Assert
         act.Should().Throw<ArgumentNullException>();
     }
