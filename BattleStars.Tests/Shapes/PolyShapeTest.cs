@@ -52,11 +52,12 @@ public class PolyShapeTest
     [Fact]
     public void GivenMalformedTriangle_WhenConstructingPolygon_ThenThrowsArgumentException()
     {
+        var mockShapeDrawer = new MockShapeDrawer();
         Action act = () => new PolyShape(
         [
-            new Triangle(PositionalVector2.Zero, PositionalVector2.UnitX, PositionalVector2.UnitY, Color.Red),
-            new Triangle(PositionalVector2.UnitX, new PositionalVector2(1, 1), PositionalVector2.UnitY, Color.Red),
-            new Triangle(PositionalVector2.Zero, PositionalVector2.Zero, PositionalVector2.Zero, Color.Red) // Malformed triangle
+            new Triangle(PositionalVector2.Zero, PositionalVector2.UnitX, PositionalVector2.UnitY, Color.Red, mockShapeDrawer),
+            new Triangle(PositionalVector2.UnitX, new PositionalVector2(1, 1), PositionalVector2.UnitY, Color.Red, mockShapeDrawer),
+            new Triangle(PositionalVector2.Zero, PositionalVector2.Zero, PositionalVector2.Zero, Color.Red, mockShapeDrawer) // Malformed triangle
         ]);
 
         act.Should().Throw<ArgumentException>();
@@ -65,7 +66,7 @@ public class PolyShapeTest
     [Fact]
     public void GivenSingleTriangle_WhenConstructingPolygon_ThenDoesNotThrowArgumentException()
     {
-        var triangle = new Triangle(PositionalVector2.Zero, PositionalVector2.UnitX, PositionalVector2.UnitY, Color.Red);
+        var triangle = new Triangle(PositionalVector2.Zero, PositionalVector2.UnitX, PositionalVector2.UnitY, Color.Red, new MockShapeDrawer());
         Action act = () => new PolyShape([triangle]);
 
         act.Should().NotThrow<ArgumentException>();
@@ -74,8 +75,9 @@ public class PolyShapeTest
     [Fact]
     public void GivenMultipleTriangles_WhenConstructingPolygon_ThenDoesNotThrowArgumentException()
     {
-        var t1 = new Triangle(PositionalVector2.Zero, PositionalVector2.UnitX, PositionalVector2.UnitY, Color.Red);
-        var t2 = new Triangle(PositionalVector2.UnitX, new PositionalVector2(1, 1), PositionalVector2.UnitY, Color.Red);
+        var mockShapeDrawer = new MockShapeDrawer();
+        var t1 = new Triangle(PositionalVector2.Zero, PositionalVector2.UnitX, PositionalVector2.UnitY, Color.Red, mockShapeDrawer);
+        var t2 = new Triangle(PositionalVector2.UnitX, new PositionalVector2(1, 1), PositionalVector2.UnitY, Color.Red, mockShapeDrawer);
         Action act = () => new PolyShape([t1, t2]);
 
         act.Should().NotThrow<ArgumentException>();
@@ -105,8 +107,9 @@ public class PolyShapeTest
     [InlineData(0.8f,  0.8f, false)] // Inside bounding box but outside triangles
     public void GivenPolygon_WhenTestingContains_ThenReturnsExpected(float pointX, float pointY, bool expected)
     {
-        var t1 = new Triangle(PositionalVector2.Zero, PositionalVector2.UnitX, PositionalVector2.UnitY, Color.Red);
-        var t2 = new Triangle(PositionalVector2.Zero, PositionalVector2.UnitX, -PositionalVector2.UnitY, Color.Red);
+        var mockShapeDrawer = new MockShapeDrawer();
+        var t1 = new Triangle(PositionalVector2.Zero, PositionalVector2.UnitX, PositionalVector2.UnitY, Color.Red, mockShapeDrawer);
+        var t2 = new Triangle(PositionalVector2.Zero, PositionalVector2.UnitX, -PositionalVector2.UnitY, Color.Red, mockShapeDrawer);
         var poly = new PolyShape([t1, t2]);
         var point = new PositionalVector2(pointX, pointY);
 
@@ -127,30 +130,15 @@ public class PolyShapeTest
     public void GivenPolygon_WhenDrawCalled_ThenDrawerIsCalledForEachTriangle()
     {
         var drawer = new MockShapeDrawer();
-        var t1 = new Triangle(PositionalVector2.Zero, PositionalVector2.UnitX, PositionalVector2.UnitY, Color.Red);
-        var t2 = new Triangle(PositionalVector2.UnitX, new PositionalVector2(1, 1), PositionalVector2.UnitY, Color.Red);
+        var t1 = new Triangle(PositionalVector2.Zero, PositionalVector2.UnitX, PositionalVector2.UnitY, Color.Red, drawer);
+        var t2 = new Triangle(PositionalVector2.UnitX, new PositionalVector2(1, 1), PositionalVector2.UnitY, Color.Red, drawer);
         var poly = new PolyShape([t1, t2]);
 
-        poly.Draw(new PositionalVector2(1, 1), drawer);
+        poly.Draw(new PositionalVector2(1, 1));
         var TimesCalled = drawer.TimesCalled;
 
         drawer.DrawCalled.Should().BeTrue();
         TimesCalled.Should().Be(2);
     }
-
-    [Fact]
-    public void GivenPolygon_WhenDrawCalled_WithNullDrawer_ThenThrowsArgumentNullException()
-    {
-        var t1 = new Triangle(PositionalVector2.Zero, PositionalVector2.UnitX, PositionalVector2.UnitY, Color.Red);
-        var t2 = new Triangle(PositionalVector2.UnitX, new PositionalVector2(1, 1), PositionalVector2.UnitY, Color.Red);
-        var poly = new PolyShape([t1, t2]);
-        var position = new PositionalVector2(1, 1);
-
-        Action act = () => poly.Draw(position, null!);
-
-        act.Should().Throw<ArgumentNullException>()
-            .And.ParamName.Should().Be("drawer");
-    }
-
     #endregion
 }

@@ -8,6 +8,13 @@ public class ShapeFactory
     private readonly float _defaultSize = 1.0f; // Default size for shapes
     private Color _color;
     private float _scale;
+    private IShapeDrawer _drawer;
+
+    public ShapeFactory(IShapeDrawer drawer)
+    {
+        ArgumentNullException.ThrowIfNull(drawer, nameof(drawer));
+        _drawer = drawer;
+    }
 
     public IShape CreateShape(ShapeDescriptor shapeDescriptor)
     {
@@ -32,7 +39,7 @@ public class ShapeFactory
 
     private Circle CreateCircle()
     {
-        return new Circle(_scale * _defaultSize, _color);
+        return new Circle(_scale * _defaultSize, _color, _drawer);
     }
 
     private Rectangle CreateSquare()
@@ -40,7 +47,7 @@ public class ShapeFactory
         float halfSize = _scale * _defaultSize / 2;
         PositionalVector2 topLeft = new(-halfSize, -halfSize);
         PositionalVector2 bottomRight = new(halfSize, halfSize);
-        return new Rectangle(topLeft, bottomRight, _color);
+        return new Rectangle(topLeft, bottomRight, _color, _drawer);
     }
 
     private Triangle CreateTriangle()
@@ -53,7 +60,7 @@ public class ShapeFactory
         PositionalVector2 point2 = new(halfSize, height / 3f);
         PositionalVector2 point3 = new(0, -2f * height / 3f);
 
-        return new Triangle(point1, point2, point3, _color);
+        return new Triangle(point1, point2, point3, _color, _drawer);
     }
 
     private PolyShape CreateHexagon()
@@ -76,7 +83,7 @@ public class ShapeFactory
             PositionalVector2 p1 = PositionalVector2.Zero;
             PositionalVector2 p2 = outerPoints[i];
             PositionalVector2 p3 = outerPoints[(i + 1) % 6];
-            triangles[i] = new Triangle(p1, p2, p3, _color);
+            triangles[i] = new Triangle(p1, p2, p3, _color, _drawer);
         }
 
         return new PolyShape(triangles);

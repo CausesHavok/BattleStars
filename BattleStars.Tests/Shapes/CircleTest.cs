@@ -34,6 +34,7 @@ public class CircleTest
         - Test the Circle constructor with valid parameters
         - Test the Circle constructor with invalid parameters
         - Test the Circle constructor with NaN, Infinity, negative, and zero radius
+        - Test the Circle constructor with null IShapeDrawer
     */
 
     [Theory]
@@ -44,7 +45,7 @@ public class CircleTest
     {
         // Arrange
         var mockShapeDrawer = new MockShapeDrawer();
-        Action act = () => new Circle(radius, Color.Red);
+        Action act = () => new Circle(radius, Color.Red, mockShapeDrawer);
 
         // Assert
         act.Should().Throw<ArgumentException>()
@@ -59,12 +60,23 @@ public class CircleTest
     {
         // Arrange
         var mockShapeDrawer = new MockShapeDrawer();
-        Action act = () => new Circle(radius, Color.Red);
+        Action act = () => new Circle(radius, Color.Red, mockShapeDrawer);
 
         // Assert
         act.Should().Throw<ArgumentOutOfRangeException>()
             .WithMessage("radius cannot be " + expectedException + ".*")
             .And.ParamName.Should().Be("radius");
+    }
+
+    [Fact]
+    public void GivenCircle_WhenConstructedWithNullShapeDrawer_ThenThrowsArgumentNullException()
+    {
+        Action act = () => new Circle(5, Color.Red, null!);
+
+        // Assert
+        act.Should().Throw<ArgumentNullException>()
+            .WithMessage("Value cannot be null.*")
+            .And.ParamName.Should().Be("drawer");
     }
 
     #endregion
@@ -88,7 +100,7 @@ public class CircleTest
     public void GivenCircle_WhenTestingContains_ThenReturnsExpectedResult(float pointX, float pointY, bool expected)
     {
         // Arrange
-        var circle = new Circle(5.0f, Color.Red);
+        var circle = new Circle(5.0f, Color.Red, new MockShapeDrawer());
         var point = new PositionalVector2(pointX, pointY);
 
         // Act
@@ -113,33 +125,15 @@ public class CircleTest
     {
         // Arrange
         var mockShapeDrawer = new MockShapeDrawer();
-        var circle = new Circle(5.0f, Color.Red);
+        var circle = new Circle(5.0f, Color.Red, mockShapeDrawer);
         var vector = PositionalVector2.Zero;
 
         // Act
-        circle.Draw(vector, mockShapeDrawer);
+        circle.Draw(vector);
 
         // Assert
         mockShapeDrawer.DrawCalled.Should().BeTrue();
     }
 
-    [Fact]
-    public void GivenCircle_WhenDrawCalled_WithNullDrawer_ThenThrowsArgumentNullException()
-    {
-        // Arrange
-        var circle = new Circle(5.0f, Color.Red);
-        var position = PositionalVector2.Zero;
-
-        // Act
-        Action act = () => circle.Draw(position, null!);
-
-        // Assert
-        act.Should().Throw<ArgumentNullException>()
-            .WithMessage("Value cannot be null.*")
-            .And.ParamName.Should().Be("drawer");
-    }
-
     #endregion
-
-
 }

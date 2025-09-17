@@ -6,8 +6,8 @@ namespace BattleStars.Shapes;
 public class Rectangle : IShape
 {
     public Color Color { get; private set; }
-
     public BoundingBox BoundingBox { get; }
+    private readonly IShapeDrawer _drawer;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Rectangle"/> class with the specified top-left and bottom-right corners.
@@ -17,9 +17,9 @@ public class Rectangle : IShape
     /// </summary>
     /// <param name="v1"></param>
     /// <param name="v2"></param>
-    public Rectangle(PositionalVector2 v1, PositionalVector2 v2, Color color)
+    public Rectangle(PositionalVector2 v1, PositionalVector2 v2, Color color, IShapeDrawer drawer)
     {
-
+        ArgumentNullException.ThrowIfNull(drawer);
         float minX = Math.Min(v1.X, v2.X);
         float minY = Math.Min(v1.Y, v2.Y);
         float maxX = Math.Max(v1.X, v2.X);
@@ -30,6 +30,7 @@ public class Rectangle : IShape
 
         BoundingBox = new BoundingBox(new PositionalVector2(minX, minY), new PositionalVector2(maxX, maxY));
         Color = color;
+        _drawer = drawer;
     }
 
     public bool Contains(PositionalVector2 point)
@@ -37,9 +38,8 @@ public class Rectangle : IShape
         return BoundingBox.Contains(point);
     }
 
-    public void Draw(PositionalVector2 position, IShapeDrawer drawer)
+    public void Draw(PositionalVector2 position)
     {
-        ArgumentNullException.ThrowIfNull(drawer);
-        drawer.DrawRectangle(position + BoundingBox.TopLeft, position + BoundingBox.BottomRight, Color);
+        _drawer.DrawRectangle(position + BoundingBox.TopLeft, position + BoundingBox.BottomRight, Color);
     }
 }

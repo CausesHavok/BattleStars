@@ -11,6 +11,7 @@ public class Triangle : IShape
     public PositionalVector2 Point3 { get; private set; }
     public BoundingBox BoundingBox { get; }
     public Color Color { get; private set; }
+    private readonly IShapeDrawer _drawer;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Triangle"/> class with the specified points.
@@ -21,8 +22,9 @@ public class Triangle : IShape
     /// <param name="point1">The first point of the triangle.</param>
     /// <param name="point2">The second point of the triangle.</param>
     /// <param name="point3">The third point of the triangle.</param>
-    public Triangle(PositionalVector2 point1, PositionalVector2 point2, PositionalVector2 point3, Color color)
+    public Triangle(PositionalVector2 point1, PositionalVector2 point2, PositionalVector2 point3, Color color, IShapeDrawer drawer)
     {
+        ArgumentNullException.ThrowIfNull(drawer);
         Point1 = point1;
         Point2 = point2;
         Point3 = point3;
@@ -32,6 +34,7 @@ public class Triangle : IShape
 
         Color = color;
         BoundingBox = CalculateBoundingBox();
+        _drawer = drawer;
     }
 
     private BoundingBox CalculateBoundingBox()
@@ -81,9 +84,8 @@ public class Triangle : IShape
         return (u >= 0) && (v >= 0) && (u + v <= 1);
     }
 
-    public void Draw(PositionalVector2 entityPosition, IShapeDrawer drawer)
+    public void Draw(PositionalVector2 entityPosition)
     {
-        ArgumentNullException.ThrowIfNull(drawer);
-        drawer.DrawTriangle(entityPosition + Point1, entityPosition + Point2, entityPosition + Point3, Color);
+        _drawer.DrawTriangle(entityPosition + Point1, entityPosition + Point2, entityPosition + Point3, Color);
     }
 }

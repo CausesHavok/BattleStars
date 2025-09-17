@@ -5,7 +5,7 @@ namespace BattleStars.Shapes;
 public class PolyShape : IShape
 {
     private readonly IShape[] _shapes;
-    public BoundingBox BoundingBox { get; } 
+    public BoundingBox BoundingBox { get; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="PolyShape"/> class with the specified triangles
@@ -59,12 +59,11 @@ public class PolyShape : IShape
         return false;
     }
 
-    public void Draw(PositionalVector2 entityPosition, IShapeDrawer drawer)
+    public void Draw(PositionalVector2 entityPosition)
     {
-        ArgumentNullException.ThrowIfNull(drawer);
         foreach (var shape in _shapes)
         {
-            shape.Draw(entityPosition, drawer);
+            shape.Draw(entityPosition);
         }
     }
 

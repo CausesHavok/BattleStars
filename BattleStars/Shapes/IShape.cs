@@ -6,5 +6,5 @@ public interface IShape : IContains<PositionalVector2>
 {
     BoundingBox BoundingBox { get; }
 
-    void Draw(PositionalVector2 position, IShapeDrawer drawer);
+    void Draw(PositionalVector2 position);
 }
