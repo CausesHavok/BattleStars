@@ -35,7 +35,7 @@ public class RaylibShapeDrawerTests
         var drawer = new RaylibShapeDrawer(logger);
         var topLeft = new PositionalVector2(-10, -20);
         var bottomRight = new PositionalVector2(30, 40);
-        var expectedSize = bottomRight-topLeft;
+        var expectedSize = bottomRight - topLeft;
         var color = Color.Red;
 
         // Act
