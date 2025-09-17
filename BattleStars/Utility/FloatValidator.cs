@@ -2,26 +2,35 @@ namespace BattleStars.Utility;
 
 public static class FloatValidator
 {
+    private static void ThrowIfNull(string paramName)
+    {
+        ArgumentNullException.ThrowIfNull(paramName, "parameter name cannot be null.");
+    }
+    
     public static void ThrowIfNaN(float value, string paramName)
     {
+        ThrowIfNull(paramName);
         if (float.IsNaN(value))
             throw new ArgumentException($"{paramName} cannot be NaN.", paramName);
     }
 
     public static void ThrowIfInfinity(float value, string paramName)
     {
+        ThrowIfNull(paramName);
         if (float.IsInfinity(value))
             throw new ArgumentException($"{paramName} cannot be Infinity.", paramName);
     }
 
     public static void ThrowIfNegative(float value, string paramName)
     {
+        ThrowIfNull(paramName);
         if (value < 0)
             throw new ArgumentOutOfRangeException(paramName, $"{paramName} cannot be negative.");
     }
 
     public static void ThrowIfZero(float value, string paramName)
     {
+        ThrowIfNull(paramName);
         if (value == 0)
             throw new ArgumentOutOfRangeException(paramName, $"{paramName} cannot be zero.");
     }
