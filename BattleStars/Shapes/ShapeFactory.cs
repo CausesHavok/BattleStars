@@ -12,7 +12,7 @@ public class ShapeFactory
 
     public ShapeFactory(IShapeDrawer drawer)
     {
-        ArgumentNullException.ThrowIfNull(drawer, nameof(drawer));
+        ArgumentNullException.ThrowIfNull(drawer);
         _drawer = drawer;
     }
 
