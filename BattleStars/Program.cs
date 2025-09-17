@@ -18,12 +18,7 @@ var shapeFactory = new ShapeFactory(drawer);
 
 
 // Create player BattleStar
-var playershape = shapeFactory.CreateShape(new ShapeDescriptor
-{
-    ShapeType = ShapeType.Square,
-    Scale = 50.0f,
-    Color = System.Drawing.Color.Blue
-});
+var playershape = shapeFactory.CreateShape(new ShapeDescriptor(ShapeType.Square, 50.0f, System.Drawing.Color.Blue));
 
 var playerMovable = new PlayerMovable(new PositionalVector2(100, 100), 5f, boundaryChecker);
 
@@ -45,12 +40,7 @@ int enemyCount = 5;
 
 for (int i = 0; i < enemyCount; i++)
 {
-    var enemyShape = shapeFactory.CreateShape(new ShapeDescriptor
-    {
-        ShapeType = ShapeType.Circle,
-        Scale = 30.0f,
-        Color = System.Drawing.Color.Red
-    });
+    var enemyShape = shapeFactory.CreateShape(new ShapeDescriptor(ShapeType.Circle, 30.0f, System.Drawing.Color.Red));
 
     var enemyPosition = new PositionalVector2(700, i * 100 + 50);
     var enemyDirection = -DirectionalVector2.UnitX;

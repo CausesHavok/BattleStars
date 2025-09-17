@@ -1,4 +1,5 @@
 using System.Drawing;
+using BattleStars.Utility;
 namespace BattleStars.Shapes;
 
 public enum ShapeType
@@ -11,7 +12,16 @@ public enum ShapeType
 
 public class ShapeDescriptor
 {
-    public ShapeType ShapeType { get; set; }
-    public float Scale { get; set; }
-    public Color Color { get; set; }
+    public ShapeType ShapeType { get; }
+    public float Scale { get; }
+    public Color Color { get; }
+
+    public ShapeDescriptor(ShapeType shapeType, float scale, Color color)
+    {
+        FloatValidator.ThrowIfNaNOrInfinity(scale, nameof(scale));
+        FloatValidator.ThrowIfNegativeOrZero(scale, nameof(scale));
+        ShapeType = shapeType;
+        Scale = scale;
+        Color = color;
+    }
 }
