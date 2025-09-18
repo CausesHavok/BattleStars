@@ -74,6 +74,7 @@ public class VectorValidatorTest
             VectorValidator.ThrowIfInfinity(vector, "testVector");
             VectorValidator.ThrowIfNotNormalized(vector, "testVector");
             VectorValidator.ThrowIfNaNOrInfinity(vector, "testVector");
+            VectorValidator.ThrowIfZero(vector, "testVector");
         };
 
         act.Should().NotThrow();
