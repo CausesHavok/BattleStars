@@ -2,7 +2,7 @@ namespace BattleStars.Utility;
 
 public static class FloatValidator
 {
-    private static void ThrowIfNull(object value,string paramName)
+    private static void ThrowIfNull(object value, string paramName)
     {
         ArgumentNullException.ThrowIfNull(value, paramName);
     }
