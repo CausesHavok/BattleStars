@@ -174,7 +174,7 @@ public class FloatValidatorTest
             .WithParameterName("test");
     }
     
-           [Fact]
+    [Fact]
     public void GivenNegativeZero_WhenValidatedAgainstZero_ThenThrowsArgumentOutOfRangeException()
     {
         Action act = () => FloatValidator.ThrowIfZero(-0f, "test");
