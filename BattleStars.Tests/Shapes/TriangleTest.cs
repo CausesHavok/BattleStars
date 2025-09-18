@@ -88,9 +88,9 @@ public class TriangleTest
 
     [Theory]
     [InlineData(0.2f, 0.2f, true)]   // inside
-    [InlineData(  0f,   0f, true)]   // on vertex
-    [InlineData(0.5f,   0f, true)]   // on edge
-    [InlineData(  2f,   2f, false)]  // outside
+    [InlineData(0f, 0f, true)]   // on vertex
+    [InlineData(0.5f, 0f, true)]   // on edge
+    [InlineData(2f, 2f, false)]  // outside
     [InlineData(0.8f, 0.8f, false)]  // Inside Bounding Box, but outside Triangle
     public void GivenTriangle_WhenTestingContains_ThenReturnsExpected(float pointX, float pointY, bool expected)
     {
@@ -121,6 +121,45 @@ public class TriangleTest
         tri.Draw(new PositionalVector2(1, 1));
 
         drawer.DrawCalled.Should().BeTrue();
+    }
+
+    #endregion
+
+    #region Barycentric Tests
+    /*
+    Tests for the Contains method of the Triangle class, focusing on the barycentric coordinate branches.
+    - Validates that the Contains method returns false for points that trigger each branch of the barycentric coordinate checks (u < 0, v < 0, u + v > 1).
+    */
+
+    [Theory]
+    [InlineData(1.0f, 2.0f)]  // u < 0
+    [InlineData(1.0f, -1.0f)]  // v < 0
+    [InlineData(3.0f, 1.0f)]   // u + v > 1
+    public void GivenTriangle_WhenTestingAllBarycentricBranches_ThenReturnsExpected(float pointX, float pointY)
+    {
+        var Point1 = new PositionalVector2(0, 0);
+        var Point2 = new PositionalVector2(2, 3);
+        var Point3 = new PositionalVector2(4, -2);
+        var drawerMock = new MockShapeDrawer();
+        var tri = new Triangle(Point1, Point2, Point3, Color.Red, drawerMock);
+        var point = new PositionalVector2(pointX, pointY);
+
+        tri.Contains(point).Should().BeFalse();
+    }
+    
+    [Fact]
+    public void GivenNearlyColinearTriangleAndColinearTestPointInsideBoundingBox_WhenCallingContains_ThenReturnsFalseDueToZeroDenom()
+    {
+        var Point1 = new PositionalVector2(0f, 0f);
+        var Point2 = new PositionalVector2(1f, 1f);
+        var Point3 = new PositionalVector2(2f, 2.000001f); // Slight offset
+        var drawerMock = new MockShapeDrawer();
+        var tri = new Triangle(Point1, Point2, Point3, Color.Red, drawerMock);
+
+        // This point is inside the bounding box and colinear with the triangle points
+        var testPoint = new PositionalVector2(1f, 1f);
+
+        tri.Contains(testPoint).Should().BeFalse(); // Should hit denom == 0
     }
 
     #endregion
