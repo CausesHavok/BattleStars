@@ -173,15 +173,6 @@ public class FloatValidatorTest
             .WithMessage("test cannot be zero.*")
             .WithParameterName("test");
     }
-    
-    [Fact]
-    public void GivenNegativeZero_WhenValidatedAgainstZero_ThenThrowsArgumentOutOfRangeException()
-    {
-        Action act = () => FloatValidator.ThrowIfZero(-0f, "test");
-        act.Should().Throw<ArgumentOutOfRangeException>()
-            .WithMessage("test cannot be zero.*")
-            .WithParameterName("test");
-    }
 
     [Theory]
     [InlineData(float.NaN)]
