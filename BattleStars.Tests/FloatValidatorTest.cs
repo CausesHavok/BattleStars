@@ -12,7 +12,7 @@ public class FloatValidatorTest
     {
         Action act = () => FloatValidator.ThrowIfNaN(0f, null!);
         act.Should().Throw<ArgumentNullException>()
-            .WithMessage("*parameter name cannot be null.*");
+            .WithMessage("*Value cannot be null.*");
     }
 
     [Fact]
@@ -47,7 +47,7 @@ public class FloatValidatorTest
     {
         Action act = () => FloatValidator.ThrowIfInfinity(0f, null!);
         act.Should().Throw<ArgumentNullException>()
-            .WithMessage("*parameter name cannot be null.*");
+            .WithMessage("*Value cannot be null.*");
     }
 
     [Theory]
@@ -83,7 +83,7 @@ public class FloatValidatorTest
     {
         Action act = () => FloatValidator.ThrowIfNaNOrInfinity(0f, null!);
         act.Should().Throw<ArgumentNullException>()
-            .WithMessage("*parameter name cannot be null.*");
+            .WithMessage("*Value cannot be null.*");
     }
 
     [Fact]
@@ -125,7 +125,7 @@ public class FloatValidatorTest
     {
         Action act = () => FloatValidator.ThrowIfNegative(-1f, null!);
         act.Should().Throw<ArgumentNullException>()
-            .WithMessage("*parameter name cannot be null.*");
+            .WithMessage("*Value cannot be null.*");
     }
 
     [Fact]
@@ -157,7 +157,7 @@ public class FloatValidatorTest
     {
         Action act = () => FloatValidator.ThrowIfZero(0f, null!);
         act.Should().Throw<ArgumentNullException>()
-            .WithMessage("*parameter name cannot be null.*");
+            .WithMessage("*Value cannot be null.*");
     }
 
     [Fact]
@@ -205,7 +205,7 @@ public class FloatValidatorTest
     {
         Action act = () => FloatValidator.ThrowIfNegativeOrZero(0f, null!);
         act.Should().Throw<ArgumentNullException>()
-            .WithMessage("*parameter name cannot be null.*");
+            .WithMessage("*Value cannot be null.*");
     }
 
     [Fact]
