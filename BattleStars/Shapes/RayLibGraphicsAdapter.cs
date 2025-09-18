@@ -3,7 +3,6 @@ using Raylib_cs;
 
 namespace BattleStars.Shapes;
 
-
 /// <summary>
 /// Adapter class to bridge between BattleStars' IShapeDrawer and Raylib's drawing functions.
 /// </summary>
