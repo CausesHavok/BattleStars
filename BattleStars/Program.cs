@@ -15,12 +15,8 @@ var drawer = new RaylibShapeDrawer(graphics);
 // Create boundary checker for the window (player stays fully inside)
 var boundaryChecker = new BoundaryChecker(0 + 25, 800 - 25, 0 + 25, 600 - 25); // 50 is the player size
 
-// Create a shape factory
-var shapeFactory = new ShapeFactory(drawer);
-
-
 // Create player BattleStar
-var playershape = shapeFactory.CreateShape(new ShapeDescriptor(ShapeType.Square, 50.0f, System.Drawing.Color.Blue));
+var playershape = ShapeFactory.CreateShape(new ShapeDescriptor(ShapeType.Square, 50.0f, System.Drawing.Color.Blue), drawer);
 
 var playerMovable = new PlayerMovable(new PositionalVector2(100, 100), 5f, boundaryChecker);
 
@@ -42,7 +38,7 @@ int enemyCount = 5;
 
 for (int i = 0; i < enemyCount; i++)
 {
-    var enemyShape = shapeFactory.CreateShape(new ShapeDescriptor(ShapeType.Circle, 30.0f, System.Drawing.Color.Red));
+    var enemyShape = ShapeFactory.CreateShape(new ShapeDescriptor(ShapeType.Circle, 30.0f, System.Drawing.Color.Red), drawer);
 
     var enemyPosition = new PositionalVector2(700, i * 100 + 50);
     var enemyDirection = -DirectionalVector2.UnitX;
