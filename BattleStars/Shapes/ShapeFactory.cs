@@ -20,8 +20,7 @@ public static class ShapeFactory
     /// <param name="drawer">The drawer responsible for rendering the shape.</param>
     /// <returns>An instance of IShape as defined by the descriptor.</returns>
     /// <exception cref="ArgumentNullException">Thrown if shapeDescriptor or drawer is null.</exception>
-    /// <exception cref="ArgumentException">Thrown if shape type is invalid or scale is non
-    /// -positive.</exception>
+    /// <exception cref="ArgumentException">Thrown if shape type is invalid or scale is non-positive.</exception>
     /// <exception cref="ArgumentOutOfRangeException">Thrown if scale is NaN or Infinity.</exception>
     /// <remarks>
     /// The method validates the input parameters and uses a switch expression to create the appropriate shape.
