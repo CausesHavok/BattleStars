@@ -81,6 +81,43 @@ public class CircleTest
 
     #endregion
 
+    #region BoundingBox Tests
+    /*
+        - Test that bounding box is correctly calculated for a circle with positive radius
+        - Test that bounding box is correctly calculated for a circle with very small radius
+    */
+
+    [Fact]
+    public void GivenCircle_WhenConstructed_ThenBoundingBoxIsCorrect()
+    {
+        // Arrange
+        float radius = 5.0f;
+        var circle = new Circle(radius, Color.Red, new MockShapeDrawer());
+
+        // Act
+        var boundingBox = circle.BoundingBox;
+
+        // Assert
+        boundingBox.TopLeft.Should().Be(new PositionalVector2(-radius, -radius));
+        boundingBox.BottomRight.Should().Be(new PositionalVector2(radius, radius));
+    }
+
+    [Fact]
+    public void GivenCircle_WhenConstructedWithSmallRadius_ThenBoundingBoxIsCorrect()
+    {
+        // Arrange
+        float radius = 0.0001f;
+        var circle = new Circle(radius, Color.Red, new MockShapeDrawer());
+
+        // Act
+        var boundingBox = circle.BoundingBox;
+
+        // Assert
+        boundingBox.TopLeft.Should().Be(new PositionalVector2(-radius, -radius));
+        boundingBox.BottomRight.Should().Be(new PositionalVector2(radius, radius));
+    }
+    #endregion
+
 
     #region Contains Tests
     /*

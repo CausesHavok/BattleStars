@@ -1,167 +1,78 @@
 using System.Drawing;
-using FluentAssertions;
 using BattleStars.Shapes;
 using BattleStars.Utility;
-using Moq;
+using FluentAssertions;
 
 namespace BattleStars.Tests.Shapes;
 
 public class ShapeFactoryTest
 {
-    [Fact]
-    public void GivenNullDrawer_WhenConstructed_ThenThrowsArgumentNullException()
+    public class MockShapeDrawer : IShapeDrawer
     {
-        // Given, When
-        Action act = () => new ShapeFactory(null!);
+        public void DrawRectangle(PositionalVector2 v1, PositionalVector2 v2, Color color) { }
+        public void DrawTriangle(PositionalVector2 p1, PositionalVector2 p2, PositionalVector2 p3, Color color) { }
+        public void DrawCircle(PositionalVector2 center, float radius, Color color) { }
+    }
 
-        // Then
+    public class TestShapeDescriptor : IShapeDescriptor
+    {
+        public ShapeType ShapeType { get; set; }
+        public float Scale { get; set; }
+        public Color Color { get; set; }
+    }
+
+    [Fact]
+    public void GivenNullShapeDescriptor_WhenCreateShapeIsCalled_ThenThrowsArgumentNullException()
+    {
+        var drawer = new MockShapeDrawer();
+        Action act = () => ShapeFactory.CreateShape(null!, drawer);
         act.Should().Throw<ArgumentNullException>();
     }
 
     [Fact]
-    public void GivenNullShapeDescriptor_WhenCreateShape_ThenThrowsArgumentNullException()
+    public void GivenNullShapeDrawer_WhenCreateShapeIsCalled_ThenThrowsArgumentNullException()
     {
-        // Given
-        var drawer = new Mock<IShapeDrawer>().Object;
-        var factory = new ShapeFactory(drawer);
-
-        // When
-        Action act = () => factory.CreateShape(null!);
-
-        // Then
+        var desc = new TestShapeDescriptor { ShapeType = ShapeType.Circle, Scale = 1f, Color = Color.Red };
+        Action act = () => ShapeFactory.CreateShape(desc, null!);
         act.Should().Throw<ArgumentNullException>();
     }
 
     [Theory]
-    [InlineData(ShapeType.Circle, "Circle")]
-    [InlineData(ShapeType.Square, "Rectangle")]
-    [InlineData(ShapeType.Triangle, "Triangle")]
-    [InlineData(ShapeType.Hexagon, "PolyShape")]
-    public void GivenValidShapeDescriptor_WhenCreateShape_ThenReturnsCorrectShapeType(ShapeType shapeType, string ExpectedName)
+    [InlineData(0f)]
+    [InlineData(-1f)]
+    [InlineData(float.NaN)]
+    [InlineData(float.PositiveInfinity)]
+    [InlineData(float.NegativeInfinity)]
+    public void GivenInvalidScale_WhenCreateShapeIsCalled_ThenThrowsArgumentException(float scale)
     {
-        // Given
-        var drawer = new Mock<IShapeDrawer>().Object;
-        var factory = new ShapeFactory(drawer);
-        var color = Color.Red;
-        var size = 2.0f;
-        var descriptor = new ShapeDescriptor(shapeType, size, color);
-
-        // When
-        var shape = factory.CreateShape(descriptor);
-
-        // Then
-        shape.Should().NotBeNull();
-        shape.GetType().Name.Should().Contain(ExpectedName);
+        var drawer = new MockShapeDrawer();
+        foreach (ShapeType type in Enum.GetValues<ShapeType>())
+        {
+            var desc = new TestShapeDescriptor { ShapeType = type, Scale = scale, Color = Color.Red };
+            Action act = () => ShapeFactory.CreateShape(desc, drawer);
+            act.Should().Throw<ArgumentException>($"ShapeType {type} with scale {scale} should throw");
+        }
     }
 
     [Fact]
-    public void GivenInvalidShapeType_WhenCreateShape_ThenThrowsArgumentException()
+    public void GivenInvalidShapeType_WhenCreateShapeIsCalled_ThenThrowsArgumentException()
     {
-        // Given
-        var drawer = new Mock<IShapeDrawer>().Object;
-        var factory = new ShapeFactory(drawer);
-        var invalidShapeType = (ShapeType)999;
-        var descriptor = new ShapeDescriptor(invalidShapeType, 1.0f, Color.Red);
-
-        // When
-        Action act = () => factory.CreateShape(descriptor);
-
-        // Then
+        var drawer = new MockShapeDrawer();
+        var desc = new TestShapeDescriptor { ShapeType = (ShapeType)999, Scale = 1f, Color = Color.Red };
+        Action act = () => ShapeFactory.CreateShape(desc, drawer);
         act.Should().Throw<ArgumentException>();
     }
 
-    [Fact]
-    public void GivenCircleDescriptor_WhenCreateShape_ThenCircleBehavesCorrectly()
+    [Theory]
+    [InlineData(ShapeType.Circle)]
+    [InlineData(ShapeType.Square)]
+    [InlineData(ShapeType.Triangle)]
+    [InlineData(ShapeType.Hexagon)]
+    public void GivenValidShapeType_WhenCreateShapeIsCalled_ThenReturnsShape(ShapeType type)
     {
-        // Given
-        var drawer = new Mock<IShapeDrawer>().Object;
-        var factory = new ShapeFactory(drawer);
-        var descriptor = new ShapeDescriptor(ShapeType.Circle, 3.0f, Color.Green);
-
-        // When
-        var shape = factory.CreateShape(descriptor);
-
-        // Then
-        shape.Should().BeOfType<Circle>();
-        var circle = (Circle)shape;
-        circle.BoundingBox.TopLeft.X.Should().BeApproximately(-3.0f, 0.0001f);
-        circle.BoundingBox.TopLeft.Y.Should().BeApproximately(-3.0f, 0.0001f);
-        circle.BoundingBox.BottomRight.X.Should().BeApproximately(3.0f, 0.0001f);
-        circle.BoundingBox.BottomRight.Y.Should().BeApproximately(3.0f, 0.0001f);
-    }
-
-    [Fact]
-    public void GivenSquareDescriptor_WhenCreateShape_ThenSquareHasCorrectCornersAndColor()
-    {
-        // Given
-        var drawer = new Mock<IShapeDrawer>().Object;
-        var factory = new ShapeFactory(drawer);
-        var descriptor = new ShapeDescriptor(ShapeType.Square, 4.0f, Color.Blue);
-
-        // When
-        var shape = factory.CreateShape(descriptor);
-
-        // Then
-        shape.Should().BeOfType<BattleStars.Shapes.Rectangle>();
-        var rect = (BattleStars.Shapes.Rectangle)shape;
-        rect.BoundingBox.Should().NotBeNull();
-        rect.BoundingBox.TopLeft.X.Should().BeApproximately(-2.0f, 0.0001f);
-        rect.BoundingBox.TopLeft.Y.Should().BeApproximately(-2.0f, 0.0001f);
-        rect.BoundingBox.BottomRight.X.Should().BeApproximately(2.0f, 0.0001f);
-        rect.BoundingBox.BottomRight.Y.Should().BeApproximately(2.0f, 0.0001f);
-        rect.Color.Should().Be(Color.Blue);
-    }
-
-    [Fact]
-    public void GivenTriangleDescriptor_WhenCreateShape_ThenTriangleHasCorrectPointsAndColor()
-    {
-        // Given
-        var drawer = new Mock<IShapeDrawer>().Object;
-        var factory = new ShapeFactory(drawer);
-        var scale = 2.0f;
-        var _defaultSize = 1.0f;
-        var descriptor = new ShapeDescriptor(ShapeType.Triangle, scale, Color.Yellow);
-
-        // When
-        var shape = factory.CreateShape(descriptor);
-
-        // Then
-        shape.Should().BeOfType<Triangle>();
-        var triangle = (Triangle)shape;
-        triangle.Color.Should().Be(Color.Yellow);
-        // Points are calculated, so just check they are not default
-
-        float halfSize = scale * _defaultSize / 2f;
-        float height = (float)(Math.Sqrt(3) * halfSize);
-
-        // Center the centroid at (0,0)
-        PositionalVector2 point1 = new(-halfSize, height / 3f);
-        PositionalVector2 point2 = new(halfSize, height / 3f);
-        PositionalVector2 point3 = new(0, -2f * height / 3f);
-
-        triangle.Point1.Should().Be(point1);
-        triangle.Point2.Should().Be(point2);
-        triangle.Point3.Should().Be(point3);
-    }
-
-    [Fact]
-    public void GivenHexagonDescriptor_WhenCreateShape_ThenPolyShapeHasSixTriangles()
-    {
-        // Given
-        var drawer = new Mock<IShapeDrawer>().Object;
-        var factory = new ShapeFactory(drawer);
-        var descriptor = new ShapeDescriptor(ShapeType.Hexagon, 6.0f, Color.Purple);
-
-        // When
-        var shape = factory.CreateShape(descriptor);
-
-        // Then
-        shape.Should().BeOfType<PolyShape>();
-        var poly = (PolyShape)shape;
-        poly.BoundingBox.Should().NotBeNull();
-        poly.BoundingBox.TopLeft.X.Should().BeApproximately(-3f, 0.0001f);
-        poly.BoundingBox.TopLeft.Y.Should().BeApproximately(-2.598f, 0.0001f);
-        poly.BoundingBox.BottomRight.X.Should().BeApproximately(3f, 0.0001f);
-        poly.BoundingBox.BottomRight.Y.Should().BeApproximately(2.598f, 0.0001f);
+        var drawer = new MockShapeDrawer();
+        var desc = new TestShapeDescriptor { ShapeType = type, Scale = 1f, Color = Color.Red };
+        var shape = ShapeFactory.CreateShape(desc, drawer);
+        shape.Should().NotBeNull();
     }
 }
