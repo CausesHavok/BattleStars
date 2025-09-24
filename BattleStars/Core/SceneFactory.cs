@@ -74,4 +74,6 @@ public static class SceneFactory
 
         return enemies;
     }
+
+    public static BasicContext CreateBasicContext() => new();
 }

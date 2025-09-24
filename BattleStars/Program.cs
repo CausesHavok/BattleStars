@@ -18,14 +18,14 @@ var boundaryChecker = new BoundaryChecker(0 + 25, 800 - 25, 0 + 25, 600 - 25); /
 // Create player BattleStar
 var playerBattleStar = SceneFactory.CreatePlayerBattleStar(drawer, boundaryChecker);
 
-
 // Create some enemies
 var enemies = SceneFactory.CreateEnemyBattleStars(drawer);
 
+// Create context
+var context = SceneFactory.CreateBasicContext();
+
 var playerShots = new List<IShot>();
 var enemyShots = new List<IShot>();
-
-var context = new BasicContext();
 
 var rnd = new Random();
 

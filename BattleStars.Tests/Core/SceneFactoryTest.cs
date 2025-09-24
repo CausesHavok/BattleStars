@@ -116,4 +116,14 @@ public class SceneFactoryTest
 
 
     #endregion
+
+    #region CreateBasicContext Tests
+    [Fact]
+    public void WhenCreateBasicContext_ThenReturnsNonNullBasicContext()
+    {
+        var context = SceneFactory.CreateBasicContext();
+        context.Should().NotBeNull();
+        context.Should().BeOfType<BasicContext>();
+    }
+    #endregion
 }
