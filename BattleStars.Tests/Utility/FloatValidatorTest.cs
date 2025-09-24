@@ -1,7 +1,7 @@
 using FluentAssertions;
 using BattleStars.Utility;
 
-namespace BattleStars.Tests;
+namespace BattleStars.Tests.Utility;
 
 public class FloatValidatorTest
 {

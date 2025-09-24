@@ -3,7 +3,7 @@ using FluentAssertions;
 using BattleStars.Shots;
 using BattleStars.Utility;
 
-namespace BattleStars.Tests;
+namespace BattleStars.Tests.Shots;
 
 public class ShotTest
 {
