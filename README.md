@@ -53,7 +53,7 @@ code CoverageReport/index.html
 ## 📦 Project Structure
 
 BattleStars/  
-├── Core/              # Interfaces and base classes  
+├── Core/              # Base classes  
 ├── Logic/             # Game logic and validation  
 ├── Shapes/            # Geometric primitives  
 ├── Shots/             # Projectile modeling  
