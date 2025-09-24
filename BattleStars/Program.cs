@@ -20,32 +20,7 @@ var playerBattleStar = SceneFactory.CreatePlayerBattleStar(drawer, boundaryCheck
 
 
 // Create some enemies
-var enemies = new List<BattleStar>();
-int enemyCount = 5;
-
-for (int i = 0; i < enemyCount; i++)
-{
-    var enemyShape = ShapeFactory.CreateShape(new ShapeDescriptor(ShapeType.Circle, 30.0f, System.Drawing.Color.Red), drawer);
-
-    var enemyPosition = new PositionalVector2(700, i * 100 + 50);
-    var enemyDirection = -DirectionalVector2.UnitX;
-    var enemySpeed = 1f;
-
-    var enemyMovable = new BasicMovable(enemyPosition, enemyDirection, enemySpeed);
-    var enemyDestructable = new BasicDestructable(1f);
-    var enemyShooter = new BasicShooter(ShotFactory.CreateCannonShot, -DirectionalVector2.UnitX); // Shoot left
-
-    var enemyBattleStar = new BattleStar(
-        enemyShape,
-        enemyMovable,
-        enemyDestructable,
-        enemyShooter
-    );
-
-    enemies.Add(enemyBattleStar);
-}
-
-
+var enemies = SceneFactory.CreateEnemyBattleStars(drawer);
 
 var playerShots = new List<IShot>();
 var enemyShots = new List<IShot>();

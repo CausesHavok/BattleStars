@@ -36,4 +36,42 @@ public static class SceneFactory
 
         return playerBattleStar;
     }
+
+    public static List<BattleStar> CreateEnemyBattleStars(
+        IShapeDrawer drawer)
+    {
+        var enemies = new List<BattleStar>();
+        var rnd = new Random();
+        var enemyCount = 10;
+
+        for (int i = 0; i < enemyCount; i++)
+        {
+            // Enemy configuration
+            var shapeDescriptor = new ShapeDescriptor(ShapeType.Circle, 30.0f, Color.Red);
+            var shot = ShotFactory.CreateCannonShot;
+            var initialHealth = 1f;
+            var speed = 1f;
+            var position = new PositionalVector2(rnd.Next(0, 800), rnd.Next(0, 600));
+            var direction = -DirectionalVector2.UnitX; // Move left
+            var shotDirection = -DirectionalVector2.UnitX; // Shoot left
+
+            // Create enemy components
+            var enemyShape = ShapeFactory.CreateShape(shapeDescriptor, drawer);
+            var enemyMovable = new BasicMovable(position, direction, speed);
+            var enemyDestructable = new BasicDestructable(initialHealth);
+            var enemyShooter = new BasicShooter(shot, shotDirection);
+
+            // Create and add the enemy BattleStar to the list
+            var enemyBattleStar = new BattleStar(
+                enemyShape,
+                enemyMovable,
+                enemyDestructable,
+                enemyShooter
+            );
+
+            enemies.Add(enemyBattleStar);
+        }
+
+        return enemies;
+    }
 }
