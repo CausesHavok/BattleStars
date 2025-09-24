@@ -1,6 +1,5 @@
 ﻿using Raylib_cs;
 using System.Numerics;
-using BattleStars.Shapes;
 using BattleStars.Logic;
 using BattleStars.Shots;
 using BattleStars.Core;
@@ -8,62 +7,21 @@ using BattleStars.Utility;
 
 Raylib.InitWindow(800, 600, "BattleStars - Square Test");
 Raylib.SetTargetFPS(60);
-var graphics = new RaylibGraphicsAdapter();
-var drawer = new RaylibShapeDrawer(graphics);
 
-
-// Create boundary checker for the window (player stays fully inside)
-var boundaryChecker = new BoundaryChecker(0 + 25, 800 - 25, 0 + 25, 600 - 25); // 50 is the player size
+// Create drawer
+var drawer = SceneFactory.CreateShapeDrawer();
 
 // Create player BattleStar
-var playershape = ShapeFactory.CreateShape(new ShapeDescriptor(ShapeType.Square, 50.0f, System.Drawing.Color.Blue), drawer);
-
-var playerMovable = new PlayerMovable(new PositionalVector2(100, 100), 5f, boundaryChecker);
-
-var playerDestructable = new BasicDestructable(100f);
-
-var playerShooter = new BasicShooter(ShotFactory.CreateLaserShot, DirectionalVector2.UnitX); // Default direction to the right
-
-var playerBattleStar = new BattleStar(
-    playershape,
-    playerMovable,
-    playerDestructable,
-    playerShooter
-);
-
+var playerBattleStar = SceneFactory.CreatePlayerBattleStar(drawer);
 
 // Create some enemies
-var enemies = new List<BattleStar>();
-int enemyCount = 5;
+var enemies = SceneFactory.CreateEnemyBattleStars(drawer);
 
-for (int i = 0; i < enemyCount; i++)
-{
-    var enemyShape = ShapeFactory.CreateShape(new ShapeDescriptor(ShapeType.Circle, 30.0f, System.Drawing.Color.Red), drawer);
-
-    var enemyPosition = new PositionalVector2(700, i * 100 + 50);
-    var enemyDirection = -DirectionalVector2.UnitX;
-    var enemySpeed = 1f;
-
-    var enemyMovable = new BasicMovable(enemyPosition, enemyDirection, enemySpeed);
-    var enemyDestructable = new BasicDestructable(1f);
-    var enemyShooter = new BasicShooter(ShotFactory.CreateCannonShot, -DirectionalVector2.UnitX); // Shoot left
-
-    var enemyBattleStar = new BattleStar(
-        enemyShape,
-        enemyMovable,
-        enemyDestructable,
-        enemyShooter
-    );
-
-    enemies.Add(enemyBattleStar);
-}
-
-
+// Create context
+var context = SceneFactory.CreateBasicContext();
 
 var playerShots = new List<IShot>();
 var enemyShots = new List<IShot>();
-
-var context = new BasicContext();
 
 var rnd = new Random();
 
