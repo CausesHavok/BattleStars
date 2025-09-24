@@ -1,7 +1,7 @@
 using FluentAssertions;
 using BattleStars.Logic;
 
-namespace BattleStars.Tests;
+namespace BattleStars.Tests.Logic;
 
 public class BoundaryCheckerTest
 {
