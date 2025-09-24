@@ -16,20 +16,7 @@ var drawer = new RaylibShapeDrawer(graphics);
 var boundaryChecker = new BoundaryChecker(0 + 25, 800 - 25, 0 + 25, 600 - 25); // 50 is the player size
 
 // Create player BattleStar
-var playershape = ShapeFactory.CreateShape(new ShapeDescriptor(ShapeType.Square, 50.0f, System.Drawing.Color.Blue), drawer);
-
-var playerMovable = new PlayerMovable(new PositionalVector2(100, 100), 5f, boundaryChecker);
-
-var playerDestructable = new BasicDestructable(100f);
-
-var playerShooter = new BasicShooter(ShotFactory.CreateLaserShot, DirectionalVector2.UnitX); // Default direction to the right
-
-var playerBattleStar = new BattleStar(
-    playershape,
-    playerMovable,
-    playerDestructable,
-    playerShooter
-);
+var playerBattleStar = SceneFactory.CreatePlayerBattleStar(drawer, boundaryChecker);
 
 
 // Create some enemies
