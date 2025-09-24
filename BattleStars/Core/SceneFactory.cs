@@ -75,4 +75,7 @@ public static class SceneFactory
     }
 
     public static BasicContext CreateBasicContext() => new();
+
+    public static IShapeDrawer CreateShapeDrawer() => new RaylibShapeDrawer(new RaylibGraphicsAdapter());
+
 }

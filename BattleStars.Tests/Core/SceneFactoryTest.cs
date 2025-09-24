@@ -26,7 +26,7 @@ public class SceneFactoryTest
         act.Should().Throw<ArgumentNullException>();
     }
 
-        [Fact]
+    [Fact]
     public void WhenCreatePlayerBattleStar_ThenReturnsNonNullBattleStar()
     {
         var drawer = new MockShapeDrawer();
@@ -115,5 +115,16 @@ public class SceneFactoryTest
         context.Should().NotBeNull();
         context.Should().BeOfType<BasicContext>();
     }
+    #endregion
+
+    #region CreateShapeDrawer Tests
+    [Fact]
+    public void WhenCreateShapeDrawer_ThenReturnsNonNullIShapeDrawer()
+    {
+        var drawer = SceneFactory.CreateShapeDrawer();
+        drawer.Should().NotBeNull();
+        drawer.Should().BeOfType<RaylibShapeDrawer>();
+    }
+
     #endregion
 }
