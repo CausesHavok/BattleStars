@@ -22,24 +22,15 @@ public class SceneFactoryTest
     public void GivenNullDrawer_WhenCreatePlayerBattleStar_ThenThrowsArgumentNullException()
     {
         var boundaryChecker = new BoundaryChecker(0, 100, 0, 100);
-        Action act = () => SceneFactory.CreatePlayerBattleStar(null!, boundaryChecker);
+        Action act = () => SceneFactory.CreatePlayerBattleStar(null!);
         act.Should().Throw<ArgumentNullException>();
     }
 
-    [Fact]
-    public void GivenNullBoundaryChecker_WhenCreatePlayerBattleStar_ThenThrowsArgumentNullException()
-    {
-        var drawer = new MockShapeDrawer();
-        Action act = () => SceneFactory.CreatePlayerBattleStar(drawer, null!);
-        act.Should().Throw<ArgumentNullException>();
-    }
-
-    [Fact]
+        [Fact]
     public void WhenCreatePlayerBattleStar_ThenReturnsNonNullBattleStar()
     {
         var drawer = new MockShapeDrawer();
-        var boundaryChecker = new BoundaryChecker(0, 100, 0, 100);
-        var battleStar = SceneFactory.CreatePlayerBattleStar(drawer, boundaryChecker);
+        var battleStar = SceneFactory.CreatePlayerBattleStar(drawer);
         battleStar.Should().NotBeNull();
         battleStar.Should().BeOfType<BattleStar>();
     }
@@ -48,8 +39,7 @@ public class SceneFactoryTest
     public void WhenCreatedBattleStar_DrawMoveShootTakeDamageWork()
     {
         var drawer = new MockShapeDrawer();
-        var boundaryChecker = new BoundaryChecker(0, 100, 0, 100);
-        var battleStar = SceneFactory.CreatePlayerBattleStar(drawer, boundaryChecker);
+        var battleStar = SceneFactory.CreatePlayerBattleStar(drawer);
 
         // Draw should not throw
         battleStar.Invoking(bs => bs.Draw()).Should().NotThrow();

@@ -7,9 +7,7 @@ namespace BattleStars.Core;
 
 public static class SceneFactory
 {
-    public static BattleStar CreatePlayerBattleStar(
-        IShapeDrawer drawer,
-        BoundaryChecker boundaryChecker)
+    public static BattleStar CreatePlayerBattleStar(IShapeDrawer drawer)
     {
         // Player configuration
         var size = 50.0f;
@@ -19,6 +17,7 @@ public static class SceneFactory
         var shapeDescriptor = new ShapeDescriptor(ShapeType.Square, size, Color.Blue);
         var shotDirection = DirectionalVector2.UnitX; // Default direction to the right
         var shot = ShotFactory.CreateLaserShot;
+        var boundaryChecker = new BoundaryChecker(0 + 25, 800 - 25, 0 + 25, 600 - 25);
 
         // Create player components
         var playershape = ShapeFactory.CreateShape(shapeDescriptor, drawer);
