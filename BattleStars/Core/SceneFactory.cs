@@ -5,8 +5,23 @@ using BattleStars.Shots;
 using BattleStars.Utility;
 namespace BattleStars.Core;
 
+/// <summary>
+/// Factory class for creating game scenes, including players, enemies, and context.
+/// </summary>
+/// <remarks>
+/// This class provides static methods to create and configure various game components.
+/// </remarks>
 public static class SceneFactory
-{
+{   
+    /// <summary>
+    /// Creates a player BattleStar with predefined attributes.
+    /// </summary>
+    /// <param name="drawer">
+    /// The shape drawer to use for rendering the BattleStar.
+    /// </param>
+    /// <returns>
+    /// A new instance of the <see cref="BattleStar"/> class.
+    /// </returns>
     public static BattleStar CreatePlayerBattleStar(IShapeDrawer drawer)
     {
         // Player configuration
@@ -36,6 +51,15 @@ public static class SceneFactory
         return playerBattleStar;
     }
 
+    /// <summary>
+    /// Creates a list of enemy BattleStars with random positions and predefined attributes.
+    /// </summary>
+    /// <param name="drawer">
+    /// The shape drawer to use for rendering the enemy BattleStars.
+    /// </param>
+    /// <returns>
+    /// A list of <see cref="BattleStar"/> instances representing enemies.
+    /// </returns>
     public static List<BattleStar> CreateEnemyBattleStars(
         IShapeDrawer drawer)
     {
@@ -74,8 +98,19 @@ public static class SceneFactory
         return enemies;
     }
 
+    /// <summary>
+    /// Creates a basic game context.
+    /// </summary>
+    /// <returns>
+    /// A new instance of the <see cref="BasicContext"/> class.
+    /// </returns>
     public static BasicContext CreateBasicContext() => new();
 
+    /// <summary>
+    /// Creates a shape drawer using Raylib for rendering.
+    /// </summary>
+    /// <returns>
+    /// An instance of <see cref="IShapeDrawer"/> for drawing shapes.
+    /// </returns>
     public static IShapeDrawer CreateShapeDrawer() => new RaylibShapeDrawer(new RaylibGraphicsAdapter());
-
 }
