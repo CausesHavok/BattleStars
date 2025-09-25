@@ -5,7 +5,7 @@ namespace BattleStars.Core;
 
 public interface IContext
 {
-    DirectionalVector2 PlayerDirection { get; }
+    DirectionalVector2 PlayerDirection { get; set; }
 
     /// <summary>
     /// Position of the shooter in world coordinates.

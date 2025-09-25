@@ -292,7 +292,7 @@ public class BasicShooterTest
             ShooterPosition = shooterPosition;
         }
         public PositionalVector2 ShooterPosition { get; set; }
-        public DirectionalVector2 PlayerDirection => DirectionalVector2.UnitX; // Arbitrary implementation
+        public DirectionalVector2 PlayerDirection { get => DirectionalVector2.UnitX; set => throw new NotImplementedException(); }
     }
 
     #endregion
