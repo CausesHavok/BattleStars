@@ -73,7 +73,7 @@ public class SceneFactoryTest
         var drawer = new MockShapeDrawer();
         var enemies = SceneFactory.CreateEnemyBattleStars(drawer);
         enemies.Should().NotBeNull();
-        enemies.Should().BeOfType<List<BattleStar>>();
+        enemies.Should().BeOfType<List<IBattleStar>>();
         enemies.Count.Should().BeGreaterThan(0);
     }
 
