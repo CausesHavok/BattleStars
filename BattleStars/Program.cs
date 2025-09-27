@@ -29,8 +29,17 @@ var inputHandler = new InputHandler(new RaylibKeyBoardProvider());
 // Create boundary checker
 var boundaryChecker = new BoundaryChecker(0, windowWidth, 0, windowHeight);
 
+// Create initial game state
+var gameState = new GameState(
+    context,
+    playerBattleStar,
+    new List<IShot>(),
+    enemies,
+    new List<IShot>()
+);
+
 // Create game controller
-var gameController = new GameController(playerBattleStar, enemies, inputHandler, boundaryChecker);
+var gameController = new GameController(gameState, inputHandler, boundaryChecker);
 var shouldContinue = true;
 
 while (!Raylib.WindowShouldClose())

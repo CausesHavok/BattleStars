@@ -14,22 +14,30 @@ namespace BattleStars.Logic;
 public class GameController
 {
     private readonly IBattleStar _player;
-    private readonly List<IBattleStar> _enemies = [];
-    private List<IShot> _playerShots = [];
-    private List<IShot> _enemyShots = [];
+    private readonly List<IBattleStar> _enemies;
+    private List<IShot> _playerShots;
+    private List<IShot> _enemyShots;
     private readonly IInputHandler _inputHandler;
     private readonly IBoundaryChecker _boundaryChecker;
 
-    public GameController(IBattleStar player,
-        IEnumerable<IBattleStar>? enemies,
-        IInputHandler inputHandler,
-        IBoundaryChecker boundaryChecker)
+    public GameController(IGameState gameState, IInputHandler inputHandler, IBoundaryChecker boundaryChecker)
     {
-        _player = player ?? throw new ArgumentNullException(nameof(player));
-        ArgumentNullException.ThrowIfNull(enemies, nameof(enemies));
-        _enemies.AddRange(enemies);
-        _inputHandler = inputHandler ?? throw new ArgumentNullException(nameof(inputHandler));
-        _boundaryChecker = boundaryChecker ?? throw new ArgumentNullException(nameof(boundaryChecker));
+        ArgumentNullException.ThrowIfNull(gameState, nameof(gameState));
+        ArgumentNullException.ThrowIfNull(gameState.Player, nameof(gameState.Player));
+        ArgumentNullException.ThrowIfNull(gameState.Enemies, nameof(gameState.Enemies));
+        ArgumentNullException.ThrowIfNull(gameState.PlayerShots, nameof(gameState.PlayerShots));
+        ArgumentNullException.ThrowIfNull(gameState.EnemyShots, nameof(gameState.EnemyShots));
+
+        _player = gameState.Player;
+        _enemies = gameState.Enemies;
+        _playerShots = gameState.PlayerShots;
+        _enemyShots = gameState.EnemyShots;
+
+        ArgumentNullException.ThrowIfNull(inputHandler, nameof(inputHandler));
+        ArgumentNullException.ThrowIfNull(boundaryChecker, nameof(boundaryChecker));
+        _inputHandler = inputHandler;
+        _boundaryChecker = boundaryChecker;
+
     }
 
     /// <summary>

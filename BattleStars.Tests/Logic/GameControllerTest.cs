@@ -11,53 +11,52 @@ public class GameControllerTest
 {
     #region Construction Tests
     [Fact]
-    public void GivenNullPlayer_WhenConstructed_ThenThrowsArgumentNullException()
+    public void GivenNullGameState_WhenConstructed_ThenThrowsArgumentNullException()
     {
         var inputHandler = new Mock<IInputHandler>().Object;
         var boundaryChecker = new Mock<IBoundaryChecker>().Object;
-        IEnumerable<IBattleStar> enemies = [];
-        Action act = () => new GameController(null!, enemies, inputHandler, boundaryChecker);
-        act.Should().Throw<ArgumentNullException>();
-    }
-
-    [Fact]
-    public void GivenNullEnemies_WhenConstructed_ThenThrowsArgumentNullException()
-    {
-        var player = new Mock<IBattleStar>().Object;
-        var inputHandler = new Mock<IInputHandler>().Object;
-        var boundaryChecker = new Mock<IBoundaryChecker>().Object;
-        Action act = () => new GameController(player, null!, inputHandler, boundaryChecker);
-        act.Should().Throw<ArgumentNullException>();
+        Action act = () => new GameController(null!, inputHandler, boundaryChecker);
+        act.Should().Throw<ArgumentNullException>().WithMessage("*gameState*");
     }
 
     [Fact]
     public void GivenNullInputHandler_WhenConstructed_ThenThrowsArgumentNullException()
     {
-        var player = new Mock<IBattleStar>().Object;
+        var gameState = new Mock<IGameState>();
+        gameState.Setup(g => g.Player).Returns(new Mock<IBattleStar>().Object);
+        gameState.Setup(g => g.Enemies).Returns(new List<IBattleStar>());
+        gameState.Setup(g => g.PlayerShots).Returns(new List<IShot>());
+        gameState.Setup(g => g.EnemyShots).Returns(new List<IShot>());
         var boundaryChecker = new Mock<IBoundaryChecker>().Object;
-        IEnumerable<IBattleStar> enemies = [];
-        Action act = () => new GameController(player, enemies, null!, boundaryChecker);
-        act.Should().Throw<ArgumentNullException>();
+        Action act = () => new GameController(gameState.Object, null!, boundaryChecker);
+        act.Should().Throw<ArgumentNullException>().WithMessage("*inputHandler*");
     }
 
     [Fact]
     public void GivenNullBoundaryChecker_WhenConstructed_ThenThrowsArgumentNullException()
     {
-        var player = new Mock<IBattleStar>().Object;
+        var gameState = new Mock<IGameState>();
+        gameState.Setup(g => g.Player).Returns(new Mock<IBattleStar>().Object);
+        gameState.Setup(g => g.Enemies).Returns(new List<IBattleStar>());
+        gameState.Setup(g => g.PlayerShots).Returns(new List<IShot>());
+        gameState.Setup(g => g.EnemyShots).Returns(new List<IShot>());
+
         var inputHandler = new Mock<IInputHandler>().Object;
-        IEnumerable<IBattleStar> enemies = [];
-        Action act = () => new GameController(player, enemies, inputHandler, null!);
-        act.Should().Throw<ArgumentNullException>();
+        Action act = () => new GameController(gameState.Object, inputHandler, null!);
+        act.Should().Throw<ArgumentNullException>().WithMessage("*boundaryChecker*");
     }
 
     [Fact]
     public void GivenNonNullInput_WhenConstructed_ThenDoesNotThrow()
     {
-        var player = new Mock<IBattleStar>().Object;
+        var gameState = new Mock<IGameState>();
+        gameState.Setup(g => g.Player).Returns(new Mock<IBattleStar>().Object);
+        gameState.Setup(g => g.Enemies).Returns(new List<IBattleStar>());
+        gameState.Setup(g => g.PlayerShots).Returns(new List<IShot>());
+        gameState.Setup(g => g.EnemyShots).Returns(new List<IShot>());
         var inputHandler = new Mock<IInputHandler>().Object;
-        IEnumerable<IBattleStar> enemies = [];
         var boundaryChecker = new Mock<IBoundaryChecker>().Object;
-        Action act = () => new GameController(player, enemies, inputHandler, boundaryChecker);
+        Action act = () => new GameController(gameState.Object, inputHandler, boundaryChecker);
         act.Should().NotThrow();
     }
     #endregion
@@ -66,12 +65,16 @@ public class GameControllerTest
     [Fact]
     public void GivenShouldExit_WhenRunFrameIsCalled_ThenShouldReturnFalse()
     {
-        var player = new Mock<IBattleStar>().Object;
+        var gameState = new Mock<IGameState>();
+        gameState.Setup(g => g.Player).Returns(new Mock<IBattleStar>().Object);
+        gameState.Setup(g => g.Enemies).Returns(new List<IBattleStar>());
+        gameState.Setup(g => g.PlayerShots).Returns(new List<IShot>());
+        gameState.Setup(g => g.EnemyShots).Returns(new List<IShot>());
+
         var inputHandler = new Mock<IInputHandler>();
         inputHandler.Setup(i => i.ShouldExit()).Returns(true);
         var boundaryChecker = new Mock<IBoundaryChecker>().Object;
-        IEnumerable<IBattleStar> enemies = [];
-        var controller = new GameController(player, enemies, inputHandler.Object, boundaryChecker);
+        var controller = new GameController(gameState.Object, inputHandler.Object, boundaryChecker);
 
         var context = new Mock<IContext>().Object;
         controller.RunFrame(context).Should().BeFalse();
@@ -80,12 +83,17 @@ public class GameControllerTest
     [Fact]
     public void GivenShouldNotExit_WhenRunFrameIsCalled_ThenShouldReturnTrue()
     {
-        var player = new Mock<IBattleStar>().Object;
         var inputHandler = new Mock<IInputHandler>();
         inputHandler.Setup(i => i.ShouldExit()).Returns(false);
         var boundaryChecker = new Mock<IBoundaryChecker>().Object;
-        IEnumerable<IBattleStar> enemies = [];
-        var controller = new GameController(player, enemies, inputHandler.Object, boundaryChecker);
+
+        var gameState = new Mock<IGameState>();
+        gameState.Setup(g => g.Player).Returns(new Mock<IBattleStar>().Object);
+        gameState.Setup(g => g.Enemies).Returns(new List<IBattleStar>());
+        gameState.Setup(g => g.PlayerShots).Returns(new List<IShot>());
+        gameState.Setup(g => g.EnemyShots).Returns(new List<IShot>());
+
+        var controller = new GameController(gameState.Object, inputHandler.Object, boundaryChecker);
 
         var context = new Mock<IContext>().Object;
         controller.RunFrame(context).Should().BeTrue();
@@ -94,12 +102,19 @@ public class GameControllerTest
     [Fact]
     public void GivenPlayerIsDestroyed_WhenGetFrameSnapshotIsCalled_ThenShouldContinueIsFalse()
     {
-        var player = new Mock<IBattleStar>();
-        player.Setup(p => p.IsDestroyed).Returns(true);
+        
         var inputHandler = new Mock<IInputHandler>().Object;
         var boundaryChecker = new Mock<IBoundaryChecker>().Object;
-        IEnumerable<IBattleStar> enemies = [];
-        var controller = new GameController(player.Object, enemies, inputHandler, boundaryChecker);
+
+        var player = new Mock<IBattleStar>();
+        player.Setup(p => p.IsDestroyed).Returns(true);
+
+        var gameState = new Mock<IGameState>();
+        gameState.Setup(g => g.Player).Returns(player.Object);
+        gameState.Setup(g => g.Enemies).Returns(new List<IBattleStar>());
+        gameState.Setup(g => g.PlayerShots).Returns(new List<IShot>());
+        gameState.Setup(g => g.EnemyShots).Returns(new List<IShot>());
+        var controller = new GameController(gameState.Object, inputHandler, boundaryChecker);
 
         var snapshot = controller.GetFrameSnapshot();
         snapshot.ShouldContinue.Should().BeFalse();
@@ -108,22 +123,28 @@ public class GameControllerTest
     [Fact]
     public void GetFrameSnapshot_ShouldReturnExpectedValues()
     {
+        var gameState = new Mock<IGameState>();
         var playerShot = new Mock<IShot>().Object;
         var player = new Mock<IBattleStar>();
         player.Setup(p => p.IsDestroyed).Returns(false);
         player.Setup(p => p.Shoot(It.IsAny<IContext>())).Returns([playerShot]);
-
-        var inputHandler = new Mock<IInputHandler>();
-        inputHandler.Setup(i => i.ShouldShoot()).Returns(true);
-
-        var boundaryChecker = new Mock<IBoundaryChecker>().Object;
 
         var enemyShot = new Mock<IShot>().Object;
         var enemy = new Mock<IBattleStar>();
         enemy.Setup(e => e.IsDestroyed).Returns(false);
         enemy.Setup(e => e.Shoot(It.IsAny<IContext>())).Returns([enemyShot]);
 
-        var controller = new GameController(player.Object, [enemy.Object], inputHandler.Object, boundaryChecker);
+        gameState.Setup(g => g.Enemies).Returns(new List<IBattleStar> { enemy.Object });
+        gameState.Setup(g => g.Player).Returns(player.Object);
+        gameState.Setup(g => g.PlayerShots).Returns(new List<IShot>());
+        gameState.Setup(g => g.EnemyShots).Returns(new List<IShot>());
+
+        var inputHandler = new Mock<IInputHandler>();
+        inputHandler.Setup(i => i.ShouldShoot()).Returns(true);
+
+        var boundaryChecker = new Mock<IBoundaryChecker>().Object;
+
+        var controller = new GameController(gameState.Object, inputHandler.Object, boundaryChecker);
 
         // Simulate adding shots
         var context = new Mock<IContext>().Object;
@@ -156,8 +177,14 @@ public class GameControllerTest
 
         var boundaryChecker = new Mock<IBoundaryChecker>().Object;
 
-        IEnumerable<IBattleStar> enemies = [];
-        var controller = new GameController(player.Object, enemies, inputHandler.Object, boundaryChecker);
+        List<IBattleStar> enemies = [];
+
+        var gameState = new Mock<IGameState>();
+        gameState.Setup(g => g.Player).Returns(player.Object);
+        gameState.Setup(g => g.Enemies).Returns(enemies);
+        gameState.Setup(g => g.PlayerShots).Returns(new List<IShot>());
+        gameState.Setup(g => g.EnemyShots).Returns(new List<IShot>());
+        var controller = new GameController(gameState.Object, inputHandler.Object, boundaryChecker);
 
         var context = new Mock<IContext>().Object;
         controller.RunFrame(context); // First frame
@@ -179,8 +206,14 @@ public class GameControllerTest
 
         var boundaryChecker = new Mock<IBoundaryChecker>().Object;
 
-        IEnumerable<IBattleStar> enemies = [];
-        var controller = new GameController(player.Object, enemies, inputHandler.Object, boundaryChecker);
+        List<IBattleStar> enemies = new List<IBattleStar>();
+        var GameState = new Mock<IGameState>();
+        GameState.Setup(g => g.Player).Returns(player.Object);
+        GameState.Setup(g => g.Enemies).Returns(enemies);
+        GameState.Setup(g => g.PlayerShots).Returns(new List<IShot>());
+        GameState.Setup(g => g.EnemyShots).Returns(new List<IShot>());
+
+        var controller = new GameController(GameState.Object, inputHandler.Object, boundaryChecker);
 
         var context = new Mock<IContext>().Object;
         controller.RunFrame(context); // This will not add any shots
@@ -208,11 +241,13 @@ public class GameControllerTest
         var destroyedEnemy = new Mock<IBattleStar>();
         destroyedEnemy.Setup(e => e.IsDestroyed).Returns(true);
 
-        var controller = new GameController(
-            player.Object,
-            [aliveEnemy.Object, destroyedEnemy.Object],
-            inputHandler.Object,
-            boundaryChecker);
+        var gameState = new Mock<IGameState>();
+        gameState.Setup(g => g.Player).Returns(player.Object);
+        gameState.Setup(g => g.Enemies).Returns([aliveEnemy.Object, destroyedEnemy.Object]);
+        gameState.Setup(g => g.PlayerShots).Returns(new List<IShot>());
+        gameState.Setup(g => g.EnemyShots).Returns(new List<IShot>());
+
+        var controller = new GameController(gameState.Object, inputHandler.Object, boundaryChecker);
 
         var context = new Mock<IContext>().Object;
         controller.RunFrame(context); // This will not add any shots
@@ -250,8 +285,14 @@ public class GameControllerTest
         boundaryChecker.Setup(b => b.IsOutsideYBounds(5f)).Returns(false);
         boundaryChecker.Setup(b => b.IsOutsideYBounds(15f)).Returns(false);
 
-        IEnumerable<IBattleStar> enemies = [];
-        var controller = new GameController(player.Object, enemies, inputHandler.Object, boundaryChecker.Object);
+        List<IBattleStar> enemies = [];
+        var gameState = new Mock<IGameState>();
+        gameState.Setup(g => g.Player).Returns(player.Object);
+        gameState.Setup(g => g.Enemies).Returns(enemies);
+        gameState.Setup(g => g.PlayerShots).Returns(new List<IShot>());
+        gameState.Setup(g => g.EnemyShots).Returns(new List<IShot>());
+
+        var controller = new GameController(gameState.Object, inputHandler.Object, boundaryChecker.Object);
 
         var context = new Mock<IContext>().Object;
         controller.RunFrame(context); // First frame
@@ -294,11 +335,13 @@ public class GameControllerTest
             return shootCallCount == 1 ? [enemyShotInside.Object] : [enemyShotOutside.Object];
         });
 
-        var controller = new GameController(
-            player.Object,
-            [enemy.Object],
-            inputHandler.Object,
-            boundaryChecker.Object);
+        var gameState = new Mock<IGameState>();
+        gameState.Setup(g => g.Player).Returns(player.Object);
+        gameState.Setup(g => g.Enemies).Returns([enemy.Object]);
+        gameState.Setup(g => g.PlayerShots).Returns(new List<IShot>());
+        gameState.Setup(g => g.EnemyShots).Returns(new List<IShot>());
+
+        var controller = new GameController(gameState.Object, inputHandler.Object, boundaryChecker.Object);
 
         var context = new Mock<IContext>().Object;
         controller.RunFrame(context); // First frame
@@ -336,11 +379,12 @@ public class GameControllerTest
         enemy.Setup(e => e.Shoot(It.IsAny<IContext>())).Returns([enemyShot.Object]);
         enemy.Setup(e => e.Contains(It.IsAny<PositionalVector2>())).Returns(true);
 
-        var controller = new GameController(
-            player.Object,
-            [enemy.Object],
-            inputHandler.Object,
-            boundaryChecker.Object);
+        var gameState = new Mock<IGameState>();
+        gameState.Setup(g => g.Player).Returns(player.Object);
+        gameState.Setup(g => g.Enemies).Returns([enemy.Object]);
+        gameState.Setup(g => g.PlayerShots).Returns(new List<IShot>());
+        gameState.Setup(g => g.EnemyShots).Returns(new List<IShot>());
+        var controller = new GameController(gameState.Object, inputHandler.Object, boundaryChecker.Object);
 
         var context = new Mock<IContext>().Object;
         controller.RunFrame(context); // This will add shots via Shoot
