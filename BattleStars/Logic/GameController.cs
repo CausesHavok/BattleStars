@@ -1,5 +1,4 @@
 using BattleStars.Core;
-using BattleStars.Shots;
 
 namespace BattleStars.Logic;
 
