@@ -102,7 +102,7 @@ public class GameControllerTest
     [Fact]
     public void GivenPlayerIsDestroyed_WhenGetFrameSnapshotIsCalled_ThenShouldContinueIsFalse()
     {
-        
+
         var inputHandler = new Mock<IInputHandler>().Object;
         var boundaryChecker = new Mock<IBoundaryChecker>().Object;
 
@@ -221,40 +221,6 @@ public class GameControllerTest
         var snapshot = controller.GetFrameSnapshot();
         snapshot.PlayerShots.Should().BeEmpty();
         snapshot.EnemyShots.Should().BeEmpty();
-    }
-
-    [Fact]
-    public void GivenDestroyedEnemies_WhenGetFrameSnapshotIsCalled_ThenEnemiesAreFilteredOut()
-    {
-        var player = new Mock<IBattleStar>();
-        player.Setup(p => p.IsDestroyed).Returns(false);
-        player.Setup(p => p.Shoot(It.IsAny<IContext>())).Returns([]);
-
-        var inputHandler = new Mock<IInputHandler>();
-        inputHandler.Setup(i => i.ShouldShoot()).Returns(false);
-
-        var boundaryChecker = new Mock<IBoundaryChecker>().Object;
-
-        var aliveEnemy = new Mock<IBattleStar>();
-        aliveEnemy.Setup(e => e.IsDestroyed).Returns(false);
-
-        var destroyedEnemy = new Mock<IBattleStar>();
-        destroyedEnemy.Setup(e => e.IsDestroyed).Returns(true);
-
-        var gameState = new Mock<IGameState>();
-        gameState.Setup(g => g.Player).Returns(player.Object);
-        gameState.Setup(g => g.Enemies).Returns([aliveEnemy.Object, destroyedEnemy.Object]);
-        gameState.Setup(g => g.PlayerShots).Returns(new List<IShot>());
-        gameState.Setup(g => g.EnemyShots).Returns(new List<IShot>());
-
-        var controller = new GameController(gameState.Object, inputHandler.Object, boundaryChecker);
-
-        var context = new Mock<IContext>().Object;
-        controller.RunFrame(context); // This will not add any shots
-
-        var snapshot = controller.GetFrameSnapshot();
-        snapshot.Enemies.Should().Contain(aliveEnemy.Object);
-        snapshot.Enemies.Should().NotContain(destroyedEnemy.Object);
     }
 
     [Fact]
@@ -392,6 +358,36 @@ public class GameControllerTest
         var snapshot = controller.GetFrameSnapshot();
         snapshot.PlayerShots.Should().BeEmpty();
         snapshot.EnemyShots.Should().BeEmpty();
+    }
+
+    [Fact]
+    public void GivenEnemy_WhenShotCollides_ThenEnemyDiesAndIsRemoved()
+    {
+        var inputHandler = new Mock<IInputHandler>();
+        var boundaryChecker = new Mock<IBoundaryChecker>();
+        boundaryChecker.Setup(b => b.IsOutsideXBounds(It.IsAny<float>())).Returns(false);
+        boundaryChecker.Setup(b => b.IsOutsideYBounds(It.IsAny<float>())).Returns(false);
+
+        var player = new Mock<IBattleStar>();
+        var playershot = new Mock<IShot>();
+        var enemy = new Mock<IBattleStar>();
+        enemy.Setup(e => e.IsDestroyed).Returns(true);
+        enemy.Setup(e => e.Contains(It.IsAny<PositionalVector2>())).Returns(true);
+
+        var gameState = new Mock<IGameState>();
+        gameState.Setup(g => g.Player).Returns(player.Object);
+        gameState.Setup(g => g.Enemies).Returns(new List<IBattleStar> { enemy.Object });
+        gameState.Setup(g => g.PlayerShots).Returns(new List<IShot> { playershot.Object });
+        gameState.Setup(g => g.EnemyShots).Returns(new List<IShot>());
+
+        var controller = new GameController(gameState.Object, inputHandler.Object, boundaryChecker.Object);
+        var context = new Mock<IContext>().Object;
+        controller.RunFrame(context); // This will process the collision
+
+        var snapshot = controller.GetFrameSnapshot();
+        snapshot.Enemies.Should().NotContain(enemy.Object);
+
+
     }
 
 

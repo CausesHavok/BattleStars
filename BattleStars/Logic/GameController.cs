@@ -13,31 +13,19 @@ namespace BattleStars.Logic;
 /// </remarks>
 public class GameController
 {
-    private readonly IBattleStar _player;
-    private readonly List<IBattleStar> _enemies;
-    private List<IShot> _playerShots;
-    private List<IShot> _enemyShots;
+    private readonly IGameState _gameState;
     private readonly IInputHandler _inputHandler;
     private readonly IBoundaryChecker _boundaryChecker;
 
-    public GameController(IGameState gameState, IInputHandler inputHandler, IBoundaryChecker boundaryChecker)
+    public GameController(IGameState mutableGameState, IInputHandler inputHandler, IBoundaryChecker boundaryChecker)
     {
-        ArgumentNullException.ThrowIfNull(gameState, nameof(gameState));
-        ArgumentNullException.ThrowIfNull(gameState.Player, nameof(gameState.Player));
-        ArgumentNullException.ThrowIfNull(gameState.Enemies, nameof(gameState.Enemies));
-        ArgumentNullException.ThrowIfNull(gameState.PlayerShots, nameof(gameState.PlayerShots));
-        ArgumentNullException.ThrowIfNull(gameState.EnemyShots, nameof(gameState.EnemyShots));
-
-        _player = gameState.Player;
-        _enemies = gameState.Enemies;
-        _playerShots = gameState.PlayerShots;
-        _enemyShots = gameState.EnemyShots;
-
+        ArgumentNullException.ThrowIfNull(mutableGameState, nameof(mutableGameState));
+        mutableGameState.Validate();
         ArgumentNullException.ThrowIfNull(inputHandler, nameof(inputHandler));
         ArgumentNullException.ThrowIfNull(boundaryChecker, nameof(boundaryChecker));
         _inputHandler = inputHandler;
         _boundaryChecker = boundaryChecker;
-
+        _gameState = mutableGameState;
     }
 
     /// <summary>
@@ -50,6 +38,12 @@ public class GameController
     /// This method processes player input, updates the positions of all entities,
     /// checks for collisions, and removes any entities that are out of bounds or destroyed.
     /// It returns a boolean indicating whether the game should continue running.
+    /// 
+    /// The guiding principles for the simulation are:
+    /// Move before you shoot.
+    /// Shoot before you check for collisions.
+    /// Check boundaries before collisions. - boundary checks are cheaper than collision checks.
+    /// Short-circuit collisions - if an entity is destroyed, don't check it against other entities.
     /// </remarks>
     public bool RunFrame(IContext context)
     {
@@ -58,12 +52,12 @@ public class GameController
             return false;
         }
 
+        UpdateShots();
         UpdatePlayer(context);
         UpdateEnemies(context);
-        UpdateShots();
-        CollisionHandling();
         BoundaryHandling();
-
+        CollisionHandling();
+        
         return ShouldContinue();
     }
 
@@ -79,15 +73,15 @@ public class GameController
     {
         // Update player direction based on input
         context.PlayerDirection = _inputHandler.GetMovement();
-        _player.Move(context);
+        _gameState.Player.Move(context);
 
         // Handle shooting
         if (_inputHandler.ShouldShoot())
         {
-            var shot = _player.Shoot(context);
+            var shot = _gameState.Player.Shoot(context);
             if (shot != null)
             {
-                _playerShots.AddRange(shot);
+                _gameState.PlayerShots.AddRange(shot);
             }
         }
     }
@@ -101,19 +95,13 @@ public class GameController
     /// </remarks>
     private void UpdateEnemies(IContext context)
     {
-        foreach (var enemy in _enemies.ToList())
+        foreach (var enemy in _gameState.Enemies.ToList())
         {
-            if (enemy.IsDestroyed)
-            {
-                _enemies.Remove(enemy);
-                continue;
-            }
-
             enemy.Move(context);
             var shot = enemy.Shoot(context);
             if (shot != null)
             {
-                _enemyShots.AddRange(shot);
+                _gameState.EnemyShots.AddRange(shot);
             }
         }
         ;
@@ -127,12 +115,12 @@ public class GameController
     /// </remarks>
     private void UpdateShots()
     {
-        foreach (var shot in _playerShots)
+        foreach (var shot in _gameState.PlayerShots)
         {
             shot.Update();
         }
 
-        foreach (var shot in _enemyShots)
+        foreach (var shot in _gameState.EnemyShots)
         {
             shot.Update();
         }
@@ -146,26 +134,27 @@ public class GameController
     /// </remarks>
     private void CollisionHandling()
     {
-        foreach (var shot in _playerShots.ToList())
+        foreach (var shot in _gameState.PlayerShots.ToList())
         {
-            foreach (var enemy in _enemies)
+            foreach (var enemy in _gameState.Enemies.ToList())
             {
                 if (CollisionChecker.CheckBattleStarShotCollision(enemy, shot))
                 {
                     enemy.TakeDamage(shot.Damage);
-                    _playerShots.Remove(shot);
+                    _gameState.PlayerShots.Remove(shot);
+                    if (enemy.IsDestroyed) _gameState.Enemies.Remove(enemy);
                     break;
                 }
             }
         }
 
-        foreach (var shot in _enemyShots.ToList())
+        foreach (var shot in _gameState.EnemyShots.ToList())
         {
-            if (CollisionChecker.CheckBattleStarShotCollision(_player, shot))
+            if (CollisionChecker.CheckBattleStarShotCollision(_gameState.Player, shot))
             {
-                _player.TakeDamage(shot.Damage);
-                _enemyShots.Remove(shot);
-                if (_player.IsDestroyed) break;
+                _gameState.Player.TakeDamage(shot.Damage);
+                _gameState.EnemyShots.Remove(shot);
+                if (_gameState.Player.IsDestroyed) break;
             }
         }
     }
@@ -178,19 +167,19 @@ public class GameController
     /// </remarks>
     private void BoundaryHandling()
     {
-        foreach (var shot in _playerShots.ToList())
+        foreach (var shot in _gameState.PlayerShots.ToList())
         {
             if (_boundaryChecker.IsOutsideXBounds(shot.Position.X) || _boundaryChecker.IsOutsideYBounds(shot.Position.Y))
             {
-                _playerShots.Remove(shot);
+                _gameState.PlayerShots.Remove(shot);
             }
         }
 
-        foreach (var shot in _enemyShots.ToList())
+        foreach (var shot in _gameState.EnemyShots.ToList())
         {
             if (_boundaryChecker.IsOutsideXBounds(shot.Position.X) || _boundaryChecker.IsOutsideYBounds(shot.Position.Y))
             {
-                _enemyShots.Remove(shot);
+                _gameState.EnemyShots.Remove(shot);
             }
         }
     }
@@ -203,7 +192,7 @@ public class GameController
     /// </remarks>
     private bool ShouldContinue()
     {
-        return !_player.IsDestroyed;
+        return !_gameState.Player.IsDestroyed;
     }
 
     /// <summary>
@@ -215,11 +204,11 @@ public class GameController
     public FrameSnapshot GetFrameSnapshot()
     {
         return new FrameSnapshot(
-            Player: _player,
-            Enemies: _enemies,
-            PlayerShots: _playerShots,
-            EnemyShots: _enemyShots,
-            ShouldContinue: !_player.IsDestroyed
+            Player:         _gameState.Player,
+            Enemies:        _gameState.Enemies,
+            PlayerShots:    _gameState.PlayerShots,
+            EnemyShots:     _gameState.EnemyShots,
+            ShouldContinue: ShouldContinue()
         );
     }
 }

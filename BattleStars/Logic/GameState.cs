@@ -8,49 +8,44 @@ namespace BattleStars.Logic;
 /// <remarks>
 /// This class encapsulates all the necessary components to represent the game's state at any given moment.
 /// </remarks>
-public class GameState : IGameState
+public class GameState(
+    IContext context,
+    IBattleStar player,
+    List<IShot> playerShots,
+    List<IBattleStar> enemies,
+    List<IShot> enemyShots) : IGameState
 {
-    public IContext Context { get; }
-    public IBattleStar Player { get; }
-    public List<IBattleStar> Enemies { get; } = [];
-    public List<IShot> PlayerShots { get; } = [];
-    public List<IShot> EnemyShots { get; } = [];
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="IImmutableGameState"/> class.
-    /// </summary>
-    /// <param name="context">The game context.</param>
-    /// <param name="inputHandler">The input handler.</param>
-    /// <param name="player">The player character.</param>
-    /// <param name="playerShots">The shots fired by the player.</param>
-    /// <param name="enemies">The enemy characters.</param>
-    /// <param name="enemyShots">The shots fired by the enemies.</param>
-    /// <exception cref="ArgumentNullException">Thrown if any of the parameters are null.</exception>
-    /// <remarks>
-    /// This constructor initializes the game state with the provided context, input handler, player, enemies, and shots.
-    /// It ensures that all components are properly set up for managing the game's state.
-    /// </remarks>
-    public GameState(
-        IContext context,
-        IBattleStar player,
-        List<IShot> playerShots,
-        List<IBattleStar> enemies,
-        List<IShot> enemyShots)
+    private IContext _context = GuardNotNull(context, nameof(context));
+    private IBattleStar _player = GuardNotNull(player, nameof(player));
+    private List<IBattleStar> _enemies = GuardNotNull(enemies, nameof(enemies));
+    private List<IShot> _playerShots = GuardNotNull(playerShots, nameof(playerShots));
+    private List<IShot> _enemyShots = GuardNotNull(enemyShots, nameof(enemyShots));
+    public IContext Context
     {
-        ArgumentNullException.ThrowIfNull(context, nameof(context));
-        ArgumentNullException.ThrowIfNull(enemies, nameof(enemies));
-        ArgumentNullException.ThrowIfNull(enemyShots, nameof(enemyShots));
-        ArgumentNullException.ThrowIfNull(player, nameof(player));
-        ArgumentNullException.ThrowIfNull(playerShots, nameof(playerShots));
-
-        Context = context;
-        Enemies = enemies;
-        EnemyShots = enemyShots;
-        Player = player;
-        PlayerShots = playerShots;
-
-        CrossValidate();
+        get => _context;
+        set => _context = GuardNotNull(value, nameof(Context));
     }
+    public IBattleStar Player
+    {
+        get => _player;
+        set => _player = GuardNotNull(value, nameof(Player));
+    }
+    public List<IBattleStar> Enemies
+    {
+        get => _enemies;
+        set => _enemies = GuardNotNull(value, nameof(Enemies));
+    }
+    public List<IShot> PlayerShots
+    {
+        get => _playerShots;
+        set => _playerShots = GuardNotNull(value, nameof(PlayerShots));
+    }
+    public List<IShot> EnemyShots
+    {
+        get => _enemyShots;
+        set => _enemyShots = GuardNotNull(value, nameof(EnemyShots));
+    }
+
 
     /// <summary>
     /// Validates the internal consistency of the game state.
@@ -61,7 +56,7 @@ public class GameState : IGameState
     /// It checks for conditions such as the player not being listed as an enemy,
     /// and that there are no duplicate entries in the enemies or shots lists.
     /// </remarks>
-    private void CrossValidate()
+    public void Validate()
     {
         if (Enemies.Contains(Player))
         {
@@ -87,5 +82,23 @@ public class GameState : IGameState
         {
             throw new InvalidOperationException("Enemy shots list contains duplicate entries.");
         }
+    }
+
+    /// <summary>
+    /// Guards against null values, throwing an ArgumentNullException if the value is null.
+    /// </summary>
+    /// <typeparam name="T">The type of the value being checked.</typeparam>
+    /// <param name="value">The value to check for null.</param>
+    /// <param name="name">The name of the parameter being checked.</param>
+    /// <returns>The original value if it is not null.</returns>
+    /// <exception cref="ArgumentNullException">Thrown if the value is null.</exception>
+    /// <remarks>
+    /// This method is a utility to ensure that required parameters are not null, improving code safety
+    /// and reducing boilerplate null-checking code throughout the class.
+    /// </remarks>
+    private static T GuardNotNull<T>(T value, string name)
+    where T : class
+    {
+        return value ?? throw new ArgumentNullException(name);
     }
 }

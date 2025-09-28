@@ -10,9 +10,17 @@ namespace BattleStars.Logic;
 /// </remarks>
 public interface IGameState
 {
-    IContext Context { get; }
-    IBattleStar Player { get; }
-    List<IBattleStar> Enemies { get; }
-    List<IShot> PlayerShots { get; }
-    List<IShot> EnemyShots { get; }
+    IContext Context { get; set; }
+    IBattleStar Player { get; set; }
+    List<IBattleStar> Enemies { get; set; }
+    List<IShot> PlayerShots { get; set; }
+    List<IShot> EnemyShots { get; set; }
+
+    /// <summary>
+    /// Validates the internal consistency of the game state.
+    /// </summary>
+    /// <exception cref="InvalidOperationException">Thrown if any validation checks fail.</exception>
+    /// <remarks>
+    public void Validate();
+
 }
