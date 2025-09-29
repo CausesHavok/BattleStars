@@ -14,17 +14,36 @@ public class GameController
 {
     private readonly IGameState _gameState;
     private readonly IInputHandler _inputHandler;
-    private readonly IBoundaryChecker _boundaryChecker;
+    private readonly IPlayerController _playerController;
+    private readonly IEnemyController _enemyController;
+    private readonly IShotController _shotController;
+    private readonly IBoundaryController _boundaryController;
+    private readonly ICollisionController _collisionController;
 
-    public GameController(IGameState mutableGameState, IInputHandler inputHandler, IBoundaryChecker boundaryChecker)
+    public GameController(
+        IGameState gameState,
+        IPlayerController playerController,
+        IEnemyController enemyController,
+        IShotController shotController,
+        IBoundaryController boundaryController,
+        ICollisionController collisionController,
+        IInputHandler inputHandler)
     {
-        ArgumentNullException.ThrowIfNull(mutableGameState, nameof(mutableGameState));
-        mutableGameState.Validate();
+        ArgumentNullException.ThrowIfNull(gameState, nameof(gameState));
+        ArgumentNullException.ThrowIfNull(playerController, nameof(playerController));
+        ArgumentNullException.ThrowIfNull(enemyController, nameof(enemyController));
+        ArgumentNullException.ThrowIfNull(shotController, nameof(shotController));
+        ArgumentNullException.ThrowIfNull(boundaryController, nameof(boundaryController));
+        ArgumentNullException.ThrowIfNull(collisionController, nameof(collisionController));
         ArgumentNullException.ThrowIfNull(inputHandler, nameof(inputHandler));
-        ArgumentNullException.ThrowIfNull(boundaryChecker, nameof(boundaryChecker));
+        gameState.Validate();
+        _gameState = gameState;
+        _playerController = playerController;
+        _enemyController = enemyController;
+        _shotController = shotController;
+        _boundaryController = boundaryController;
+        _collisionController = collisionController;
         _inputHandler = inputHandler;
-        _boundaryChecker = boundaryChecker;
-        _gameState = mutableGameState;
     }
 
     /// <summary>
@@ -46,141 +65,17 @@ public class GameController
     /// </remarks>
     public bool RunFrame(IContext context)
     {
-        if (_inputHandler.ShouldExit())
-        {
-            return false;
-        }
+        ArgumentNullException.ThrowIfNull(context, nameof(context));
+        if (_inputHandler.ShouldExit()) return false;
 
-        UpdateShots();
-        UpdatePlayer(context);
-        UpdateEnemies(context);
-        BoundaryHandling();
-        CollisionHandling();
-        
+        _shotController.UpdateShots(_gameState);
+        _playerController.UpdatePlayer(context, _inputHandler, _gameState);
+        _enemyController.UpdateEnemies(context, _gameState);
+        _boundaryController.EnforceBoundaries(_gameState);
+        _collisionController.HandleCollisions(_gameState);
+
+        _gameState.Validate();
         return ShouldContinue();
-    }
-
-    /// <summary>
-    /// Updates the player based on input and game context.
-    /// </summary>
-    /// <param name="context">The game context.</param>
-    /// <remarks>
-    /// This method updates the player's position based on input and handles shooting.
-    /// If the player shoots, the resulting shots are added to the player's shot list.
-    /// </remarks>
-    private void UpdatePlayer(IContext context)
-    {
-        // Update player direction based on input
-        context.PlayerDirection = _inputHandler.GetMovement();
-        _gameState.Player.Move(context);
-
-        // Handle shooting
-        if (_inputHandler.ShouldShoot())
-        {
-            var shot = _gameState.Player.Shoot(context);
-            if (shot != null)
-            {
-                _gameState.PlayerShots.AddRange(shot);
-            }
-        }
-    }
-
-    /// <summary>
-    /// Updates all enemies in the game.
-    /// </summary>
-    /// <param name="context">The game context.</param>
-    /// <remarks>
-    /// This method updates the position of each enemy and handles their shooting.
-    /// </remarks>
-    private void UpdateEnemies(IContext context)
-    {
-        foreach (var enemy in _gameState.Enemies.ToList())
-        {
-            enemy.Move(context);
-            var shot = enemy.Shoot(context);
-            if (shot != null)
-            {
-                _gameState.EnemyShots.AddRange(shot);
-            }
-        }
-        ;
-    }
-
-    /// <summary>
-    /// Updates the positions of all active shots.
-    /// </summary>
-    /// <remarks>
-    /// This method iterates through all player and enemy shots, updating their positions.
-    /// </remarks>
-    private void UpdateShots()
-    {
-        foreach (var shot in _gameState.PlayerShots)
-        {
-            shot.Update();
-        }
-
-        foreach (var shot in _gameState.EnemyShots)
-        {
-            shot.Update();
-        }
-    }
-
-    /// <summary>
-    /// Handles collisions between shots and battle stars.
-    /// </summary>
-    /// <remarks>
-    /// This method checks for collisions between player shots and enemies, as well as enemy shots and the player.
-    /// </remarks>
-    private void CollisionHandling()
-    {
-        foreach (var shot in _gameState.PlayerShots.ToList())
-        {
-            foreach (var enemy in _gameState.Enemies.ToList())
-            {
-                if (CollisionChecker.CheckBattleStarShotCollision(enemy, shot))
-                {
-                    enemy.TakeDamage(shot.Damage);
-                    _gameState.PlayerShots.Remove(shot);
-                    if (enemy.IsDestroyed) _gameState.Enemies.Remove(enemy);
-                    break;
-                }
-            }
-        }
-
-        foreach (var shot in _gameState.EnemyShots.ToList())
-        {
-            if (CollisionChecker.CheckBattleStarShotCollision(_gameState.Player, shot))
-            {
-                _gameState.Player.TakeDamage(shot.Damage);
-                _gameState.EnemyShots.Remove(shot);
-                if (_gameState.Player.IsDestroyed) break;
-            }
-        }
-    }
-
-    /// <summary>
-    /// Removes shots that are outside the game boundaries.
-    /// </summary>
-    /// <remarks>
-    /// This method checks each shot's position and removes it if it is outside the defined boundaries.
-    /// </remarks>
-    private void BoundaryHandling()
-    {
-        foreach (var shot in _gameState.PlayerShots.ToList())
-        {
-            if (_boundaryChecker.IsOutsideXBounds(shot.Position.X) || _boundaryChecker.IsOutsideYBounds(shot.Position.Y))
-            {
-                _gameState.PlayerShots.Remove(shot);
-            }
-        }
-
-        foreach (var shot in _gameState.EnemyShots.ToList())
-        {
-            if (_boundaryChecker.IsOutsideXBounds(shot.Position.X) || _boundaryChecker.IsOutsideYBounds(shot.Position.Y))
-            {
-                _gameState.EnemyShots.Remove(shot);
-            }
-        }
     }
 
     /// <summary>
@@ -189,10 +84,7 @@ public class GameController
     /// <remarks>
     /// This method checks if the player is still alive.
     /// </remarks>
-    private bool ShouldContinue()
-    {
-        return !_gameState.Player.IsDestroyed;
-    }
+    private bool ShouldContinue() => !_gameState.Player.IsDestroyed;
 
     /// <summary>
     /// Gets a snapshot of the current game state.
@@ -202,6 +94,7 @@ public class GameController
     /// </remarks>
     public FrameSnapshot GetFrameSnapshot()
     {
+        _gameState.Validate();
         return new FrameSnapshot(
             Player:         _gameState.Player,
             Enemies:        _gameState.Enemies,

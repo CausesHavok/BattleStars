@@ -38,8 +38,23 @@ var gameState = new GameState(
     new List<IShot>()
 );
 
+// Create controllers
+var playerController = new PlayerController();
+var enemyController = new EnemyController();
+var shotController = new ShotController();
+var boundaryController = new BoundaryController(boundaryChecker);
+var collisionController = new CollisionController();
+
 // Create game controller
-var gameController = new GameController(gameState, inputHandler, boundaryChecker);
+var gameController = new GameController(
+    gameState,
+    playerController,
+    enemyController,
+    shotController,
+    boundaryController,
+    collisionController,
+    inputHandler
+);
 var shouldContinue = true;
 
 while (!Raylib.WindowShouldClose())
