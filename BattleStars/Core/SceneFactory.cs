@@ -60,10 +60,10 @@ public static class SceneFactory
     /// <returns>
     /// A list of <see cref="BattleStar"/> instances representing enemies.
     /// </returns>
-    public static List<BattleStar> CreateEnemyBattleStars(
+    public static List<IBattleStar> CreateEnemyBattleStars(
         IShapeDrawer drawer)
     {
-        var enemies = new List<BattleStar>();
+        var enemies = new List<IBattleStar>();
         var rnd = new Random();
         var enemyCount = 10;
 

@@ -28,7 +28,7 @@ public class TestBattleStarFixture
 
 public class TestContextFixture : IContext
 {
-    public DirectionalVector2 PlayerDirection { get; private set; }
+    public DirectionalVector2 PlayerDirection { get; set; }
 
     public PositionalVector2 ShooterPosition { get; set; }
 

@@ -2,9 +2,9 @@ using BattleStars.Shots;
 using BattleStars.Core;
 namespace BattleStars.Logic;
 
-public static class CollisionChecker
+public class CollisionChecker : ICollisionChecker
 {
-    public static bool CheckBattleStarShotCollision(IBattleStar battleStar, IShot shot)
+    public bool CheckBattleStarShotCollision(IBattleStar battleStar, IShot shot)
     {
         ArgumentNullException.ThrowIfNull(battleStar);
         ArgumentNullException.ThrowIfNull(shot);

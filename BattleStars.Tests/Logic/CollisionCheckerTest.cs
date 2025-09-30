@@ -15,7 +15,8 @@ public class CollisionCheckerTest
     public void GivenNullBattleStar_WhenCheckBattleStarShotCollision_ThenThrowsArgumentNullException()
     {
         var shotMock = new Mock<IShot>().Object;
-        Action act = () => CollisionChecker.CheckBattleStarShotCollision(null!, shotMock);
+        var collisionChecker = new CollisionChecker();
+        Action act = () => collisionChecker.CheckBattleStarShotCollision(null!, shotMock);
         act.Should().Throw<ArgumentNullException>();
     }
 
@@ -23,7 +24,8 @@ public class CollisionCheckerTest
     public void GivenNullShot_WhenCheckBattleStarShotCollision_ThenThrowsArgumentNullException()
     {
         var battleStarMock = new Mock<IBattleStar>().Object;
-        Action act = () => CollisionChecker.CheckBattleStarShotCollision(battleStarMock, null!);
+        var collisionChecker = new CollisionChecker();
+        Action act = () => collisionChecker.CheckBattleStarShotCollision(battleStarMock, null!);
         act.Should().Throw<ArgumentNullException>();
     }
 
@@ -37,7 +39,8 @@ public class CollisionCheckerTest
         shotMock.Setup(s => s.Position).Returns(shotPosition);
         battleStarMock.Setup(bs => bs.Contains(shotPosition)).Returns(true);
 
-        var result = CollisionChecker.CheckBattleStarShotCollision(battleStarMock.Object, shotMock.Object);
+        var collisionChecker = new CollisionChecker();
+        var result = collisionChecker.CheckBattleStarShotCollision(battleStarMock.Object, shotMock.Object);
 
         result.Should().BeTrue();
         battleStarMock.Verify(bs => bs.Contains(shotPosition), Times.Once);
@@ -53,7 +56,8 @@ public class CollisionCheckerTest
         shotMock.Setup(s => s.Position).Returns(shotPosition);
         battleStarMock.Setup(bs => bs.Contains(shotPosition)).Returns(false);
 
-        var result = CollisionChecker.CheckBattleStarShotCollision(battleStarMock.Object, shotMock.Object);
+        var collisionChecker = new CollisionChecker();
+        var result = collisionChecker.CheckBattleStarShotCollision(battleStarMock.Object, shotMock.Object);
 
         result.Should().BeFalse();
         battleStarMock.Verify(bs => bs.Contains(shotPosition), Times.Once);
