@@ -54,7 +54,7 @@ public class EnemyController : IEnemyController
     /// </remarks>
     private void MoveEnemies(IContext context, IGameState gameState)
     {
-        foreach (var enemy in gameState.Enemies.ToList())
+        foreach (var enemy in gameState.Enemies)
         {
             enemy.Move(context);
         }
