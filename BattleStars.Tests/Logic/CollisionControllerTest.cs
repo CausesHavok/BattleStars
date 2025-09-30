@@ -274,7 +274,7 @@ public class CollisionControllerTest
     }
 
     [Fact]
-    public void GivenEnemyShotDoesNotCollideWithPlayer_WhenHandleCollisions_ThenNoDamageTakenAndShotRemoved()
+    public void GivenEnemyShotDoesNotCollideWithPlayer_WhenHandleCollisions_ThenNoDamageTakenAndShotNotRemoved()
     {
         // Given
         var shotMock = new Mock<IShot>();
