@@ -37,7 +37,7 @@ public class EnemyController : IEnemyController
     /// </remarks>
     private void HandleShooting(IContext context, IGameState gameState)
     {
-        foreach (var enemy in gameState.Enemies.ToList())
+        foreach (var enemy in gameState.Enemies)
         {
             var shot = enemy.Shoot(context);
             if (shot != null) gameState.EnemyShots.AddRange(shot);
