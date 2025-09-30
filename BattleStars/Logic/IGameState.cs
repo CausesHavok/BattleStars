@@ -20,7 +20,6 @@ public interface IGameState
     /// Validates the internal consistency of the game state.
     /// </summary>
     /// <exception cref="InvalidOperationException">Thrown if any validation checks fail.</exception>
-    /// <remarks>
     public void Validate();
 
 }
