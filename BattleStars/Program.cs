@@ -1,5 +1,4 @@
 ﻿using Raylib_cs;
-using System.Numerics;
 using BattleStars.Logic;
 using BattleStars.Shots;
 using BattleStars.Core;
@@ -72,8 +71,8 @@ while (!Raylib.WindowShouldClose())
 
     // Draw
     Raylib.BeginDrawing();
-    Raylib.ClearBackground(Raylib_cs.Color.Black);
-    Raylib.DrawText("Arrow keys move the square", 10, 10, 20, Raylib_cs.Color.White);
+    Raylib.ClearBackground(Color.Black);
+    Raylib.DrawText("Arrow keys move the square", 10, 10, 20, Color.White);
 
     // Draw player
     frameSnapshot.Player.Draw();
