@@ -29,6 +29,9 @@ var inputHandler = new InputHandler(new RaylibKeyBoardProvider());
 // Create boundary checker
 var boundaryChecker = new BoundaryChecker(0, windowWidth, 0, windowHeight);
 
+// Create collision checker
+var collisionChecker = new CollisionChecker();
+
 // Create initial game state
 var gameState = new GameState(
     context,
@@ -43,7 +46,7 @@ var playerController = new PlayerController();
 var enemyController = new EnemyController();
 var shotController = new ShotController();
 var boundaryController = new BoundaryController(boundaryChecker);
-var collisionController = new CollisionController();
+var collisionController = new CollisionController(collisionChecker);
 
 // Create game controller
 var gameController = new GameController(

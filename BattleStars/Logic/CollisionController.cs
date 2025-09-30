@@ -3,9 +3,10 @@ namespace BattleStars.Logic;
 /// <summary>
 /// Controls collision detection and response in the game.
 /// </summary>
-public class CollisionController : ICollisionController
+public class CollisionController(ICollisionChecker collisionChecker) : ICollisionController
 {
 
+    private ICollisionChecker _collisionChecker = collisionChecker ?? throw new ArgumentNullException(nameof(collisionChecker));
     /// <summary>
     /// Handles collisions between shots and battle stars.
     /// </summary>
@@ -39,7 +40,7 @@ public class CollisionController : ICollisionController
         {
             foreach (var enemy in gameState.Enemies.ToList())
             {
-                if (CollisionChecker.CheckBattleStarShotCollision(enemy, shot))
+                if (_collisionChecker.CheckBattleStarShotCollision(enemy, shot))
                 {
                     enemy.TakeDamage(shot.Damage);
                     gameState.PlayerShots.Remove(shot);
@@ -63,7 +64,7 @@ public class CollisionController : ICollisionController
     {
         foreach (var shot in gameState.EnemyShots.ToList())
         {
-            if (CollisionChecker.CheckBattleStarShotCollision(gameState.Player, shot))
+            if (_collisionChecker.CheckBattleStarShotCollision(gameState.Player, shot))
             {
                 gameState.Player.TakeDamage(shot.Damage);
                 gameState.EnemyShots.Remove(shot);
