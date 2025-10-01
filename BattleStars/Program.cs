@@ -1,8 +1,12 @@
 ﻿using Raylib_cs;
-using BattleStars.Logic;
-using BattleStars.Shots;
-using BattleStars.Core;
-using BattleStars.Utility;
+using BattleStars.Application.Checkers;
+using BattleStars.Application.Controllers;
+using BattleStars.Application.Services;
+using BattleStars.Domain.Entities;
+using BattleStars.Domain.ValueObjects;
+using BattleStars.Domain.Interfaces;
+using BattleStars.Infrastructure.Factories;
+using BattleStars.Infrastructure.Adapters;
 
 int windowWidth = 800;
 int windowHeight = 600;

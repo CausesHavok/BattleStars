@@ -1,0 +1,307 @@
+using Moq;
+using FluentAssertions;
+using BattleStars.Domain.Interfaces;
+using BattleStars.Domain.Entities;
+using BattleStars.Domain.ValueObjects;
+
+namespace BattleStars.Tests.Domain.Entities;
+
+public class TestBattleStarFixture
+{
+    public Mock<IShape> MockShape = new();
+    public Mock<IMovable> MockMovable = new();
+    public Mock<IDestructable> MockDestructable = new();
+    public Mock<IShooter> MockShooter = new();
+    public BattleStar BattleStar;
+
+    public TestBattleStarFixture()
+    {
+        BattleStar = new BattleStar(
+            MockShape.Object,
+            MockMovable.Object,
+            MockDestructable.Object,
+            MockShooter.Object);
+    }
+}
+
+public class TestContextFixture : IContext
+{
+    public DirectionalVector2 PlayerDirection { get; set; }
+
+    public PositionalVector2 ShooterPosition { get; set; }
+
+    public TestContextFixture(DirectionalVector2 playerDirection)
+    {
+        PlayerDirection = playerDirection;
+    }
+
+    public TestContextFixture() : this(DirectionalVector2.UnitX) { }
+}
+
+
+public class BattleStarTest : IClassFixture<TestBattleStarFixture>
+{
+    #region Helpers
+    private readonly TestBattleStarFixture _battleStarFixture;
+    private readonly TestContextFixture _contextFixture;
+
+    public BattleStarTest(TestBattleStarFixture fixture)
+    {
+        _battleStarFixture = fixture;
+        _contextFixture = new TestContextFixture();
+    }
+    #endregion
+
+    #region Construction Tests
+
+    [Fact]
+    public void GivenNullShape_WhenConstructed_ThenThrowsArgumentNullException()
+    {
+        // Arrange
+        IShape nullShape = null!;
+        var mockMovable = new Mock<IMovable>();
+        var mockDestructable = new Mock<IDestructable>();
+        var mockShooter = new Mock<IShooter>();
+
+        Action act = () => new BattleStar(nullShape, mockMovable.Object, mockDestructable.Object, mockShooter.Object);
+
+        // Act & Assert
+        act.Should().Throw<ArgumentNullException>();
+    }
+
+    [Fact]
+    public void GivenNullMovable_WhenConstructed_ThenThrowsArgumentNullException()
+    {
+        // Arrange
+        var mockShape = new Mock<IShape>();
+        IMovable nullMovable = null!;
+        var mockDestructable = new Mock<IDestructable>();
+        var mockShooter = new Mock<IShooter>();
+
+        Action act = () => new BattleStar(mockShape.Object, nullMovable, mockDestructable.Object, mockShooter.Object);
+
+        // Act & Assert
+        act.Should().Throw<ArgumentNullException>();
+    }
+
+    [Fact]
+    public void GivenNullDestructable_WhenConstructed_ThenThrowsArgumentNullException()
+    {
+        // Arrange
+        var mockShape = new Mock<IShape>();
+        var mockMovable = new Mock<IMovable>();
+        IDestructable nullDestructable = null!;
+        var mockShooter = new Mock<IShooter>();
+
+        Action act = () => new BattleStar(mockShape.Object, mockMovable.Object, nullDestructable, mockShooter.Object);
+
+        // Act & Assert
+        act.Should().Throw<ArgumentNullException>();
+    }
+
+    [Fact]
+    public void GivenNullShooter_WhenConstructed_ThenThrowsArgumentNullException()
+    {
+        // Arrange
+        var mockShape = new Mock<IShape>();
+        var mockMovable = new Mock<IMovable>();
+        var mockDestructable = new Mock<IDestructable>();
+        IShooter nullShooter = null!;
+
+        Action act = () => new BattleStar(mockShape.Object, mockMovable.Object, mockDestructable.Object, nullShooter);
+        // Act & Assert
+        act.Should().Throw<ArgumentNullException>();
+    }
+
+    [Fact]
+    public void GivenValidInput_WhenConstructed_ThenDoesNotThrow()
+    {
+        // Arrange
+        var mockShape = new Mock<IShape>();
+        var mockMovable = new Mock<IMovable>();
+        var mockDestructable = new Mock<IDestructable>();
+        var mockShooter = new Mock<IShooter>();
+
+        Action act = () => new BattleStar(mockShape.Object, mockMovable.Object, mockDestructable.Object, mockShooter.Object);
+
+        // Act & Assert
+        act.Should().NotThrow();
+    }
+
+    #endregion
+
+
+    #region Delegation Tests
+
+    [Fact]
+    public void GivenBattleStar_WhenDrawCalled_ThenDelegatesToShape()
+    {
+        // Arrange
+        var testBattleStar = _battleStarFixture;
+        var battleStar = testBattleStar.BattleStar;
+
+        // Act
+        battleStar.Draw();
+
+        // Assert
+        testBattleStar.MockShape.Verify(s => s.Draw(It.IsAny<PositionalVector2>()), Times.Once);
+    }
+
+    [Fact]
+    public void GivenBattleStar_WhenGetBoundingBoxCalled_ThenDelegatesToShape()
+    {
+        // Arrange
+        var testBattleStar = _battleStarFixture;
+        var battleStar = testBattleStar.BattleStar;
+
+        var expectedBoundingBox = new BoundingBox();
+        testBattleStar.MockShape.Setup(s => s.BoundingBox).Returns(expectedBoundingBox);
+
+        // Act
+        var result = battleStar.GetBoundingBox();
+
+        // Assert
+        result.Should().Be(expectedBoundingBox);
+    }
+
+    [Fact]
+    public void GivenBattleStar_WhenMoveCalled_ThenDelegatesToMovable()
+    {
+        // Arrange
+        var testBattleStar = _battleStarFixture;
+        var battleStar = testBattleStar.BattleStar;
+
+        var context = _contextFixture;
+
+        // Act
+        battleStar.Move(context);
+
+        // Assert
+        testBattleStar.MockMovable.Verify(m => m.Move(context), Times.Once);
+    }
+
+    [Fact]
+    public void GivenBattleStar_WhenAccessingPosition_ThenReturnsPosition()
+    {
+        // Arrange
+        var testBattleStar = _battleStarFixture;
+        var battleStar = testBattleStar.BattleStar;
+
+        var expectedPosition = new PositionalVector2(10, 20);
+        testBattleStar.MockMovable.Setup(m => m.Position).Returns(expectedPosition);
+
+        // Act
+        var result = testBattleStar.MockMovable.Object.Position;
+
+        // Assert
+        result.Should().Be(expectedPosition);
+    }
+
+    [Fact]
+    public void GivenBattleStar_WhenTakeDamageCalled_ThenDelegatesToDestructable()
+    {
+        // Arrange
+        var testBattleStar = _battleStarFixture;
+        var battleStar = testBattleStar.BattleStar;
+
+        float damageAmount = 25.0f;
+
+        // Act
+        battleStar.TakeDamage(damageAmount);
+
+        // Assert
+        testBattleStar.MockDestructable.Verify(d => d.TakeDamage(damageAmount), Times.Once);
+    }
+
+    [Fact]
+    public void GivenBattleStar_WhenIsDestroyedCalled_ThenDelegatesToDestructable()
+    {
+        // Arrange
+        var testBattleStar = _battleStarFixture;
+        var battleStar = testBattleStar.BattleStar;
+
+        // Act
+        bool isDestroyed = battleStar.IsDestroyed;
+
+        // Assert
+        testBattleStar.MockDestructable.Verify(d => d.IsDestroyed, Times.Once);
+    }
+
+    [Fact]
+    public void GivenBattleStar_WhenShootCalled_ThenDelegatesToShooter()
+    {
+        // Arrange
+        var testBattleStar = _battleStarFixture;
+        var battleStar = testBattleStar.BattleStar;
+
+        var context = _contextFixture;
+
+        // Act
+        battleStar.Shoot(context);
+
+        // Assert
+        testBattleStar.MockShooter.Verify(s => s.Shoot(context), Times.Once);
+    }
+
+    [Fact]
+    public void GivenBattleStar_WhenShootCalled_ThenReturnsShotsFromShooter()
+    {
+        // Arrange
+        var testBattleStar = _battleStarFixture;
+        var battleStar = testBattleStar.BattleStar;
+
+        var context = _contextFixture;
+
+        var expectedShots = new List<IShot> { new Mock<IShot>().Object };
+        testBattleStar.MockShooter.Setup(s => s.Shoot(context)).Returns(expectedShots);
+
+        // Act
+        var result = battleStar.Shoot(context);
+
+        // Assert
+        result.Should().BeEquivalentTo(expectedShots);
+    }
+
+    [Fact]
+    public void GivenBattleStar_WhenShootCalled_ThenContextShooterPositionIsSet()
+    {
+        // Arrange
+        var testBattleStar = _battleStarFixture;
+        var battleStar = testBattleStar.BattleStar;
+
+        var context = _contextFixture;
+
+        var expectedPosition = new PositionalVector2(15, 30);
+        testBattleStar.MockMovable.Setup(m => m.Position).Returns(expectedPosition);
+
+        // Act
+        battleStar.Shoot(context);
+
+        // Assert
+        context.ShooterPosition.Should().Be(expectedPosition);
+    }
+
+    [Theory]
+    [InlineData(5, 5)]
+    [InlineData(10, 10)]
+    [InlineData(-5, -5)]
+    [InlineData(0, 0)]
+    public void GivenBattleStar_WhenContainsCalled_ThenDelegatesToShapeWithAdjustedPoint(float x, float y)
+    {
+        // Arrange
+        var testBattleStar = _battleStarFixture;
+        var battleStar = testBattleStar.BattleStar;
+
+        testBattleStar.MockMovable.Setup(m => m.Position).Returns(new PositionalVector2(x, y));
+        var point = new PositionalVector2(5, 5);
+        var adjustedPoint = point - new PositionalVector2(x, y);
+
+        // Act
+        battleStar.Contains(point);
+
+        // Assert
+        testBattleStar.MockShape.Verify(s => s.Contains(adjustedPoint), Times.Once);
+    }
+
+    #endregion
+}
