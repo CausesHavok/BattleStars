@@ -1,0 +1,16 @@
+using BattleStars.Domain.ValueObjects;
+namespace BattleStars.Domain.Interfaces;
+
+public interface IContext
+{
+    DirectionalVector2 PlayerDirection { get; set; }
+
+    /// <summary>
+    /// Position of the shooter in world coordinates.
+    /// </summary>
+    /// <remarks>
+    /// Any concrete implementation must ensure that the ShooterPosition,
+    /// is not NaN/Infinity and is a valid Vector2.
+    /// </remarks>
+    PositionalVector2 ShooterPosition { get; set; }
+}

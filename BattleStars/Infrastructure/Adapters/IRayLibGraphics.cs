@@ -1,0 +1,11 @@
+using System.Drawing;
+using BattleStars.Domain.ValueObjects;
+namespace BattleStars.Infrastructure.Adapters;
+
+public interface IRaylibGraphics
+{
+    void DrawRectangle(PositionalVector2 topLeft, PositionalVector2 size, Color color);
+    void DrawTriangle(PositionalVector2 p1, PositionalVector2 p2, PositionalVector2 p3, Color color);
+    void DrawCircle(PositionalVector2 center, float radius, Color color);
+}
+
