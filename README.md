@@ -52,14 +52,25 @@ code CoverageReport/index.html
 
 ## 📦 Project Structure
 
-BattleStars/  
-├── Core/              # Base classes  
-├── Logic/             # Game logic and validation  
-├── Shapes/            # Geometric primitives  
-├── Shots/             # Projectile modeling  
-├── Utility/           # Vector math and helpers  
-├── Program.cs         # Entry point  
-├── BattleStars.csproj # Project file  
+BattleStars/
+├── Application/
+│   ├── Checkers/         # Game rule validation (e.g., collisions, boundaries)
+│   ├── Controllers/      # Orchestrates game logic (player, enemy, shots)
+│   └── Services/         # Game services (input, boundary, collision)
+├── Domain/
+│   ├── Entities/         # Core game objects and behaviors
+│   │   └── Shapes/       # Geometric primitives (Circle, Rectangle, etc.)
+│   ├── Interfaces/       # Domain contracts and abstractions
+│   └── ValueObjects/     # Immutable domain concepts (vectors, keys, descriptors)
+├── Infrastructure/
+│   ├── Adapters/         # External system adapters (input, graphics)
+│   ├── Factories/        # Object and service creation
+│   └── Utilities/        # General-purpose helpers
+├── Presentation/
+│   ├── Drawers/          # Shape/UI drawing interfaces and implementations
+│   └── Views/            # UI components (future expansion)
+├── Program.cs            # Entry point
+├── BattleStars.csproj    # Project file
 
 ## 📜 License
 MIT License
