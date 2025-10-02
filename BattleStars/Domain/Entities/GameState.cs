@@ -1,4 +1,5 @@
 using BattleStars.Domain.Interfaces;
+using BattleStars.Infrastructure.Utilities;
 namespace BattleStars.Domain.Entities;
 
 /// <summary>
@@ -14,35 +15,35 @@ public class GameState(
     List<IBattleStar> enemies,
     List<IShot> enemyShots) : IGameState
 {
-    private IContext _context = GuardNotNull(context, nameof(context));
-    private IBattleStar _player = GuardNotNull(player, nameof(player));
-    private List<IBattleStar> _enemies = GuardNotNull(enemies, nameof(enemies));
-    private List<IShot> _playerShots = GuardNotNull(playerShots, nameof(playerShots));
-    private List<IShot> _enemyShots = GuardNotNull(enemyShots, nameof(enemyShots));
+    private IContext _context = Guard.NotNull(context, nameof(context));
+    private IBattleStar _player = Guard.NotNull(player, nameof(player));
+    private List<IBattleStar> _enemies = Guard.NotNull(enemies, nameof(enemies));
+    private List<IShot> _playerShots = playerShots;
+    private List<IShot> _enemyShots = enemyShots;
     public IContext Context
     {
         get => _context;
-        set => _context = GuardNotNull(value, nameof(Context));
+        set => _context = Guard.NotNull(value, nameof(Context));
     }
     public IBattleStar Player
     {
         get => _player;
-        set => _player = GuardNotNull(value, nameof(Player));
+        set => _player = Guard.NotNull(value, nameof(Player));
     }
     public List<IBattleStar> Enemies
     {
         get => _enemies;
-        set => _enemies = GuardNotNull(value, nameof(Enemies));
+        set => _enemies = Guard.NotNull(value, nameof(Enemies));
     }
     public List<IShot> PlayerShots
     {
         get => _playerShots;
-        set => _playerShots = GuardNotNull(value, nameof(PlayerShots));
+        set => _playerShots = Guard.NotNull(value, nameof(PlayerShots));
     }
     public List<IShot> EnemyShots
     {
         get => _enemyShots;
-        set => _enemyShots = GuardNotNull(value, nameof(EnemyShots));
+        set => _enemyShots = Guard.NotNull(value, nameof(EnemyShots));
     }
 
 
@@ -81,23 +82,5 @@ public class GameState(
         {
             throw new InvalidOperationException("Enemy shots list contains duplicate entries.");
         }
-    }
-
-    /// <summary>
-    /// Guards against null values, throwing an ArgumentNullException if the value is null.
-    /// </summary>
-    /// <typeparam name="T">The type of the value being checked.</typeparam>
-    /// <param name="value">The value to check for null.</param>
-    /// <param name="name">The name of the parameter being checked.</param>
-    /// <returns>The original value if it is not null.</returns>
-    /// <exception cref="ArgumentNullException">Thrown if the value is null.</exception>
-    /// <remarks>
-    /// This method is a utility to ensure that required parameters are not null, improving code safety
-    /// and reducing boilerplate null-checking code throughout the class.
-    /// </remarks>
-    private static T GuardNotNull<T>(T value, string name)
-    where T : class
-    {
-        return value ?? throw new ArgumentNullException(name);
     }
 }

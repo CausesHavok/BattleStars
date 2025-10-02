@@ -2,6 +2,7 @@ using Moq;
 using FluentAssertions;
 using BattleStars.Application.Controllers;
 using BattleStars.Domain.Interfaces;
+using BattleStars.Infrastructure.Factories;
 
 namespace BattleStars.Tests.Application.Controllers;
 
@@ -44,8 +45,8 @@ public class ShotControllerTest
     {
         // Given
         var gameStateMock = new Mock<IGameState>();
-        gameStateMock.Setup(g => g.PlayerShots).Returns(new List<IShot>());
-        gameStateMock.Setup(g => g.EnemyShots).Returns(new List<IShot>());
+        gameStateMock.Setup(g => g.PlayerShots).Returns(ShotFactory.CreateEmptyShotList());
+        gameStateMock.Setup(g => g.EnemyShots).Returns(ShotFactory.CreateEmptyShotList());
         var controller = new ShotController();
 
         // When

@@ -38,9 +38,9 @@ var collisionChecker = new CollisionChecker();
 var gameState = new GameState(
     context,
     playerBattleStar,
-    new List<IShot>(),
+    ShotFactory.CreateEmptyShotList(),
     enemies,
-    new List<IShot>()
+    ShotFactory.CreateEmptyShotList()
 );
 
 // Create game controller

@@ -3,6 +3,7 @@ using FluentAssertions;
 using BattleStars.Application.Controllers;
 using BattleStars.Domain.Interfaces;
 using BattleStars.Domain.ValueObjects;
+using BattleStars.Infrastructure.Factories;
 
 namespace BattleStars.Tests.Application.Controllers;
 
@@ -48,8 +49,8 @@ public class PlayerControllerTest
         var inputHandlerMock = new Mock<IInputHandler>();
         var gameStateMock = new Mock<IGameState>();
         var playerMock = new Mock<IBattleStar>();
-        var shotList = new List<IShot>();
-        var expectedShots = new List<IShot> { new Mock<IShot>().Object };
+        var shotList = ShotFactory.CreateEmptyShotList();
+        var expectedShots = new List<IShot> { ShotFactory.CreateNoOpShot() };
 
         inputHandlerMock.Setup(i => i.GetMovement()).Returns(DirectionalVector2.UnitY);
         inputHandlerMock.Setup(i => i.ShouldShoot()).Returns(true);
@@ -74,7 +75,7 @@ public class PlayerControllerTest
         var inputHandlerMock = new Mock<IInputHandler>();
         var gameStateMock = new Mock<IGameState>();
         var playerMock = new Mock<IBattleStar>();
-        var shotList = new List<IShot>();
+        var shotList = ShotFactory.CreateEmptyShotList();
 
         inputHandlerMock.Setup(i => i.GetMovement()).Returns(-DirectionalVector2.UnitY);
         inputHandlerMock.Setup(i => i.ShouldShoot()).Returns(false);
@@ -99,7 +100,7 @@ public class PlayerControllerTest
         var inputHandlerMock = new Mock<IInputHandler>();
         var gameStateMock = new Mock<IGameState>();
         var playerMock = new Mock<IBattleStar>();
-        var shotList = new List<IShot>();
+        var shotList = ShotFactory.CreateEmptyShotList();
 
         inputHandlerMock.Setup(i => i.GetMovement()).Returns(DirectionalVector2.UnitX);
         inputHandlerMock.Setup(i => i.ShouldShoot()).Returns(true);
@@ -124,11 +125,11 @@ public class PlayerControllerTest
         var inputHandlerMock = new Mock<IInputHandler>();
         var gameStateMock = new Mock<IGameState>();
         var playerMock = new Mock<IBattleStar>();
-        var shotList = new List<IShot>();
+        var shotList = ShotFactory.CreateEmptyShotList();
 
         inputHandlerMock.Setup(i => i.GetMovement()).Returns(-DirectionalVector2.UnitX);
         inputHandlerMock.Setup(i => i.ShouldShoot()).Returns(true);
-        playerMock.Setup(p => p.Shoot(contextMock.Object)).Returns(new List<IShot>());
+        playerMock.Setup(p => p.Shoot(contextMock.Object)).Returns(ShotFactory.CreateEmptyShotList());
         gameStateMock.Setup(g => g.Player).Returns(playerMock.Object);
         gameStateMock.Setup(g => g.PlayerShots).Returns(shotList);
 
@@ -153,9 +154,9 @@ public class PlayerControllerTest
         var inputHandlerMock = new Mock<IInputHandler>();
         var gameStateMock = new Mock<IGameState>();
         var playerMock = new Mock<IBattleStar>();
-        var shotList = new List<IShot>();
-        var expectedShotsFirst = new List<IShot> { new Mock<IShot>().Object };
-        var expectedShotsSecond = new List<IShot> { new Mock<IShot>().Object, new Mock<IShot>().Object };
+        var shotList = ShotFactory.CreateEmptyShotList();
+        var expectedShotsFirst = new List<IShot> { ShotFactory.CreateNoOpShot() };
+        var expectedShotsSecond = new List<IShot> { ShotFactory.CreateNoOpShot(), ShotFactory.CreateNoOpShot() };
 
         contextMock.SetupProperty(c => c.PlayerDirection);
         inputHandlerMock.SetupSequence(i => i.GetMovement())

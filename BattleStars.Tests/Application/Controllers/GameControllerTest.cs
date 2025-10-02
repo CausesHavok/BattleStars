@@ -2,6 +2,7 @@ using Moq;
 using FluentAssertions;
 using BattleStars.Domain.Interfaces;
 using BattleStars.Infrastructure.Factories;
+using BattleStars.Domain.Entities;
 
 namespace BattleStars.Tests.Application.Controllers;
 
@@ -78,8 +79,8 @@ public class GameControllerTest
         var gameStateMock = new Mock<IGameState>();
         gameStateMock.Setup(gs => gs.Player).Returns(new Mock<IBattleStar>().Object);
         gameStateMock.Setup(gs => gs.Enemies).Returns(new List<IBattleStar>());
-        gameStateMock.Setup(gs => gs.PlayerShots).Returns(new List<IShot>());
-        gameStateMock.Setup(gs => gs.EnemyShots).Returns(new List<IShot>());
+        gameStateMock.Setup(gs => gs.PlayerShots).Returns(ShotFactory.CreateEmptyShotList());
+        gameStateMock.Setup(gs => gs.EnemyShots).Returns(ShotFactory.CreateEmptyShotList());
 
         var inputHandlerMock = new Mock<IInputHandler>();
         inputHandlerMock.Setup(ih => ih.ShouldExit()).Returns(false);
@@ -106,8 +107,8 @@ public class GameControllerTest
         var gameStateMock = new Mock<IGameState>();
         gameStateMock.Setup(gs => gs.Player).Returns(new Mock<IBattleStar>().Object);
         gameStateMock.Setup(gs => gs.Enemies).Returns(new List<IBattleStar>());
-        gameStateMock.Setup(gs => gs.PlayerShots).Returns(new List<IShot>());
-        gameStateMock.Setup(gs => gs.EnemyShots).Returns(new List<IShot>());
+        gameStateMock.Setup(gs => gs.PlayerShots).Returns(ShotFactory.CreateEmptyShotList());
+        gameStateMock.Setup(gs => gs.EnemyShots).Returns(ShotFactory.CreateEmptyShotList());
         gameStateMock.Setup(gs => gs.Validate()).Verifiable();
         var inputHandlerMock = new Mock<IInputHandler>();
 
@@ -140,8 +141,8 @@ public class GameControllerTest
         // Arrange
         var playerMock = new Mock<IBattleStar>();
         var enemies = new List<IBattleStar> { new Mock<IBattleStar>().Object };
-        var playerShots = new List<IShot> { new Mock<IShot>().Object };
-        var enemyShots = new List<IShot> { new Mock<IShot>().Object };
+        var playerShots = new List<IShot> { ShotFactory.CreateNoOpShot() };
+        var enemyShots = new List<IShot> { ShotFactory.CreateNoOpShot() };
 
         var gameStateMock = new Mock<IGameState>();
         gameStateMock.Setup(gs => gs.Player).Returns(playerMock.Object);
