@@ -1,6 +1,5 @@
 ﻿using Raylib_cs;
 using BattleStars.Application.Checkers;
-using BattleStars.Application.Controllers;
 using BattleStars.Application.Services;
 using BattleStars.Domain.Entities;
 using BattleStars.Domain.ValueObjects;
@@ -44,23 +43,14 @@ var gameState = new GameState(
     new List<IShot>()
 );
 
-// Create controllers
-var playerController = new PlayerController();
-var enemyController = new EnemyController();
-var shotController = new ShotController();
-var boundaryController = new BoundaryController(boundaryChecker);
-var collisionController = new CollisionController(collisionChecker);
-
 // Create game controller
-var gameController = new GameController(
+var gameController = ControllerFactory.CreateGameController(
     gameState,
-    playerController,
-    enemyController,
-    shotController,
-    boundaryController,
-    collisionController,
+    boundaryChecker,
+    collisionChecker,
     inputHandler
 );
+
 var shouldContinue = true;
 
 while (!Raylib.WindowShouldClose())

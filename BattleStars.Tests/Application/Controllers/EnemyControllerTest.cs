@@ -1,5 +1,5 @@
-using FluentAssertions;
 using Moq;
+using FluentAssertions;
 using BattleStars.Application.Controllers;
 using BattleStars.Domain.Interfaces;
 
@@ -7,51 +7,9 @@ namespace BattleStars.Tests.Application.Controllers;
 
 public class EnemyControllerTest
 {
-    #region Null Checks
-    [Fact]
-    public void GivenNullContext_WhenUpdateEnemies_ThenThrowsArgumentNullException()
-    {
-        // Given
-        var gameStateMock = new Mock<IGameState>().Object;
-        var controller = new EnemyController();
 
-        // When
-        var act = () => controller.UpdateEnemies(null!, gameStateMock);
-
-        // Then
-        act.Should().Throw<ArgumentNullException>().WithParameterName("context");
-    }
-
-    [Fact]
-    public void GivenNullGameState_WhenUpdateEnemies_ThenThrowsArgumentNullException()
-    {
-        // Given
-        var contextMock = new Mock<IContext>().Object;
-        var controller = new EnemyController();
-
-        // When
-        var act = () => controller.UpdateEnemies(contextMock, null!);
-
-        // Then
-        act.Should().Throw<ArgumentNullException>().WithParameterName("gameState");
-    }
-
-    [Fact]
-    public void GivenNullEnemies_WhenUpdateEnemies_ThenThrowsArgumentNullException()
-    {
-        // Given
-        var contextMock = new Mock<IContext>().Object;
-        var gameStateMock = new Mock<IGameState>();
-        gameStateMock.Setup(g => g.Enemies).Returns((List<IBattleStar>)null!);
-        var controller = new EnemyController();
-
-        // When
-        var act = () => controller.UpdateEnemies(contextMock, gameStateMock.Object);
-
-        // Then
-        act.Should().Throw<ArgumentNullException>().WithParameterName("Enemies");
-    }
-    #endregion
+    // Null tests are not needed as this class is a composite component of GameController
+    // and the parameters are already validated in GameController or during Factory construction.
 
     #region Behavior Tests
     [Fact]

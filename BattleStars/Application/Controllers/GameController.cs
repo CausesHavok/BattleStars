@@ -29,14 +29,6 @@ public class GameController
         ICollisionController collisionController,
         IInputHandler inputHandler)
     {
-        ArgumentNullException.ThrowIfNull(gameState, nameof(gameState));
-        ArgumentNullException.ThrowIfNull(playerController, nameof(playerController));
-        ArgumentNullException.ThrowIfNull(enemyController, nameof(enemyController));
-        ArgumentNullException.ThrowIfNull(shotController, nameof(shotController));
-        ArgumentNullException.ThrowIfNull(boundaryController, nameof(boundaryController));
-        ArgumentNullException.ThrowIfNull(collisionController, nameof(collisionController));
-        ArgumentNullException.ThrowIfNull(inputHandler, nameof(inputHandler));
-        gameState.Validate();
         _gameState = gameState;
         _playerController = playerController;
         _enemyController = enemyController;
@@ -94,7 +86,6 @@ public class GameController
     /// </remarks>
     public FrameSnapshot GetFrameSnapshot()
     {
-        _gameState.Validate();
         return new FrameSnapshot(
             Player: _gameState.Player,
             Enemies: _gameState.Enemies,

@@ -1,5 +1,5 @@
-using FluentAssertions;
 using Moq;
+using FluentAssertions;
 using BattleStars.Application.Controllers;
 using BattleStars.Domain.Interfaces;
 using BattleStars.Domain.ValueObjects;
@@ -8,79 +8,8 @@ namespace BattleStars.Tests.Application.Controllers;
 
 public class PlayerControllerTest
 {
-    #region Null Checks
-
-    [Fact]
-    public void GivenNullContext_WhenUpdatePlayer_ThenThrowsArgumentNullException()
-    {
-        // Given
-        var inputHandler = new Mock<IInputHandler>().Object;
-        var gameState = new Mock<IGameState>().Object;
-        var controller = new PlayerController();
-
-        // When
-        var act = () => controller.UpdatePlayer(null!, inputHandler, gameState);
-
-        // Then
-        act.Should().Throw<ArgumentNullException>().WithParameterName("context");
-    }
-
-    [Fact]
-    public void GivenNullInputHandler_WhenUpdatePlayer_ThenThrowsArgumentNullException()
-    {
-        // Given
-        var contextMock = new Mock<IContext>().Object;
-        IInputHandler inputHandler = null!;
-        var gameStateMock = new Mock<IGameState>().Object;
-        var controller = new PlayerController();
-
-        // When
-        var act = () => controller.UpdatePlayer(contextMock, inputHandler, gameStateMock);
-
-        // Then
-        act.Should().Throw<ArgumentNullException>().WithParameterName("inputHandler");
-    }
-
-    [Fact]
-    public void GivenNullGameState_WhenUpdatePlayer_ThenThrowsArgumentNullException()
-    {
-        // Given
-        var contextMock = new Mock<IContext>().Object;
-        var inputHandlerMock = new Mock<IInputHandler>().Object;
-        IGameState gameState = null!;
-        var controller = new PlayerController();
-
-        // When
-        var act = () => controller.UpdatePlayer(contextMock, inputHandlerMock, gameState);
-
-        // Then
-        act.Should().Throw<ArgumentNullException>().WithParameterName("gameState");
-    }
-
-    [Fact]
-    public void GivenPlayerIsNull_WhenUpdatePlayer_ThenThrowsArgumentNullException()
-    {
-        // Given
-        var contextMock = new Mock<IContext>();
-        var inputHandlerMock = new Mock<IInputHandler>();
-        var gameStateMock = new Mock<IGameState>();
-        var shotList = new List<IShot>();
-
-        inputHandlerMock.Setup(i => i.GetMovement()).Returns(DirectionalVector2.UnitX);
-        inputHandlerMock.Setup(i => i.ShouldShoot()).Returns(true);
-        gameStateMock.Setup(g => g.Player).Returns((IBattleStar?)null!);
-        gameStateMock.Setup(g => g.PlayerShots).Returns(shotList);
-
-        var controller = new PlayerController();
-
-        // When
-        var act = () => controller.UpdatePlayer(contextMock.Object, inputHandlerMock.Object, gameStateMock.Object);
-
-        // Then
-        act.Should().Throw<ArgumentNullException>().WithParameterName("Player");
-    }
-
-    #endregion
+    // Null tests are not needed as this class is a composite component of GameController
+    // and the parameters are already validated in GameController or during Factory construction.
 
     #region Movement Tests
 

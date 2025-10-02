@@ -1,225 +1,27 @@
 using Moq;
 using FluentAssertions;
 using BattleStars.Domain.Interfaces;
-using BattleStars.Application.Controllers;
+using BattleStars.Infrastructure.Factories;
 
 namespace BattleStars.Tests.Application.Controllers;
 
 public class GameControllerTest
 {
     #region Construction Tests
-    [Fact]
-    public void Constructor_NullGameState_ThrowsArgumentNullException()
-    {
-        // Arrange
-        IGameState gameState = null!;
-        var playerControllerMock = new Mock<IPlayerController>();
-        var enemyControllerMock = new Mock<IEnemyController>();
-        var shotControllerMock = new Mock<IShotController>();
-        var boundaryControllerMock = new Mock<IBoundaryController>();
-        var collisionControllerMock = new Mock<ICollisionController>();
-        var inputHandlerMock = new Mock<IInputHandler>();
-
-        // Act
-        Action act = () => new GameController(
-            gameState,
-            playerControllerMock.Object,
-            enemyControllerMock.Object,
-            shotControllerMock.Object,
-            boundaryControllerMock.Object,
-            collisionControllerMock.Object,
-            inputHandlerMock.Object);
-
-        // Assert
-        act.Should().Throw<ArgumentNullException>()
-            .WithParameterName("gameState");
-    }
-
-    [Fact]
-    public void Constructor_NullPlayerController_ThrowsArgumentNullException()
-    {
-        // Arrange
-        var gameStateMock = new Mock<IGameState>();
-        IPlayerController playerController = null!;
-        var enemyControllerMock = new Mock<IEnemyController>();
-        var shotControllerMock = new Mock<IShotController>();
-        var boundaryControllerMock = new Mock<IBoundaryController>();
-        var collisionControllerMock = new Mock<ICollisionController>();
-        var inputHandlerMock = new Mock<IInputHandler>();
-
-        // Act
-        Action act = () => new GameController(
-            gameStateMock.Object,
-            playerController!,
-            enemyControllerMock.Object,
-            shotControllerMock.Object,
-            boundaryControllerMock.Object,
-            collisionControllerMock.Object,
-            inputHandlerMock.Object);
-
-        // Assert
-        act.Should().Throw<ArgumentNullException>()
-            .WithParameterName("playerController");
-    }
-
-    [Fact]
-    public void Constructor_NullEnemyController_ThrowsArgumentNullException()
-    {
-        // Arrange
-        var gameStateMock = new Mock<IGameState>();
-        var playerControllerMock = new Mock<IPlayerController>();
-        IEnemyController enemyController = null!;
-        var shotControllerMock = new Mock<IShotController>();
-        var boundaryControllerMock = new Mock<IBoundaryController>();
-        var collisionControllerMock = new Mock<ICollisionController>();
-        var inputHandlerMock = new Mock<IInputHandler>();
-
-        // Act
-        Action act = () => new GameController(
-            gameStateMock.Object,
-            playerControllerMock.Object,
-            enemyController!,
-            shotControllerMock.Object,
-            boundaryControllerMock.Object,
-            collisionControllerMock.Object,
-            inputHandlerMock.Object);
-
-        // Assert
-        act.Should().Throw<ArgumentNullException>()
-            .WithParameterName("enemyController");
-    }
-
-    [Fact]
-    public void Constructor_NullShotController_ThrowsArgumentNullException()
-    {
-        // Arrange
-        var gameStateMock = new Mock<IGameState>();
-        var playerControllerMock = new Mock<IPlayerController>();
-        var enemyControllerMock = new Mock<IEnemyController>();
-        IShotController shotController = null!;
-        var boundaryControllerMock = new Mock<IBoundaryController>();
-        var collisionControllerMock = new Mock<ICollisionController>();
-        var inputHandlerMock = new Mock<IInputHandler>();
-
-        // Act
-        Action act = () => new GameController(
-            gameStateMock.Object,
-            playerControllerMock.Object,
-            enemyControllerMock.Object,
-            shotController!,
-            boundaryControllerMock.Object,
-            collisionControllerMock.Object,
-            inputHandlerMock.Object);
-
-        // Assert
-        act.Should().Throw<ArgumentNullException>()
-            .WithParameterName("shotController");
-    }
-
-    [Fact]
-    public void Constructor_NullBoundaryController_ThrowsArgumentNullException()
-    {
-        // Arrange
-        var gameStateMock = new Mock<IGameState>();
-        var playerControllerMock = new Mock<IPlayerController>();
-        var enemyControllerMock = new Mock<IEnemyController>();
-        var shotControllerMock = new Mock<IShotController>();
-        IBoundaryController boundaryController = null!;
-        var collisionControllerMock = new Mock<ICollisionController>();
-        var inputHandlerMock = new Mock<IInputHandler>();
-
-        // Act
-        Action act = () => new GameController(
-            gameStateMock.Object,
-            playerControllerMock.Object,
-            enemyControllerMock.Object,
-            shotControllerMock.Object,
-            boundaryController!,
-            collisionControllerMock.Object,
-            inputHandlerMock.Object);
-
-        // Assert
-        act.Should().Throw<ArgumentNullException>()
-            .WithParameterName("boundaryController");
-    }
-
-    [Fact]
-    public void Constructor_NullCollisionController_ThrowsArgumentNullException()
-    {
-        // Arrange
-        var gameStateMock = new Mock<IGameState>();
-        var playerControllerMock = new Mock<IPlayerController>();
-        var enemyControllerMock = new Mock<IEnemyController>();
-        var shotControllerMock = new Mock<IShotController>();
-        var boundaryControllerMock = new Mock<IBoundaryController>();
-        ICollisionController collisionController = null!;
-        var inputHandlerMock = new Mock<IInputHandler>();
-
-        // Act
-        Action act = () => new GameController(
-            gameStateMock.Object,
-            playerControllerMock.Object,
-            enemyControllerMock.Object,
-            shotControllerMock.Object,
-            boundaryControllerMock.Object,
-            collisionController!,
-            inputHandlerMock.Object);
-
-        // Assert
-        act.Should().Throw<ArgumentNullException>()
-            .WithParameterName("collisionController");
-    }
-
-    [Fact]
-    public void Constructor_NullInputHandler_ThrowsArgumentNullException()
-    {
-        // Arrange
-        var gameStateMock = new Mock<IGameState>();
-        var playerControllerMock = new Mock<IPlayerController>();
-        var enemyControllerMock = new Mock<IEnemyController>();
-        var shotControllerMock = new Mock<IShotController>();
-        var boundaryControllerMock = new Mock<IBoundaryController>();
-        var collisionControllerMock = new Mock<ICollisionController>();
-        IInputHandler inputHandler = null!;
-
-        // Act
-        Action act = () => new GameController(
-            gameStateMock.Object,
-            playerControllerMock.Object,
-            enemyControllerMock.Object,
-            shotControllerMock.Object,
-            boundaryControllerMock.Object,
-            collisionControllerMock.Object,
-            inputHandler!);
-
-        // Assert
-        act.Should().Throw<ArgumentNullException>()
-            .WithParameterName("inputHandler");
-    }
+    // Null tests are not needed as this class is created via the ControllerFactory
+    // and the parameters are already validated in the Factory.
 
     [Fact]
     public void Constructor_ValidParameters_DoesNotThrow()
     {
         // Arrange
-        var gameStateMock = new Mock<IGameState>();
-        var playerControllerMock = new Mock<IPlayerController>();
-        var enemyControllerMock = new Mock<IEnemyController>();
-        var shotControllerMock = new Mock<IShotController>();
-        var boundaryControllerMock = new Mock<IBoundaryController>();
-        var collisionControllerMock = new Mock<ICollisionController>();
-        var inputHandlerMock = new Mock<IInputHandler>();
+        Action act = () => ControllerFactory.CreateGameController(
+            new Mock<IGameState>().Object,
+            new Mock<IBoundaryChecker>().Object,
+            new Mock<ICollisionChecker>().Object,
+            new Mock<IInputHandler>().Object);
 
-        // Act
-        Action act = () => new GameController(
-            gameStateMock.Object,
-            playerControllerMock.Object,
-            enemyControllerMock.Object,
-            shotControllerMock.Object,
-            boundaryControllerMock.Object,
-            collisionControllerMock.Object,
-            inputHandlerMock.Object);
-
-        // Assert
+        // Act / Assert
         act.Should().NotThrow();
     }
 
@@ -230,22 +32,11 @@ public class GameControllerTest
     public void RunFrame_NullContext_ThrowsArgumentNullException()
     {
         // Arrange
-        var gameStateMock = new Mock<IGameState>();
-        var playerControllerMock = new Mock<IPlayerController>();
-        var enemyControllerMock = new Mock<IEnemyController>();
-        var shotControllerMock = new Mock<IShotController>();
-        var boundaryControllerMock = new Mock<IBoundaryController>();
-        var collisionControllerMock = new Mock<ICollisionController>();
-        var inputHandlerMock = new Mock<IInputHandler>();
-
-        var gameController = new GameController(
-            gameStateMock.Object,
-            playerControllerMock.Object,
-            enemyControllerMock.Object,
-            shotControllerMock.Object,
-            boundaryControllerMock.Object,
-            collisionControllerMock.Object,
-            inputHandlerMock.Object);
+        var gameController = ControllerFactory.CreateGameController(
+            new Mock<IGameState>().Object,
+            new Mock<IBoundaryChecker>().Object,
+            new Mock<ICollisionChecker>().Object,
+            new Mock<IInputHandler>().Object);
 
         IContext context = null!;
 
@@ -261,23 +52,14 @@ public class GameControllerTest
     public void RunFrame_InputHandlerIndicatesExit_ReturnsFalse()
     {
         // Arrange
-        var gameStateMock = new Mock<IGameState>();
-        var playerControllerMock = new Mock<IPlayerController>();
-        var enemyControllerMock = new Mock<IEnemyController>();
-        var shotControllerMock = new Mock<IShotController>();
-        var boundaryControllerMock = new Mock<IBoundaryController>();
-        var collisionControllerMock = new Mock<ICollisionController>();
         var inputHandlerMock = new Mock<IInputHandler>();
 
         inputHandlerMock.Setup(ih => ih.ShouldExit()).Returns(true);
 
-        var gameController = new GameController(
-            gameStateMock.Object,
-            playerControllerMock.Object,
-            enemyControllerMock.Object,
-            shotControllerMock.Object,
-            boundaryControllerMock.Object,
-            collisionControllerMock.Object,
+        var gameController = ControllerFactory.CreateGameController(
+            new Mock<IGameState>().Object,
+            new Mock<IBoundaryChecker>().Object,
+            new Mock<ICollisionChecker>().Object,
             inputHandlerMock.Object);
 
         var contextMock = new Mock<IContext>();
@@ -287,11 +69,6 @@ public class GameControllerTest
 
         // Assert
         result.Should().BeFalse();
-        playerControllerMock.Verify(pc => pc.UpdatePlayer(It.IsAny<IContext>(), It.IsAny<IInputHandler>(), It.IsAny<IGameState>()), Times.Never);
-        enemyControllerMock.Verify(ec => ec.UpdateEnemies(It.IsAny<IContext>(), It.IsAny<IGameState>()), Times.Never);
-        shotControllerMock.Verify(sc => sc.UpdateShots(It.IsAny<IGameState>()), Times.Never);
-        boundaryControllerMock.Verify(bc => bc.EnforceBoundaries(It.IsAny<IGameState>()), Times.Never);
-        collisionControllerMock.Verify(cc => cc.HandleCollisions(It.IsAny<IGameState>()), Times.Never);
     }
 
     [Fact]
@@ -300,22 +77,17 @@ public class GameControllerTest
         // Arrange
         var gameStateMock = new Mock<IGameState>();
         gameStateMock.Setup(gs => gs.Player).Returns(new Mock<IBattleStar>().Object);
-        var playerControllerMock = new Mock<IPlayerController>();
-        var enemyControllerMock = new Mock<IEnemyController>();
-        var shotControllerMock = new Mock<IShotController>();
-        var boundaryControllerMock = new Mock<IBoundaryController>();
-        var collisionControllerMock = new Mock<ICollisionController>();
-        var inputHandlerMock = new Mock<IInputHandler>();
+        gameStateMock.Setup(gs => gs.Enemies).Returns(new List<IBattleStar>());
+        gameStateMock.Setup(gs => gs.PlayerShots).Returns(new List<IShot>());
+        gameStateMock.Setup(gs => gs.EnemyShots).Returns(new List<IShot>());
 
+        var inputHandlerMock = new Mock<IInputHandler>();
         inputHandlerMock.Setup(ih => ih.ShouldExit()).Returns(false);
 
-        var gameController = new GameController(
+        var gameController =  ControllerFactory.CreateGameController(
             gameStateMock.Object,
-            playerControllerMock.Object,
-            enemyControllerMock.Object,
-            shotControllerMock.Object,
-            boundaryControllerMock.Object,
-            collisionControllerMock.Object,
+            new Mock<IBoundaryChecker>().Object,
+            new Mock<ICollisionChecker>().Object,
             inputHandlerMock.Object);
 
         var contextMock = new Mock<IContext>();
@@ -325,11 +97,6 @@ public class GameControllerTest
 
         // Assert
         result.Should().BeTrue();
-        shotControllerMock.Verify(sc => sc.UpdateShots(gameStateMock.Object), Times.Once);
-        playerControllerMock.Verify(pc => pc.UpdatePlayer(contextMock.Object, inputHandlerMock.Object, gameStateMock.Object), Times.Once);
-        enemyControllerMock.Verify(ec => ec.UpdateEnemies(contextMock.Object, gameStateMock.Object), Times.Once);
-        boundaryControllerMock.Verify(bc => bc.EnforceBoundaries(gameStateMock.Object), Times.Once);
-        collisionControllerMock.Verify(cc => cc.HandleCollisions(gameStateMock.Object), Times.Once);
     }
 
     [Fact]
@@ -338,32 +105,30 @@ public class GameControllerTest
         // Arrange
         var gameStateMock = new Mock<IGameState>();
         gameStateMock.Setup(gs => gs.Player).Returns(new Mock<IBattleStar>().Object);
-        var playerControllerMock = new Mock<IPlayerController>();
-        var enemyControllerMock = new Mock<IEnemyController>();
-        var shotControllerMock = new Mock<IShotController>();
-        var boundaryControllerMock = new Mock<IBoundaryController>();
-        var collisionControllerMock = new Mock<ICollisionController>();
+        gameStateMock.Setup(gs => gs.Enemies).Returns(new List<IBattleStar>());
+        gameStateMock.Setup(gs => gs.PlayerShots).Returns(new List<IShot>());
+        gameStateMock.Setup(gs => gs.EnemyShots).Returns(new List<IShot>());
+        gameStateMock.Setup(gs => gs.Validate()).Verifiable();
         var inputHandlerMock = new Mock<IInputHandler>();
 
         inputHandlerMock.Setup(ih => ih.ShouldExit()).Returns(false);
-        gameStateMock.Setup(gs => gs.Validate()).Verifiable();
+        
 
-        var gameController = new GameController(
+        var gameController =  ControllerFactory.CreateGameController(
             gameStateMock.Object,
-            playerControllerMock.Object,
-            enemyControllerMock.Object,
-            shotControllerMock.Object,
-            boundaryControllerMock.Object,
-            collisionControllerMock.Object,
+            new Mock<IBoundaryChecker>().Object,
+            new Mock<ICollisionChecker>().Object,
             inputHandlerMock.Object);
 
         var contextMock = new Mock<IContext>();
+
+        gameStateMock.Verify(gs => gs.Validate(), Times.Once); // Once during construction
 
         // Act
         gameController.RunFrame(contextMock.Object);
 
         // Assert
-        gameStateMock.Verify(gs => gs.Validate(), Times.Exactly(2)); // Once in constructor, once after processing
+        gameStateMock.Verify(gs => gs.Validate(), Times.Exactly(2)); // Once during construction and once after processing
     }
 
     #endregion
@@ -384,21 +149,12 @@ public class GameControllerTest
         gameStateMock.Setup(gs => gs.PlayerShots).Returns(playerShots);
         gameStateMock.Setup(gs => gs.EnemyShots).Returns(enemyShots);
 
-        var playerControllerMock = new Mock<IPlayerController>();
-        var enemyControllerMock = new Mock<IEnemyController>();
-        var shotControllerMock = new Mock<IShotController>();
-        var boundaryControllerMock = new Mock<IBoundaryController>();
-        var collisionControllerMock = new Mock<ICollisionController>();
-        var inputHandlerMock = new Mock<IInputHandler>();
-
-        var gameController = new GameController(
+        var gameController =  ControllerFactory.CreateGameController(
             gameStateMock.Object,
-            playerControllerMock.Object,
-            enemyControllerMock.Object,
-            shotControllerMock.Object,
-            boundaryControllerMock.Object,
-            collisionControllerMock.Object,
-            inputHandlerMock.Object);
+            new Mock<IBoundaryChecker>().Object,
+            new Mock<ICollisionChecker>().Object,
+            new Mock<IInputHandler>().Object
+        );
 
         // Act
         var snapshot = gameController.GetFrameSnapshot();
@@ -409,7 +165,6 @@ public class GameControllerTest
         snapshot.PlayerShots.Should().BeEquivalentTo(playerShots);
         snapshot.EnemyShots.Should().BeEquivalentTo(enemyShots);
         snapshot.ShouldContinue.Should().BeTrue();
-        gameStateMock.Verify(gs => gs.Validate(), Times.Exactly(2)); // Ensure Validate is called
     }
 
     #endregion
