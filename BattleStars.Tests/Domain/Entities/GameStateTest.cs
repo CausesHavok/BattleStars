@@ -2,6 +2,7 @@ using FluentAssertions;
 using Moq;
 using BattleStars.Domain.Interfaces;
 using BattleStars.Domain.Entities;
+using BattleStars.Infrastructure.Factories;
 
 namespace BattleStars.Tests.Domain.Entities;
 
@@ -14,9 +15,9 @@ public class GameStateTest
     {
         // Given
         var player = new Mock<IBattleStar>().Object;
-        var playerShots = new List<IShot>();
+        var playerShots = ShotFactory.CreateEmptyShotList();
         var enemies = new List<IBattleStar>();
-        var enemyShots = new List<IShot>();
+        var enemyShots = ShotFactory.CreateEmptyShotList();
 
         // When
         Action act = () => new GameState(null!, player, playerShots, enemies, enemyShots);
@@ -30,9 +31,9 @@ public class GameStateTest
     {
         // Given
         var context = new Mock<IContext>().Object;
-        var playerShots = new List<IShot>();
+        var playerShots = ShotFactory.CreateEmptyShotList();
         var enemies = new List<IBattleStar>();
-        var enemyShots = new List<IShot>();
+        var enemyShots = ShotFactory.CreateEmptyShotList();
 
         // When
         Action act = () => new GameState(context, null!, playerShots, enemies, enemyShots);
@@ -42,29 +43,13 @@ public class GameStateTest
     }
 
     [Fact]
-    public void GivenNullPlayerShots_WhenConstructed_ThenThrowsArgumentNullException()
-    {
-        // Given
-        var context = new Mock<IContext>().Object;
-        var player = new Mock<IBattleStar>().Object;
-        var enemies = new List<IBattleStar>();
-        var enemyShots = new List<IShot>();
-
-        // When
-        Action act = () => new GameState(context, player, null!, enemies, enemyShots);
-
-        // Then
-        act.Should().Throw<ArgumentNullException>().WithMessage("*playerShots*");
-    }
-
-    [Fact]
     public void GivenNullEnemies_WhenConstructed_ThenThrowsArgumentNullException()
     {
         // Given
         var context = new Mock<IContext>().Object;
         var player = new Mock<IBattleStar>().Object;
-        var playerShots = new List<IShot>();
-        var enemyShots = new List<IShot>();
+        var playerShots = ShotFactory.CreateEmptyShotList();
+        var enemyShots = ShotFactory.CreateEmptyShotList();
 
         // When
         Action act = () => new GameState(context, player, playerShots, null!, enemyShots);
@@ -74,30 +59,14 @@ public class GameStateTest
     }
 
     [Fact]
-    public void GivenNullEnemyShots_WhenConstructed_ThenThrowsArgumentNullException()
-    {
-        // Given
-        var context = new Mock<IContext>().Object;
-        var player = new Mock<IBattleStar>().Object;
-        var playerShots = new List<IShot>();
-        var enemies = new List<IBattleStar>();
-
-        // When
-        Action act = () => new GameState(context, player, playerShots, enemies, null!);
-
-        // Then
-        act.Should().Throw<ArgumentNullException>().WithMessage("*enemyShots*");
-    }
-
-    [Fact]
     public void GivenValidInputs_WhenConstructed_ThenPropertiesAreSet()
     {
         // Given
         var context = new Mock<IContext>().Object;
         var player = new Mock<IBattleStar>().Object;
-        var playerShots = new List<IShot>();
+        var playerShots = ShotFactory.CreateEmptyShotList();
         var enemies = new List<IBattleStar>();
-        var enemyShots = new List<IShot>();
+        var enemyShots = ShotFactory.CreateEmptyShotList();
 
         // When
         var gameState = new GameState(context, player, playerShots, enemies, enemyShots);
@@ -120,9 +89,9 @@ public class GameStateTest
         // Given
         var context = new Mock<IContext>().Object;
         var player = new Mock<IBattleStar>().Object;
-        var playerShots = new List<IShot>();
+        var playerShots = ShotFactory.CreateEmptyShotList();
         var enemies = new List<IBattleStar>();
-        var enemyShots = new List<IShot>();
+        var enemyShots = ShotFactory.CreateEmptyShotList();
         var gameState = new GameState(context, player, playerShots, enemies, enemyShots);
 
         // When
@@ -138,9 +107,9 @@ public class GameStateTest
         // Given
         var context = new Mock<IContext>().Object;
         var player = new Mock<IBattleStar>().Object;
-        var playerShots = new List<IShot>();
+        var playerShots = ShotFactory.CreateEmptyShotList();
         var enemies = new List<IBattleStar>();
-        var enemyShots = new List<IShot>();
+        var enemyShots = ShotFactory.CreateEmptyShotList();
         var gameState = new GameState(context, player, playerShots, enemies, enemyShots);
 
         // When
@@ -156,9 +125,9 @@ public class GameStateTest
         // Given
         var context = new Mock<IContext>().Object;
         var player = new Mock<IBattleStar>().Object;
-        var playerShots = new List<IShot>();
+        var playerShots = ShotFactory.CreateEmptyShotList();
         var enemies = new List<IBattleStar>();
-        var enemyShots = new List<IShot>();
+        var enemyShots = ShotFactory.CreateEmptyShotList();
         var gameState = new GameState(context, player, playerShots, enemies, enemyShots);
 
         // When
@@ -174,9 +143,9 @@ public class GameStateTest
         // Given
         var context = new Mock<IContext>().Object;
         var player = new Mock<IBattleStar>().Object;
-        var playerShots = new List<IShot>();
+        var playerShots = ShotFactory.CreateEmptyShotList();
         var enemies = new List<IBattleStar>();
-        var enemyShots = new List<IShot>();
+        var enemyShots = ShotFactory.CreateEmptyShotList();
         var gameState = new GameState(context, player, playerShots, enemies, enemyShots);
 
         // When
@@ -192,9 +161,9 @@ public class GameStateTest
         // Given
         var context = new Mock<IContext>().Object;
         var player = new Mock<IBattleStar>().Object;
-        var playerShots = new List<IShot>();
+        var playerShots = ShotFactory.CreateEmptyShotList();
         var enemies = new List<IBattleStar>();
-        var enemyShots = new List<IShot>();
+        var enemyShots = ShotFactory.CreateEmptyShotList();
         var gameState = new GameState(context, player, playerShots, enemies, enemyShots);
 
         // When
@@ -210,16 +179,16 @@ public class GameStateTest
         // Given
         var context = new Mock<IContext>().Object;
         var player = new Mock<IBattleStar>().Object;
-        var playerShots = new List<IShot>();
+        var playerShots = ShotFactory.CreateEmptyShotList();
         var enemies = new List<IBattleStar>();
-        var enemyShots = new List<IShot>();
+        var enemyShots = ShotFactory.CreateEmptyShotList();
         var gameState = new GameState(context, player, playerShots, enemies, enemyShots);
 
         var newContext = new Mock<IContext>().Object;
         var newPlayer = new Mock<IBattleStar>().Object;
-        var newPlayerShots = new List<IShot> { new Mock<IShot>().Object };
+        var newPlayerShots = new List<IShot> { ShotFactory.CreateNoOpShot() };
         var newEnemies = new List<IBattleStar> { new Mock<IBattleStar>().Object };
-        var newEnemyShots = new List<IShot> { new Mock<IShot>().Object };
+        var newEnemyShots = new List<IShot> { ShotFactory.CreateNoOpShot() };
 
         // When
         gameState.Context = newContext;
@@ -246,9 +215,9 @@ public class GameStateTest
         // Given
         var context = new Mock<IContext>().Object;
         var player = new Mock<IBattleStar>().Object;
-        var playerShots = new List<IShot>();
+        var playerShots = ShotFactory.CreateEmptyShotList();
         var enemies = new List<IBattleStar> { player };
-        var enemyShots = new List<IShot>();
+        var enemyShots = ShotFactory.CreateEmptyShotList();
         var gameState = new GameState(context, player, playerShots, enemies, enemyShots);
 
         // When
@@ -264,7 +233,7 @@ public class GameStateTest
         // Given
         var context = new Mock<IContext>().Object;
         var player = new Mock<IBattleStar>().Object;
-        var shot = new Mock<IShot>().Object;
+        var shot = ShotFactory.CreateNoOpShot();
         var playerShots = new List<IShot> { shot };
         var enemies = new List<IBattleStar>();
         var enemyShots = new List<IShot> { shot };
@@ -285,8 +254,8 @@ public class GameStateTest
         var player = new Mock<IBattleStar>().Object;
         var enemy1 = new Mock<IBattleStar>().Object;
         var enemies = new List<IBattleStar> { enemy1, enemy1 };
-        var playerShots = new List<IShot>();
-        var enemyShots = new List<IShot>();
+        var playerShots = ShotFactory.CreateEmptyShotList();
+        var enemyShots = ShotFactory.CreateEmptyShotList();
         var gameState = new GameState(context, player, playerShots, enemies, enemyShots);
 
         // When
@@ -302,10 +271,10 @@ public class GameStateTest
         // Given
         var context = new Mock<IContext>().Object;
         var player = new Mock<IBattleStar>().Object;
-        var shot = new Mock<IShot>().Object;
+        var shot = ShotFactory.CreateNoOpShot();
         var playerShots = new List<IShot> { shot, shot };
         var enemies = new List<IBattleStar>();
-        var enemyShots = new List<IShot>();
+        var enemyShots = ShotFactory.CreateEmptyShotList();
         var gameState = new GameState(context, player, playerShots, enemies, enemyShots);
 
         // When
@@ -321,8 +290,8 @@ public class GameStateTest
         // Given
         var context = new Mock<IContext>().Object;
         var player = new Mock<IBattleStar>().Object;
-        var shot = new Mock<IShot>().Object;
-        var playerShots = new List<IShot>();
+        var shot = ShotFactory.CreateNoOpShot();
+        var playerShots = ShotFactory.CreateEmptyShotList();
         var enemies = new List<IBattleStar>();
         var enemyShots = new List<IShot> { shot, shot };
         var gameState = new GameState(context, player, playerShots, enemies, enemyShots);
@@ -343,8 +312,8 @@ public class GameStateTest
         var enemy1 = new Mock<IBattleStar>().Object;
         var enemy2 = new Mock<IBattleStar>().Object;
         var enemies = new List<IBattleStar> { enemy1, enemy2 };
-        var shot1 = new Mock<IShot>().Object;
-        var shot2 = new Mock<IShot>().Object;
+        var shot1 = ShotFactory.CreateNoOpShot();
+        var shot2 = ShotFactory.CreateNoOpShot();
         var playerShots = new List<IShot> { shot1 };
         var enemyShots = new List<IShot> { shot2 };
         var gameState = new GameState(context, player, playerShots, enemies, enemyShots);

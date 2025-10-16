@@ -3,6 +3,7 @@ using Moq;
 using BattleStars.Domain.Interfaces;
 using BattleStars.Domain.ValueObjects;
 using BattleStars.Application.Services;
+using BattleStars.Infrastructure.Factories;
 
 namespace BattleStars.Tests.Application.Services;
 
@@ -62,7 +63,7 @@ public class CollisionControllerTest
         // Given
         var gameStateMock = new Mock<IGameState>();
         gameStateMock.Setup(g => g.Player).Returns(new Mock<IBattleStar>().Object);
-        gameStateMock.Setup(g => g.Enemies).Returns(new List<IBattleStar>());
+        gameStateMock.Setup(g => g.Enemies).Returns([]);
         gameStateMock.Setup(g => g.PlayerShots).Returns((List<IShot>)null!);
         var collisionChecker = new Mock<ICollisionChecker>();
         var controller = new CollisionController(collisionChecker.Object);
@@ -80,8 +81,8 @@ public class CollisionControllerTest
         // Given
         var gameStateMock = new Mock<IGameState>();
         gameStateMock.Setup(g => g.Player).Returns(new Mock<IBattleStar>().Object);
-        gameStateMock.Setup(g => g.Enemies).Returns(new List<IBattleStar>());
-        gameStateMock.Setup(g => g.PlayerShots).Returns(new List<IShot>());
+        gameStateMock.Setup(g => g.Enemies).Returns([]);
+        gameStateMock.Setup(g => g.PlayerShots).Returns(ShotFactory.CreateEmptyShotList());
         gameStateMock.Setup(g => g.EnemyShots).Returns((List<IShot>)null!);
         var collisionChecker = new Mock<ICollisionChecker>();
         var controller = new CollisionController(collisionChecker.Object);
@@ -110,9 +111,13 @@ public class CollisionControllerTest
     public void GivenPlayerShotCollidesWithEnemy_WhenHandleCollisions_ThenEnemyTakesDamageAndShotRemoved()
     {
         // Given
-        var shotMock = new Mock<IShot>();
-        shotMock.Setup(s => s.Position).Returns(new PositionalVector2(5, 5));
-        shotMock.Setup(s => s.Damage).Returns(10);
+        var damage = 10;
+        var customShot = ShotFactory.CustomShot(
+            new PositionalVector2(5, 5),
+            new DirectionalVector2(1, 0),
+            5,
+            damage
+        );
 
         var enemyMock = new Mock<IBattleStar>();
         enemyMock.Setup(e => e.Contains(It.IsAny<PositionalVector2>())).Returns(true);
@@ -121,12 +126,12 @@ public class CollisionControllerTest
 
         var gameStateMock = new Mock<IGameState>();
         gameStateMock.Setup(g => g.Player).Returns(new Mock<IBattleStar>().Object);
-        gameStateMock.Setup(g => g.Enemies).Returns(new List<IBattleStar> { enemyMock.Object });
-        gameStateMock.Setup(g => g.PlayerShots).Returns(new List<IShot> { shotMock.Object });
-        gameStateMock.Setup(g => g.EnemyShots).Returns(new List<IShot>());
+        gameStateMock.Setup(g => g.Enemies).Returns([enemyMock.Object]);
+        gameStateMock.Setup(g => g.PlayerShots).Returns([customShot]);
+        gameStateMock.Setup(g => g.EnemyShots).Returns(ShotFactory.CreateEmptyShotList());
 
         var collisionCheckerMock = new Mock<ICollisionChecker>();
-        collisionCheckerMock.Setup(c => c.CheckBattleStarShotCollision(enemyMock.Object, shotMock.Object)).Returns(true);
+        collisionCheckerMock.Setup(c => c.CheckBattleStarShotCollision(enemyMock.Object, customShot)).Returns(true);
 
         var controller = new CollisionController(collisionCheckerMock.Object);
 
@@ -134,7 +139,7 @@ public class CollisionControllerTest
         controller.HandleCollisions(gameStateMock.Object);
 
         // Then
-        enemyMock.Verify(e => e.TakeDamage(10), Times.Once);
+        enemyMock.Verify(e => e.TakeDamage(damage), Times.Once);
         gameStateMock.Object.PlayerShots.Should().BeEmpty();
     }
 
@@ -142,9 +147,13 @@ public class CollisionControllerTest
     public void GivenPlayerShotDestroysEnemy_WhenHandleCollisions_ThenEnemyAndShotRemoved()
     {
         // Given
-        var shotMock = new Mock<IShot>();
-        shotMock.Setup(s => s.Position).Returns(new PositionalVector2(5, 5));
-        shotMock.Setup(s => s.Damage).Returns(10);
+        var damage = 10;
+        var customShot = ShotFactory.CustomShot(
+            new PositionalVector2(5, 5),
+            new DirectionalVector2(1, 0),
+            5,
+            damage
+        );
 
         var enemyMock = new Mock<IBattleStar>();
         enemyMock.Setup(e => e.Contains(It.IsAny<PositionalVector2>())).Returns(true);
@@ -153,12 +162,12 @@ public class CollisionControllerTest
 
         var gameStateMock = new Mock<IGameState>();
         gameStateMock.Setup(g => g.Player).Returns(new Mock<IBattleStar>().Object);
-        gameStateMock.Setup(g => g.Enemies).Returns(new List<IBattleStar> { enemyMock.Object });
-        gameStateMock.Setup(g => g.PlayerShots).Returns(new List<IShot> { shotMock.Object });
-        gameStateMock.Setup(g => g.EnemyShots).Returns(new List<IShot>());
+        gameStateMock.Setup(g => g.Enemies).Returns([enemyMock.Object]);
+        gameStateMock.Setup(g => g.PlayerShots).Returns([customShot]);
+        gameStateMock.Setup(g => g.EnemyShots).Returns(ShotFactory.CreateEmptyShotList());
 
         var collisionCheckerMock = new Mock<ICollisionChecker>();
-        collisionCheckerMock.Setup(c => c.CheckBattleStarShotCollision(enemyMock.Object, shotMock.Object)).Returns(true);
+        collisionCheckerMock.Setup(c => c.CheckBattleStarShotCollision(enemyMock.Object, customShot)).Returns(true);
 
         var controller = new CollisionController(collisionCheckerMock.Object);
 
@@ -166,7 +175,7 @@ public class CollisionControllerTest
         controller.HandleCollisions(gameStateMock.Object);
 
         // Then
-        enemyMock.Verify(e => e.TakeDamage(10), Times.Once);
+        enemyMock.Verify(e => e.TakeDamage(damage), Times.Once);
         gameStateMock.Object.PlayerShots.Should().BeEmpty();
         gameStateMock.Object.Enemies.Should().BeEmpty();
     }
@@ -175,9 +184,7 @@ public class CollisionControllerTest
     public void GivenPlayerShotDoesNotCollideWithEnemy_WhenHandleCollisions_ThenNoDamageAndShotNotRemoved()
     {
         // Given
-        var shotMock = new Mock<IShot>();
-        shotMock.Setup(s => s.Position).Returns(new PositionalVector2(5, 5));
-        shotMock.Setup(s => s.Damage).Returns(10);
+        var noOpShot = ShotFactory.CreateNoOpShot(new PositionalVector2(5, 5));
 
         var enemyMock = new Mock<IBattleStar>();
         enemyMock.Setup(e => e.Contains(It.IsAny<PositionalVector2>())).Returns(false);
@@ -185,12 +192,12 @@ public class CollisionControllerTest
 
         var gameStateMock = new Mock<IGameState>();
         gameStateMock.Setup(g => g.Player).Returns(new Mock<IBattleStar>().Object);
-        gameStateMock.Setup(g => g.Enemies).Returns(new List<IBattleStar> { enemyMock.Object });
-        gameStateMock.Setup(g => g.PlayerShots).Returns(new List<IShot> { shotMock.Object });
-        gameStateMock.Setup(g => g.EnemyShots).Returns(new List<IShot>());
+        gameStateMock.Setup(g => g.Enemies).Returns([enemyMock.Object]);
+        gameStateMock.Setup(g => g.PlayerShots).Returns([noOpShot]);
+        gameStateMock.Setup(g => g.EnemyShots).Returns(ShotFactory.CreateEmptyShotList());
 
         var collisionCheckerMock = new Mock<ICollisionChecker>();
-        collisionCheckerMock.Setup(c => c.CheckBattleStarShotCollision(enemyMock.Object, shotMock.Object)).Returns(false);
+        collisionCheckerMock.Setup(c => c.CheckBattleStarShotCollision(enemyMock.Object, noOpShot)).Returns(false);
 
         var controller = new CollisionController(collisionCheckerMock.Object);
 
@@ -199,7 +206,7 @@ public class CollisionControllerTest
 
         // Then
         enemyMock.Verify(e => e.TakeDamage(It.IsAny<int>()), Times.Never);
-        gameStateMock.Object.PlayerShots.Should().Contain(shotMock.Object);
+        gameStateMock.Object.PlayerShots.Should().Contain(noOpShot);
         gameStateMock.Object.Enemies.Should().Contain(enemyMock.Object);
     }
 
@@ -210,9 +217,13 @@ public class CollisionControllerTest
     public void GivenEnemyShotCollidesWithPlayer_WhenHandleCollisions_ThenPlayerTakesDamageAndShotRemoved()
     {
         // Given
-        var shotMock = new Mock<IShot>();
-        shotMock.Setup(s => s.Position).Returns(new PositionalVector2(5, 5));
-        shotMock.Setup(s => s.Damage).Returns(10);
+        var damage = 10;
+        var customShot = ShotFactory.CustomShot(
+            new PositionalVector2(5, 5),
+            new DirectionalVector2(1, 0),
+            5,
+            damage
+        );
 
         var playerMock = new Mock<IBattleStar>();
         playerMock.Setup(p => p.Contains(It.IsAny<PositionalVector2>())).Returns(true);
@@ -221,12 +232,12 @@ public class CollisionControllerTest
 
         var gameStateMock = new Mock<IGameState>();
         gameStateMock.Setup(g => g.Player).Returns(playerMock.Object);
-        gameStateMock.Setup(g => g.Enemies).Returns(new List<IBattleStar>());
-        gameStateMock.Setup(g => g.PlayerShots).Returns(new List<IShot>());
-        gameStateMock.Setup(g => g.EnemyShots).Returns(new List<IShot> { shotMock.Object });
+        gameStateMock.Setup(g => g.Enemies).Returns([]);
+        gameStateMock.Setup(g => g.PlayerShots).Returns(ShotFactory.CreateEmptyShotList());
+        gameStateMock.Setup(g => g.EnemyShots).Returns([customShot]);
 
         var collisionCheckerMock = new Mock<ICollisionChecker>();
-        collisionCheckerMock.Setup(c => c.CheckBattleStarShotCollision(playerMock.Object, shotMock.Object)).Returns(true);
+        collisionCheckerMock.Setup(c => c.CheckBattleStarShotCollision(playerMock.Object, customShot)).Returns(true);
 
         var controller = new CollisionController(collisionCheckerMock.Object);
 
@@ -234,7 +245,7 @@ public class CollisionControllerTest
         controller.HandleCollisions(gameStateMock.Object);
 
         // Then
-        playerMock.Verify(p => p.TakeDamage(10), Times.Once);
+        playerMock.Verify(p => p.TakeDamage(damage), Times.Once);
         gameStateMock.Object.EnemyShots.Should().BeEmpty();
         gameStateMock.Object.Player.IsDestroyed.Should().BeFalse();
     }
@@ -243,9 +254,13 @@ public class CollisionControllerTest
     public void GivenEnemyShotDestroysPlayer_WhenHandleCollisions_ThenPlayerTakesDamageAndShotRemoved()
     {
         // Given
-        var shotMock = new Mock<IShot>();
-        shotMock.Setup(s => s.Position).Returns(new PositionalVector2(5, 5));
-        shotMock.Setup(s => s.Damage).Returns(10);
+        var damage = 10;
+        var customShot = ShotFactory.CustomShot(
+            new PositionalVector2(5, 5),
+            new DirectionalVector2(1, 0),
+            5,
+            damage
+        );
 
         var playerMock = new Mock<IBattleStar>();
         playerMock.Setup(p => p.Contains(It.IsAny<PositionalVector2>())).Returns(true);
@@ -254,12 +269,12 @@ public class CollisionControllerTest
 
         var gameStateMock = new Mock<IGameState>();
         gameStateMock.Setup(g => g.Player).Returns(playerMock.Object);
-        gameStateMock.Setup(g => g.Enemies).Returns(new List<IBattleStar>());
-        gameStateMock.Setup(g => g.PlayerShots).Returns(new List<IShot>());
-        gameStateMock.Setup(g => g.EnemyShots).Returns(new List<IShot> { shotMock.Object });
+        gameStateMock.Setup(g => g.Enemies).Returns([]);
+        gameStateMock.Setup(g => g.PlayerShots).Returns([]);
+        gameStateMock.Setup(g => g.EnemyShots).Returns([customShot]);
 
         var collisionCheckerMock = new Mock<ICollisionChecker>();
-        collisionCheckerMock.Setup(c => c.CheckBattleStarShotCollision(playerMock.Object, shotMock.Object)).Returns(true);
+        collisionCheckerMock.Setup(c => c.CheckBattleStarShotCollision(playerMock.Object, customShot)).Returns(true);
 
         var controller = new CollisionController(collisionCheckerMock.Object);
 
@@ -267,7 +282,7 @@ public class CollisionControllerTest
         controller.HandleCollisions(gameStateMock.Object);
 
         // Then
-        playerMock.Verify(p => p.TakeDamage(10), Times.Once);
+        playerMock.Verify(p => p.TakeDamage(damage), Times.Once);
         gameStateMock.Object.EnemyShots.Should().BeEmpty();
         gameStateMock.Object.Player.IsDestroyed.Should().BeTrue();
     }
@@ -276,9 +291,7 @@ public class CollisionControllerTest
     public void GivenEnemyShotDoesNotCollideWithPlayer_WhenHandleCollisions_ThenNoDamageTakenAndShotNotRemoved()
     {
         // Given
-        var shotMock = new Mock<IShot>();
-        shotMock.Setup(s => s.Position).Returns(new PositionalVector2(5, 5));
-        shotMock.Setup(s => s.Damage).Returns(10);
+        var noOpShot = ShotFactory.CreateNoOpShot(new PositionalVector2(5, 5));
 
         var playerMock = new Mock<IBattleStar>();
         playerMock.Setup(p => p.Contains(It.IsAny<PositionalVector2>())).Returns(true);
@@ -287,12 +300,12 @@ public class CollisionControllerTest
 
         var gameStateMock = new Mock<IGameState>();
         gameStateMock.Setup(g => g.Player).Returns(playerMock.Object);
-        gameStateMock.Setup(g => g.Enemies).Returns(new List<IBattleStar>());
-        gameStateMock.Setup(g => g.PlayerShots).Returns(new List<IShot>());
-        gameStateMock.Setup(g => g.EnemyShots).Returns(new List<IShot> { shotMock.Object });
+        gameStateMock.Setup(g => g.Enemies).Returns([]);
+        gameStateMock.Setup(g => g.PlayerShots).Returns([]);
+        gameStateMock.Setup(g => g.EnemyShots).Returns([noOpShot]);
 
         var collisionCheckerMock = new Mock<ICollisionChecker>();
-        collisionCheckerMock.Setup(c => c.CheckBattleStarShotCollision(playerMock.Object, shotMock.Object)).Returns(false);
+        collisionCheckerMock.Setup(c => c.CheckBattleStarShotCollision(playerMock.Object, noOpShot)).Returns(false);
 
         var controller = new CollisionController(collisionCheckerMock.Object);
 
@@ -301,7 +314,7 @@ public class CollisionControllerTest
 
         // Then
         playerMock.Verify(p => p.TakeDamage(It.IsAny<int>()), Times.Never);
-        gameStateMock.Object.EnemyShots.Should().Contain(shotMock.Object);
+        gameStateMock.Object.EnemyShots.Should().Contain(noOpShot);
         gameStateMock.Object.Player.IsDestroyed.Should().BeFalse();
     }
     #endregion

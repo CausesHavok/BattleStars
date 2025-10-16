@@ -3,6 +3,7 @@ using Moq;
 using BattleStars.Domain.Interfaces;
 using BattleStars.Domain.ValueObjects;
 using BattleStars.Application.Services;
+using BattleStars.Infrastructure.Factories;
 
 namespace BattleStars.Tests.Application.Services;
 
@@ -81,13 +82,11 @@ public class BoundaryControllerTest
         boundaryCheckerMock.Setup(b => b.IsOutsideXBounds(It.IsAny<float>())).Returns(true);
         boundaryCheckerMock.Setup(b => b.IsOutsideYBounds(It.IsAny<float>())).Returns(false);
 
-        var shotMock1 = new Mock<IShot>();
-        shotMock1.Setup(s => s.Position).Returns(new PositionalVector2(1000, 50));
-        var shotMock2 = new Mock<IShot>();
-        shotMock2.Setup(s => s.Position).Returns(new PositionalVector2(-100, 50));
+        var noOpShot1 = ShotFactory.CreateNoOpShot(new PositionalVector2(1000, 50));
+        var noOpShot2 = ShotFactory.CreateNoOpShot(new PositionalVector2(-100, 50));
 
-        var playerShots = new List<IShot> { shotMock1.Object, shotMock2.Object };
-        var enemyShots = new List<IShot> { shotMock1.Object, shotMock2.Object };
+        var playerShots = new List<IShot> { noOpShot1, noOpShot2 };
+        var enemyShots = new List<IShot> { noOpShot1, noOpShot2 };
 
         var gameStateMock = new Mock<IGameState>();
         gameStateMock.Setup(g => g.Player).Returns(new Mock<IBattleStar>().Object);
@@ -113,13 +112,11 @@ public class BoundaryControllerTest
         boundaryCheckerMock.Setup(b => b.IsOutsideXBounds(It.IsAny<float>())).Returns(false);
         boundaryCheckerMock.Setup(b => b.IsOutsideYBounds(It.IsAny<float>())).Returns(false);
 
-        var shotMock1 = new Mock<IShot>();
-        shotMock1.Setup(s => s.Position).Returns(new PositionalVector2(100, 50));
-        var shotMock2 = new Mock<IShot>();
-        shotMock2.Setup(s => s.Position).Returns(new PositionalVector2(200, 150));
+        var noOpShot1 = ShotFactory.CreateNoOpShot(new PositionalVector2(100, 50));
+        var noOpShot2 = ShotFactory.CreateNoOpShot(new PositionalVector2(200, 150));
 
-        var playerShots = new List<IShot> { shotMock1.Object, shotMock2.Object };
-        var enemyShots = new List<IShot> { shotMock1.Object, shotMock2.Object };
+        var playerShots = new List<IShot> { noOpShot1, noOpShot2 };
+        var enemyShots = new List<IShot> { noOpShot1, noOpShot2 };
 
         var gameStateMock = new Mock<IGameState>();
         gameStateMock.Setup(g => g.Player).Returns(new Mock<IBattleStar>().Object);

@@ -9,7 +9,7 @@ namespace BattleStars.Application.Controllers;
 /// It interacts with the input handler to get movement directions and shooting commands,
 /// and updates the game state accordingly.
 /// </remarks>
-public class PlayerController : IPlayerController
+internal class PlayerController : IPlayerController
 {
     /// <summary>
     /// Updates the player character based on input and game state.
@@ -28,11 +28,6 @@ public class PlayerController : IPlayerController
     /// </remarks>
     public void UpdatePlayer(IContext context, IInputHandler inputHandler, IGameState gameState)
     {
-        ArgumentNullException.ThrowIfNull(context, nameof(context));
-        ArgumentNullException.ThrowIfNull(inputHandler, nameof(inputHandler));
-        ArgumentNullException.ThrowIfNull(gameState, nameof(gameState));
-        ArgumentNullException.ThrowIfNull(gameState.Player, nameof(gameState.Player));
-
         MovePlayer(context, inputHandler, gameState.Player);
         HandleShooting(context, inputHandler, gameState);
     }

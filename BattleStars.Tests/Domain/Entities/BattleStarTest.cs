@@ -3,6 +3,7 @@ using FluentAssertions;
 using BattleStars.Domain.Interfaces;
 using BattleStars.Domain.Entities;
 using BattleStars.Domain.ValueObjects;
+using BattleStars.Infrastructure.Factories;
 
 namespace BattleStars.Tests.Domain.Entities;
 
@@ -252,7 +253,7 @@ public class BattleStarTest : IClassFixture<TestBattleStarFixture>
 
         var context = _contextFixture;
 
-        var expectedShots = new List<IShot> { new Mock<IShot>().Object };
+        var expectedShots = new List<IShot> { ShotFactory.CreateNoOpShot() };
         testBattleStar.MockShooter.Setup(s => s.Shoot(context)).Returns(expectedShots);
 
         // Act

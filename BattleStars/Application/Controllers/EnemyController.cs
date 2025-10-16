@@ -7,7 +7,7 @@ namespace BattleStars.Application.Controllers;
 /// <remarks>
 /// This class is responsible for updating the position of each enemy and handling their shooting.
 /// </remarks>
-public class EnemyController : IEnemyController
+internal class EnemyController : IEnemyController
 {
 
     /// <summary>
@@ -19,9 +19,6 @@ public class EnemyController : IEnemyController
     /// </remarks>
     public void UpdateEnemies(IContext context, IGameState gameState)
     {
-        ArgumentNullException.ThrowIfNull(gameState, nameof(gameState));
-        ArgumentNullException.ThrowIfNull(context, nameof(context));
-        ArgumentNullException.ThrowIfNull(gameState.Enemies, nameof(gameState.Enemies));
         MoveEnemies(context, gameState);
         HandleShooting(context, gameState);
     }

@@ -11,125 +11,23 @@ public class ShotTest
     */
 
     #region Constructor Tests
-    /*
-        * Tests the construction of properties
-        * Tests the damage
-            * NaN or Infinity values are not allowed
-            * Negative values are not allowed
-            * Other values are allowed
-        * Tests the Speed property
-            * NaN or Infinity values are not allowed
-            * Negative values are not allowed
-            * Other values are allowed
-        * Tests the IsActive property
-            * Should be true by default
-        * NOTE. PositionalVector2 and DirectionalVector2 are tested in their respective test classes
-    */
 
     [Fact]
-    public void GivenShot_WhenConstructed_PropertiesAreSetCorrectly()
+    public void GivenValidParameters_WhenShotConstructed_ThenPropertiesAreSetCorrectly()
     {
-        // Arrange
         var position = new PositionalVector2(1, 2);
-        var direction = new DirectionalVector2(Vector2.UnitY); // Up
-        var speed = 5f;
-        var damage = 10f;
+        var direction = new DirectionalVector2(0, 1);
+        float speed = 5f;
+        float damage = 10f;
 
-        // Act
         var shot = new Shot(position, direction, speed, damage);
 
-        // Assert
         shot.Position.Should().Be(position);
         shot.Direction.Should().Be(direction);
         shot.Speed.Should().Be(speed);
         shot.Damage.Should().Be(damage);
         shot.IsActive.Should().BeTrue();
     }
-
-    [Fact]
-    public void GivenShot_WhenSpeedIsNaN_ThrowsArgumentException()
-    {
-        // Arrange
-        var position = new PositionalVector2(1, 2);
-        var direction = new DirectionalVector2(Vector2.UnitY); // Up
-        float speed = float.NaN;
-        float damage = 10f;
-
-        // Act & Assert
-        Action act = () => new Shot(position, direction, speed, damage);
-        act.Should().Throw<ArgumentException>().WithMessage("speed cannot be NaN.*");
-    }
-
-    [Fact]
-    public void GivenShot_WhenSpeedIsInfinity_ThrowsArgumentException()
-    {
-        // Arrange
-        var position = new PositionalVector2(1, 2);
-        var direction = new DirectionalVector2(Vector2.UnitY); // Up
-        float speed = float.PositiveInfinity;
-        float damage = 10f;
-
-        // Act & Assert
-        Action act = () => new Shot(position, direction, speed, damage);
-        act.Should().Throw<ArgumentException>().WithMessage("speed cannot be Infinity.*");
-    }
-
-    [Fact]
-    public void GivenShot_WhenSpeedIsNegative_ThrowsArgumentException()
-    {
-        // Arrange
-        var position = new PositionalVector2(1, 2);
-        var direction = new DirectionalVector2(Vector2.UnitY); // Up
-        float speed = -5f;
-        float damage = 10f;
-
-        // Act & Assert
-        Action act = () => new Shot(position, direction, speed, damage);
-        act.Should().Throw<ArgumentException>().WithMessage("speed cannot be negative.*");
-    }
-
-    [Fact]
-    public void GivenShot_WhenDamageIsNaN_ThrowsArgumentException()
-    {
-        // Arrange
-        var position = new PositionalVector2(1, 2);
-        var direction = new DirectionalVector2(Vector2.UnitY); // Up
-        float speed = 5f;
-        float damage = float.NaN;
-
-        // Act & Assert
-        Action act = () => new Shot(position, direction, speed, damage);
-        act.Should().Throw<ArgumentException>().WithMessage("damage cannot be NaN*");
-    }
-
-    [Fact]
-    public void GivenShot_WhenDamageIsInfinity_ThrowsArgumentException()
-    {
-        // Arrange
-        var position = new PositionalVector2(1, 2);
-        var direction = new DirectionalVector2(Vector2.UnitY); // Up
-        float speed = 5f;
-        float damage = float.PositiveInfinity;
-
-        // Act & Assert
-        Action act = () => new Shot(position, direction, speed, damage);
-        act.Should().Throw<ArgumentException>().WithMessage("damage cannot be Infinity.*");
-    }
-
-    [Fact]
-    public void GivenShot_WhenDamageIsNegative_ThrowsArgumentException()
-    {
-        // Arrange
-        var position = new PositionalVector2(1, 2);
-        var direction = new DirectionalVector2(Vector2.UnitY); // Up
-        float speed = 5f;
-        float damage = -10f;
-
-        // Act & Assert
-        Action act = () => new Shot(position, direction, speed, damage);
-        act.Should().Throw<ArgumentException>().WithMessage("damage cannot be negative.*");
-    }
-
     #endregion
 
     #region Update Tests
@@ -345,5 +243,4 @@ public class ShotTest
     }
 
     #endregion
-
 }

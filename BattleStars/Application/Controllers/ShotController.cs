@@ -8,7 +8,7 @@ namespace BattleStars.Application.Controllers;
 /// This class is responsible for updating the positions of all active shots in the game state.
 /// It iterates through both player and enemy shots, calling their update methods to reflect movement.
 /// </remarks>
-public class ShotController : IShotController
+internal class ShotController : IShotController
 {
     /// <summary>
     /// Updates the positions of all active shots.
@@ -18,10 +18,6 @@ public class ShotController : IShotController
     /// </remarks>
     public void UpdateShots(IGameState gameState)
     {
-        ArgumentNullException.ThrowIfNull(gameState, nameof(gameState));
-        ArgumentNullException.ThrowIfNull(gameState.PlayerShots, nameof(gameState.PlayerShots));
-        ArgumentNullException.ThrowIfNull(gameState.EnemyShots, nameof(gameState.EnemyShots));
-
         HandleShots(gameState.PlayerShots);
         HandleShots(gameState.EnemyShots);
     }
