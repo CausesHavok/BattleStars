@@ -1,7 +1,7 @@
 using BattleStars.Domain.Entities;
 using BattleStars.Domain.Interfaces;
 using BattleStars.Domain.ValueObjects;
-using BattleStars.Infrastructure.Utilities;
+using BattleStars.Core.Guards;
 namespace BattleStars.Infrastructure.Factories;
 
 public static class ShotFactory

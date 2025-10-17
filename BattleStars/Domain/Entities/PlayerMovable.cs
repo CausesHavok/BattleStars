@@ -1,6 +1,6 @@
 using BattleStars.Domain.Interfaces;
 using BattleStars.Domain.ValueObjects;
-using BattleStars.Infrastructure.Utilities;
+using BattleStars.Core.Guards;
 using System.Numerics;
 namespace BattleStars.Domain.Entities;
 

@@ -1,7 +1,7 @@
 using BattleStars.Domain.Entities.Shapes;
 using BattleStars.Domain.Interfaces;
 using BattleStars.Domain.ValueObjects;
-using BattleStars.Infrastructure.Utilities;
+using BattleStars.Core.Guards;
 using BattleStars.Presentation.Drawers;
 
 namespace BattleStars.Infrastructure.Factories;

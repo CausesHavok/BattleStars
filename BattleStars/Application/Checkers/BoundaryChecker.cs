@@ -1,4 +1,4 @@
-using BattleStars.Infrastructure.Utilities;
+using BattleStars.Core.Guards;
 using BattleStars.Domain.Interfaces;
 
 namespace BattleStars.Application.Checkers;

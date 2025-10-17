@@ -1,7 +1,7 @@
 using System.Drawing;
 using BattleStars.Domain.ValueObjects;
 using BattleStars.Infrastructure.Adapters;
-using BattleStars.Infrastructure.Utilities;
+using BattleStars.Core.Guards;
 namespace BattleStars.Presentation.Drawers
 {
     public class RaylibShapeDrawer : IShapeDrawer

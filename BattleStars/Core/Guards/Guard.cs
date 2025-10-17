@@ -1,4 +1,4 @@
-namespace BattleStars.Infrastructure.Utilities;
+namespace BattleStars.Core.Guards;
 
 public static class Guard
 {

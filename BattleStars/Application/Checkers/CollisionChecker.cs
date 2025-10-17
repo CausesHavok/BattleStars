@@ -1,5 +1,5 @@
 using BattleStars.Domain.Interfaces;
-using BattleStars.Infrastructure.Utilities;
+using BattleStars.Core.Guards;
 namespace BattleStars.Application.Checkers;
 
 public class CollisionChecker : ICollisionChecker

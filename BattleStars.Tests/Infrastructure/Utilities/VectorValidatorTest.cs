@@ -1,6 +1,6 @@
 using System.Numerics;
 using FluentAssertions;
-using BattleStars.Infrastructure.Utilities;
+using BattleStars.Core.Guards;
 
 namespace BattleStars.Tests.Infrastructure.Utilities;
 

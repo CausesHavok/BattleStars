@@ -1,5 +1,5 @@
 using System.Numerics;
-using BattleStars.Infrastructure.Utilities;
+using BattleStars.Core.Guards;
 namespace BattleStars.Domain.ValueObjects;
 
 public struct PositionalVector2

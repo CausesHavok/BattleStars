@@ -3,7 +3,7 @@ using System.Numerics;
 using BattleStars.Domain.Interfaces;
 using BattleStars.Domain.ValueObjects;
 using BattleStars.Presentation.Drawers;
-using BattleStars.Infrastructure.Utilities;
+using BattleStars.Core.Guards;
 
 namespace BattleStars.Domain.Entities.Shapes;
 

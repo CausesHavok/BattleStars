@@ -2,7 +2,7 @@ using System.Numerics;
 using BattleStars.Domain.Interfaces;
 using BattleStars.Infrastructure.Adapters;
 using BattleStars.Domain.ValueObjects;
-using BattleStars.Infrastructure.Utilities;
+using BattleStars.Core.Guards;
 
 namespace BattleStars.Application.Services;
 

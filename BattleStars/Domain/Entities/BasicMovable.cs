@@ -1,6 +1,6 @@
 using BattleStars.Domain.Interfaces;
 using BattleStars.Domain.ValueObjects;
-using BattleStars.Infrastructure.Utilities;
+using BattleStars.Core.Guards;
 namespace BattleStars.Domain.Entities;
 
 public class BasicMovable : IMovable
