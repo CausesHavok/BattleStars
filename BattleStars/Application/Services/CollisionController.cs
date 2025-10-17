@@ -14,7 +14,7 @@ public class CollisionController : ICollisionController
         _collisionChecker = collisionChecker;
     }
 
-    private ICollisionChecker _collisionChecker;
+    private readonly ICollisionChecker _collisionChecker;
     /// <summary>
     /// Handles collisions between shots and battle stars.
     /// </summary>
