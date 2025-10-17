@@ -1,5 +1,5 @@
 using BattleStars.Domain.Interfaces;
-using BattleStars.Infrastructure.Utilities;
+using BattleStars.Core.Guards;
 namespace BattleStars.Domain.Entities
 {
     public class BasicDestructable : IDestructable

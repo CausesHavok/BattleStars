@@ -2,6 +2,7 @@ using System.Numerics;
 using BattleStars.Domain.Interfaces;
 using BattleStars.Infrastructure.Adapters;
 using BattleStars.Domain.ValueObjects;
+using BattleStars.Core.Guards;
 
 namespace BattleStars.Application.Services;
 
@@ -24,7 +25,8 @@ public class InputHandler : IInputHandler
     /// <exception cref="ArgumentNullException">Thrown if <paramref name="keyboardProvider"/> is null.</exception>
     public InputHandler(IKeyboardProvider keyboardProvider)
     {
-        _keyboardProvider = keyboardProvider ?? throw new ArgumentNullException(nameof(keyboardProvider));
+        Guard.NotNull(keyboardProvider, nameof(keyboardProvider));
+        _keyboardProvider = keyboardProvider;
     }
 
     /// <summary>

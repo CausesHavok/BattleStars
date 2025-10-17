@@ -2,6 +2,7 @@ using System.Drawing;
 using BattleStars.Domain.Interfaces;
 using BattleStars.Domain.ValueObjects;
 using BattleStars.Presentation.Drawers;
+using BattleStars.Core.Guards;
 
 namespace BattleStars.Domain.Entities.Shapes;
 
@@ -21,7 +22,7 @@ public class Rectangle : IShape
     /// <param name="v2"></param>
     public Rectangle(PositionalVector2 v1, PositionalVector2 v2, Color color, IShapeDrawer drawer)
     {
-        ArgumentNullException.ThrowIfNull(drawer);
+        Guard.NotNull(drawer, nameof(drawer));
         float minX = Math.Min(v1.X, v2.X);
         float minY = Math.Min(v1.Y, v2.Y);
         float maxX = Math.Max(v1.X, v2.X);

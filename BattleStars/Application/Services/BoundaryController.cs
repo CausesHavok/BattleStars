@@ -1,12 +1,20 @@
 using BattleStars.Domain.Interfaces;
+using BattleStars.Core.Guards;
 namespace BattleStars.Application.Services;
 
 /// <summary>
 /// Implements boundary enforcement in the game.
 /// </summary>
-public class BoundaryController(IBoundaryChecker boundaryChecker) : IBoundaryController
+public class BoundaryController : IBoundaryController
 {
-    private readonly IBoundaryChecker _boundaryChecker = boundaryChecker ?? throw new ArgumentNullException(nameof(boundaryChecker));
+
+    public BoundaryController(IBoundaryChecker boundaryChecker)
+    {
+        Guard.NotNull(boundaryChecker, nameof(boundaryChecker));
+        _boundaryChecker = boundaryChecker;
+    }
+
+    private readonly IBoundaryChecker _boundaryChecker;
 
     /// <summary>
     /// Ensures all game entities remain within the defined game boundaries.
@@ -16,9 +24,9 @@ public class BoundaryController(IBoundaryChecker boundaryChecker) : IBoundaryCon
     /// </remarks>
     public void EnforceBoundaries(IGameState gameState)
     {
-        ArgumentNullException.ThrowIfNull(gameState, nameof(gameState));
-        ArgumentNullException.ThrowIfNull(gameState.Player, nameof(gameState.Player));
-        ArgumentNullException.ThrowIfNull(gameState.Enemies, nameof(gameState.Enemies));
+        Guard.NotNull(gameState, nameof(gameState));
+        Guard.NotNull(gameState.Player, nameof(gameState.Player));
+        Guard.NotNull(gameState.Enemies, nameof(gameState.Enemies));
         HandlePlayerShots(gameState);
         HandleEnemyShots(gameState);
     }

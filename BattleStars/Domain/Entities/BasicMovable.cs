@@ -1,6 +1,6 @@
 using BattleStars.Domain.Interfaces;
 using BattleStars.Domain.ValueObjects;
-using BattleStars.Infrastructure.Utilities;
+using BattleStars.Core.Guards;
 namespace BattleStars.Domain.Entities;
 
 public class BasicMovable : IMovable
@@ -31,7 +31,7 @@ public class BasicMovable : IMovable
 
     public void Move(IContext context)
     {
-        ArgumentNullException.ThrowIfNull(context, nameof(context));
+        Guard.NotNull(context, nameof(context));
 
         Position += _direction * _speed;
     }

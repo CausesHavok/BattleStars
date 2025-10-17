@@ -2,7 +2,7 @@ using System.Drawing;
 using BattleStars.Domain.Interfaces;
 using BattleStars.Domain.ValueObjects;
 using BattleStars.Presentation.Drawers;
-using BattleStars.Infrastructure.Utilities;
+using BattleStars.Core.Guards;
 
 namespace BattleStars.Domain.Entities.Shapes;
 
@@ -15,7 +15,7 @@ public class Circle : IShape
 
     public Circle(float radius, Color color, IShapeDrawer drawer)
     {
-        ArgumentNullException.ThrowIfNull(drawer);
+        Guard.NotNull(drawer, nameof(drawer));
         FloatValidator.ThrowIfNaNOrInfinity(radius, nameof(radius));
         FloatValidator.ThrowIfNegative(radius, nameof(radius));
         FloatValidator.ThrowIfZero(radius, nameof(radius));

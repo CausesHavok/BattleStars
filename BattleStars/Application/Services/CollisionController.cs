@@ -1,13 +1,20 @@
 using BattleStars.Domain.Interfaces;
+using BattleStars.Core.Guards;
 namespace BattleStars.Application.Services;
 
 /// <summary>
 /// Controls collision detection and response in the game.
 /// </summary>
-public class CollisionController(ICollisionChecker collisionChecker) : ICollisionController
+public class CollisionController : ICollisionController
 {
 
-    private ICollisionChecker _collisionChecker = collisionChecker ?? throw new ArgumentNullException(nameof(collisionChecker));
+    public CollisionController(ICollisionChecker collisionChecker)
+    {
+        Guard.NotNull(collisionChecker, nameof(collisionChecker));
+        _collisionChecker = collisionChecker;
+    }
+
+    private readonly ICollisionChecker _collisionChecker;
     /// <summary>
     /// Handles collisions between shots and battle stars.
     /// </summary>
@@ -16,11 +23,11 @@ public class CollisionController(ICollisionChecker collisionChecker) : ICollisio
     /// </remarks>
     public void HandleCollisions(IGameState gameState)
     {
-        ArgumentNullException.ThrowIfNull(gameState, nameof(gameState));
-        ArgumentNullException.ThrowIfNull(gameState.Player, nameof(gameState.Player));
-        ArgumentNullException.ThrowIfNull(gameState.Enemies, nameof(gameState.Enemies));
-        ArgumentNullException.ThrowIfNull(gameState.PlayerShots, nameof(gameState.PlayerShots));
-        ArgumentNullException.ThrowIfNull(gameState.EnemyShots, nameof(gameState.EnemyShots));
+        Guard.NotNull(gameState, nameof(gameState));
+        Guard.NotNull(gameState.Player, nameof(gameState.Player));
+        Guard.NotNull(gameState.Enemies, nameof(gameState.Enemies));
+        Guard.NotNull(gameState.PlayerShots, nameof(gameState.PlayerShots));
+        Guard.NotNull(gameState.EnemyShots, nameof(gameState.EnemyShots));
 
         HandleEnemyCollisions(gameState);
         HandlePlayerCollision(gameState);

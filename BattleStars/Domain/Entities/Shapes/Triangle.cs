@@ -3,6 +3,7 @@ using System.Numerics;
 using BattleStars.Domain.Interfaces;
 using BattleStars.Domain.ValueObjects;
 using BattleStars.Presentation.Drawers;
+using BattleStars.Core.Guards;
 
 namespace BattleStars.Domain.Entities.Shapes;
 
@@ -27,7 +28,7 @@ public class Triangle : IShape
     /// <param name="point3">The third point of the triangle.</param>
     public Triangle(PositionalVector2 point1, PositionalVector2 point2, PositionalVector2 point3, Color color, IShapeDrawer drawer)
     {
-        ArgumentNullException.ThrowIfNull(drawer);
+        Guard.NotNull(drawer, nameof(drawer));
         Point1 = point1;
         Point2 = point2;
         Point3 = point3;
