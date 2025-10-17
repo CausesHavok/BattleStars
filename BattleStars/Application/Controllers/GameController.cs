@@ -1,5 +1,6 @@
 using BattleStars.Domain.Interfaces;
 using BattleStars.Domain.ValueObjects;
+using BattleStars.Infrastructure.Utilities;
 namespace BattleStars.Application.Controllers;
 
 /// <summary>
@@ -57,7 +58,7 @@ public class GameController
     /// </remarks>
     public bool RunFrame(IContext context)
     {
-        ArgumentNullException.ThrowIfNull(context, nameof(context));
+        Guard.NotNull(context, nameof(context));
         if (_inputHandler.ShouldExit()) return false;
 
         _shotController.UpdateShots(_gameState);

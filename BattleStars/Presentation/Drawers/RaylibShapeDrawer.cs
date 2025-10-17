@@ -1,6 +1,7 @@
 using System.Drawing;
 using BattleStars.Domain.ValueObjects;
 using BattleStars.Infrastructure.Adapters;
+using BattleStars.Infrastructure.Utilities;
 namespace BattleStars.Presentation.Drawers
 {
     public class RaylibShapeDrawer : IShapeDrawer
@@ -9,7 +10,7 @@ namespace BattleStars.Presentation.Drawers
 
         public RaylibShapeDrawer(IRaylibGraphics graphics)
         {
-            ArgumentNullException.ThrowIfNull(graphics);
+            Guard.NotNull(graphics, nameof(graphics));
             _graphics = graphics;
         }
 

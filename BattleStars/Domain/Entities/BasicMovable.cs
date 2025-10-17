@@ -31,7 +31,7 @@ public class BasicMovable : IMovable
 
     public void Move(IContext context)
     {
-        ArgumentNullException.ThrowIfNull(context, nameof(context));
+        Guard.NotNull(context, nameof(context));
 
         Position += _direction * _speed;
     }

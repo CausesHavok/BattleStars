@@ -1,5 +1,6 @@
 using BattleStars.Domain.Interfaces;
 using BattleStars.Domain.ValueObjects;
+using BattleStars.Infrastructure.Utilities;
 namespace BattleStars.Domain.Entities;
 
 /// <summary>
@@ -15,7 +16,7 @@ public class BasicShooter : IShooter
 
     public BasicShooter(Func<PositionalVector2, DirectionalVector2, IShot> shotFactory, DirectionalVector2 direction)
     {
-        ArgumentNullException.ThrowIfNull(shotFactory, nameof(shotFactory));
+        Guard.NotNull(shotFactory, nameof(shotFactory));
 
         _shotFactory = shotFactory;
         _direction = direction;
@@ -27,7 +28,7 @@ public class BasicShooter : IShooter
     /// </remarks>
     public IEnumerable<IShot> Shoot(IContext context)
     {
-        ArgumentNullException.ThrowIfNull(context, nameof(context));
+        Guard.NotNull(context, nameof(context));
 
         var shot = _shotFactory(context.ShooterPosition, _direction);
         return [shot];

@@ -15,7 +15,7 @@ public class Circle : IShape
 
     public Circle(float radius, Color color, IShapeDrawer drawer)
     {
-        ArgumentNullException.ThrowIfNull(drawer);
+        Guard.NotNull(drawer, nameof(drawer));
         FloatValidator.ThrowIfNaNOrInfinity(radius, nameof(radius));
         FloatValidator.ThrowIfNegative(radius, nameof(radius));
         FloatValidator.ThrowIfZero(radius, nameof(radius));

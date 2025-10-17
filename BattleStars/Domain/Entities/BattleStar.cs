@@ -1,5 +1,6 @@
 using BattleStars.Domain.Interfaces;
 using BattleStars.Domain.ValueObjects;
+using BattleStars.Infrastructure.Utilities;
 namespace BattleStars.Domain.Entities;
 
 public class BattleStar : IBattleStar
@@ -11,10 +12,10 @@ public class BattleStar : IBattleStar
 
     public BattleStar(IShape shape, IMovable movable, IDestructable destructable, IShooter shooter)
     {
-        ArgumentNullException.ThrowIfNull(shape, nameof(shape));
-        ArgumentNullException.ThrowIfNull(movable, nameof(movable));
-        ArgumentNullException.ThrowIfNull(destructable, nameof(destructable));
-        ArgumentNullException.ThrowIfNull(shooter, nameof(shooter));
+        Guard.NotNull(shape, nameof(shape));
+        Guard.NotNull(movable, nameof(movable));
+        Guard.NotNull(destructable, nameof(destructable));
+        Guard.NotNull(shooter, nameof(shooter));
 
         _shape = shape;
         _movable = movable;

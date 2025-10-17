@@ -1,12 +1,13 @@
+using BattleStars.Infrastructure.Utilities;
 namespace BattleStars.Infrastructure.Utilities;
 
 public static class FloatValidator
 {
     private static void ThrowIfNull(object value, string paramName)
     {
-        ArgumentNullException.ThrowIfNull(value, paramName);
+        Guard.NotNull(value, paramName);
     }
-    
+
     public static void ThrowIfNaN(float value, string paramName)
     {
         ThrowIfNull(paramName, nameof(paramName));

@@ -33,8 +33,8 @@ public static class ShapeFactory
     /// </remarks>
     public static IShape CreateShape(IShapeDescriptor shapeDescriptor, IShapeDrawer drawer)
     {
-        ArgumentNullException.ThrowIfNull(shapeDescriptor, nameof(shapeDescriptor));
-        ArgumentNullException.ThrowIfNull(drawer, nameof(drawer));
+        Guard.NotNull(shapeDescriptor, nameof(shapeDescriptor));
+        Guard.NotNull(drawer, nameof(drawer));
         FloatValidator.ThrowIfNaNOrInfinity(shapeDescriptor.Scale, nameof(shapeDescriptor.Scale));
         FloatValidator.ThrowIfNegativeOrZero(shapeDescriptor.Scale, nameof(shapeDescriptor.Scale));
 

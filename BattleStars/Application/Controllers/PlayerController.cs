@@ -18,8 +18,6 @@ internal class PlayerController : IPlayerController
     /// <param name="inputHandler">The input handler to retrieve player commands.</param>
     /// <param name="gameState">The current game state, including the player and active
     /// shots.</param>
-    /// <exception cref="ArgumentNullException">Thrown if any of the parameters are null,
-    /// or if the player in gameState is null.</exception>
     /// <remarks>
     /// This method first validates the input parameters to ensure they are not null.
     /// It then updates the player's movement based on the input handler's movement direction.

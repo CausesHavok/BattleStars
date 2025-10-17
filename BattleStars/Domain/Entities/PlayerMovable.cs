@@ -17,7 +17,7 @@ public class PlayerMovable : IMovable
         FloatValidator.ThrowIfNaNOrInfinity(speed, nameof(speed));
         FloatValidator.ThrowIfNegative(speed, nameof(speed));
         FloatValidator.ThrowIfZero(speed, nameof(speed));
-        ArgumentNullException.ThrowIfNull(boundaryChecker, nameof(boundaryChecker));
+        Guard.NotNull(boundaryChecker, nameof(boundaryChecker));
 
         _position = initialPosition;
         _speed = speed;
@@ -26,7 +26,7 @@ public class PlayerMovable : IMovable
 
     public void Move(IContext context)
     {
-        ArgumentNullException.ThrowIfNull(context, nameof(context));
+        Guard.NotNull(context, nameof(context));
 
         var direction = context.PlayerDirection;
         VectorValidator.ThrowIfNaNOrInfinity(direction, nameof(direction));
