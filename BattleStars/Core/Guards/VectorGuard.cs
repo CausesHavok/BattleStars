@@ -1,18 +1,18 @@
 using System.Numerics;
 namespace BattleStars.Core.Guards;
 
-public static class VectorValidator
+public static class VectorGuard
 {
     public static void ThrowIfNaN(Vector2 vector, string paramName)
     {
-        FloatValidator.ThrowIfNaN(vector.X, $"{paramName}.X");
-        FloatValidator.ThrowIfNaN(vector.Y, $"{paramName}.Y");
+        FloatGuard.ThrowIfNaN(vector.X, $"{paramName}.X");
+        FloatGuard.ThrowIfNaN(vector.Y, $"{paramName}.Y");
     }
 
     public static void ThrowIfInfinity(Vector2 vector, string paramName)
     {
-        FloatValidator.ThrowIfInfinity(vector.X, $"{paramName}.X");
-        FloatValidator.ThrowIfInfinity(vector.Y, $"{paramName}.Y");
+        FloatGuard.ThrowIfInfinity(vector.X, $"{paramName}.X");
+        FloatGuard.ThrowIfInfinity(vector.Y, $"{paramName}.Y");
     }
 
     public static void ThrowIfZero(Vector2 vector, string paramName)

@@ -1,6 +1,6 @@
 namespace BattleStars.Core.Guards;
 
-public static class FloatValidator
+public static class FloatGuard
 {
     private static void ThrowIfNull(object value, string paramName)
     {

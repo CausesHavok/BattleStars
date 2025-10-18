@@ -35,8 +35,8 @@ public static class ShapeFactory
     {
         Guard.NotNull(shapeDescriptor, nameof(shapeDescriptor));
         Guard.NotNull(drawer, nameof(drawer));
-        FloatValidator.ThrowIfNaNOrInfinity(shapeDescriptor.Scale, nameof(shapeDescriptor.Scale));
-        FloatValidator.ThrowIfNegativeOrZero(shapeDescriptor.Scale, nameof(shapeDescriptor.Scale));
+        FloatGuard.ThrowIfNaNOrInfinity(shapeDescriptor.Scale, nameof(shapeDescriptor.Scale));
+        FloatGuard.ThrowIfNegativeOrZero(shapeDescriptor.Scale, nameof(shapeDescriptor.Scale));
 
         return shapeDescriptor.ShapeType switch
         {

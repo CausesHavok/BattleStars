@@ -14,9 +14,9 @@ public class PlayerMovable : IMovable
     public PlayerMovable(PositionalVector2 initialPosition, float speed, IBoundaryChecker boundaryChecker)
     {
         // Removed redundant validation: PositionalVector2 already validates during construction.
-        FloatValidator.ThrowIfNaNOrInfinity(speed, nameof(speed));
-        FloatValidator.ThrowIfNegative(speed, nameof(speed));
-        FloatValidator.ThrowIfZero(speed, nameof(speed));
+        FloatGuard.ThrowIfNaNOrInfinity(speed, nameof(speed));
+        FloatGuard.ThrowIfNegative(speed, nameof(speed));
+        FloatGuard.ThrowIfZero(speed, nameof(speed));
         Guard.NotNull(boundaryChecker, nameof(boundaryChecker));
 
         _position = initialPosition;
@@ -29,11 +29,11 @@ public class PlayerMovable : IMovable
         Guard.NotNull(context, nameof(context));
 
         var direction = context.PlayerDirection;
-        VectorValidator.ThrowIfNaNOrInfinity(direction, nameof(direction));
+        VectorGuard.ThrowIfNaNOrInfinity(direction, nameof(direction));
         if (direction == Vector2.Zero)
             return;
 
-        VectorValidator.ThrowIfNotNormalized(direction, nameof(direction));
+        VectorGuard.ThrowIfNotNormalized(direction, nameof(direction));
 
         var newPosition = _position + direction * _speed;
 

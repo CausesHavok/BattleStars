@@ -8,10 +8,10 @@ public static class ShotFactory
 {
     private static void ValidateShotParameters(float speed, float damage)
     {
-        FloatValidator.ThrowIfNaNOrInfinity(speed, nameof(speed));
-        FloatValidator.ThrowIfNaNOrInfinity(damage, nameof(damage));
-        FloatValidator.ThrowIfNegative(speed, nameof(speed));
-        FloatValidator.ThrowIfNegative(damage, nameof(damage));
+        FloatGuard.ThrowIfNaNOrInfinity(speed, nameof(speed));
+        FloatGuard.ThrowIfNaNOrInfinity(damage, nameof(damage));
+        FloatGuard.ThrowIfNegative(speed, nameof(speed));
+        FloatGuard.ThrowIfNegative(damage, nameof(damage));
     }
 
     public static IShot CustomShot(PositionalVector2 position, DirectionalVector2 direction, float speed, float damage)
