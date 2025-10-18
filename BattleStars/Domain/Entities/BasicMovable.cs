@@ -11,7 +11,7 @@ public class BasicMovable : IMovable
         get => _position;
         private set
         {
-            VectorGuard.RequireValid(value, nameof(value));
+            Guard.RequireValid(value, nameof(value));
             _position = value;
         }
     }
