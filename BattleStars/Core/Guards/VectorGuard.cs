@@ -5,14 +5,14 @@ public static class VectorGuard
 {
     public static void ThrowIfNaN(Vector2 vector, string paramName)
     {
-        FloatGuard.ThrowIfNaN(vector.X, $"{paramName}.X");
-        FloatGuard.ThrowIfNaN(vector.Y, $"{paramName}.Y");
+        FloatGuard.RequireNotNaN(vector.X, $"{paramName}.X");
+        FloatGuard.RequireNotNaN(vector.Y, $"{paramName}.Y");
     }
 
     public static void ThrowIfInfinity(Vector2 vector, string paramName)
     {
-        FloatGuard.ThrowIfInfinity(vector.X, $"{paramName}.X");
-        FloatGuard.ThrowIfInfinity(vector.Y, $"{paramName}.Y");
+        FloatGuard.RequireFinite(vector.X, $"{paramName}.X");
+        FloatGuard.RequireFinite(vector.Y, $"{paramName}.Y");
     }
 
     public static void ThrowIfZero(Vector2 vector, string paramName)

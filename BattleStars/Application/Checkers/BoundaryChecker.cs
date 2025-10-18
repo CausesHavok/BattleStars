@@ -9,10 +9,10 @@ public class BoundaryChecker : IBoundaryChecker
 
     public BoundaryChecker(float minX, float maxX, float minY, float maxY)
     {
-        FloatGuard.ThrowIfNaNOrInfinity(minX, nameof(minX));
-        FloatGuard.ThrowIfNaNOrInfinity(maxX, nameof(maxX));
-        FloatGuard.ThrowIfNaNOrInfinity(minY, nameof(minY));
-        FloatGuard.ThrowIfNaNOrInfinity(maxY, nameof(maxY));
+        FloatGuard.RequireValidFloat(minX, nameof(minX));
+        FloatGuard.RequireValidFloat(maxX, nameof(maxX));
+        FloatGuard.RequireValidFloat(minY, nameof(minY));
+        FloatGuard.RequireValidFloat(maxY, nameof(maxY));
         if (minX >= maxX)
             throw new ArgumentException("minX must be less than maxX.");
         if (minY >= maxY)
@@ -26,25 +26,25 @@ public class BoundaryChecker : IBoundaryChecker
 
     public bool IsOutsideXBounds(float x)
     {
-        FloatGuard.ThrowIfNaNOrInfinity(x, nameof(x));
+        FloatGuard.RequireValidFloat(x, nameof(x));
         return x < minX || x > maxX;
     }
 
     public float XDistanceToBoundary(float x)
     {
-        FloatGuard.ThrowIfNaNOrInfinity(x, nameof(x));
+        FloatGuard.RequireValidFloat(x, nameof(x));
         return Math.Min(Math.Abs(x - minX), Math.Abs(x - maxX));
     }
 
     public bool IsOutsideYBounds(float y)
     {
-        FloatGuard.ThrowIfNaNOrInfinity(y, nameof(y));
+        FloatGuard.RequireValidFloat(y, nameof(y));
         return y < minY || y > maxY;
     }
 
     public float YDistanceToBoundary(float y)
     {
-        FloatGuard.ThrowIfNaNOrInfinity(y, nameof(y));
+        FloatGuard.RequireValidFloat(y, nameof(y));
         return Math.Min(Math.Abs(y - minY), Math.Abs(y - maxY));
     }
 }

@@ -11,7 +11,7 @@ public struct PositionalVector2
         get => _position.X;
         set
         {
-            FloatGuard.ThrowIfNaNOrInfinity(value, nameof(X));
+            FloatGuard.RequireValidFloat(value, nameof(X));
             _position.X = value;
         }
     }
@@ -20,7 +20,7 @@ public struct PositionalVector2
         get => _position.Y;
         set
         {
-            FloatGuard.ThrowIfNaNOrInfinity(value, nameof(Y));
+            FloatGuard.RequireValidFloat(value, nameof(Y));
             _position.Y = value;
         }
     }
