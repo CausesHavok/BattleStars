@@ -37,7 +37,7 @@ public static class FloatGuard
         RequireNonZero(value, paramName);
     }
 
-    public static void RequireValidFloat(float value, string paramName)
+    public static void RequireValid(float value, string paramName)
     {
         RequireNotNaN(value, paramName);
         RequireFinite(value, paramName);

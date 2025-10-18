@@ -35,7 +35,7 @@ public static class ShapeFactory
     {
         Guard.NotNull(shapeDescriptor, nameof(shapeDescriptor));
         Guard.NotNull(drawer, nameof(drawer));
-        FloatGuard.RequireValidFloat(shapeDescriptor.Scale, nameof(shapeDescriptor.Scale));
+        FloatGuard.RequireValid(shapeDescriptor.Scale, nameof(shapeDescriptor.Scale));
         FloatGuard.RequirePositive(shapeDescriptor.Scale, nameof(shapeDescriptor.Scale));
 
         return shapeDescriptor.ShapeType switch

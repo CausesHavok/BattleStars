@@ -14,7 +14,7 @@ public class PlayerMovable : IMovable
     public PlayerMovable(PositionalVector2 initialPosition, float speed, IBoundaryChecker boundaryChecker)
     {
         // Removed redundant validation: PositionalVector2 already validates during construction.
-        FloatGuard.RequireValidFloat(speed, nameof(speed));
+        FloatGuard.RequireValid(speed, nameof(speed));
         FloatGuard.RequireNonNegative(speed, nameof(speed));
         FloatGuard.RequireNonZero(speed, nameof(speed));
         Guard.NotNull(boundaryChecker, nameof(boundaryChecker));

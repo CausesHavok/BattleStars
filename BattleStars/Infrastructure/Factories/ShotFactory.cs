@@ -8,8 +8,8 @@ public static class ShotFactory
 {
     private static void ValidateShotParameters(float speed, float damage)
     {
-        FloatGuard.RequireValidFloat(speed, nameof(speed));
-        FloatGuard.RequireValidFloat(damage, nameof(damage));
+        FloatGuard.RequireValid(speed, nameof(speed));
+        FloatGuard.RequireValid(damage, nameof(damage));
         FloatGuard.RequireNonNegative(speed, nameof(speed));
         FloatGuard.RequireNonNegative(damage, nameof(damage));
     }

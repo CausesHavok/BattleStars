@@ -81,7 +81,7 @@ public class FloatValidatorTest
     [Fact]
     public void GivenNullName_WhenValidatedWithNaNOrInfinity_ThenThrowsArgumentNullException()
     {
-        Action act = () => FloatGuard.RequireValidFloat(0f, null!);
+        Action act = () => FloatGuard.RequireValid(0f, null!);
         act.Should().Throw<ArgumentNullException>()
             .WithMessage("*Value cannot be null.*");
     }
@@ -89,17 +89,17 @@ public class FloatValidatorTest
     [Fact]
     public void GivenNaNOrInfinity_WhenValidated_ThenThrowsArgumentException()
     {
-        Action act = () => FloatGuard.RequireValidFloat(float.NaN, "test");
+        Action act = () => FloatGuard.RequireValid(float.NaN, "test");
         act.Should().Throw<ArgumentException>()
             .WithMessage("test cannot be NaN.*")
             .WithParameterName("test");
 
-        act = () => FloatGuard.RequireValidFloat(float.PositiveInfinity, "test");
+        act = () => FloatGuard.RequireValid(float.PositiveInfinity, "test");
         act.Should().Throw<ArgumentException>()
             .WithMessage("test cannot be Infinity.*")
             .WithParameterName("test");
 
-        act = () => FloatGuard.RequireValidFloat(float.NegativeInfinity, "test");
+        act = () => FloatGuard.RequireValid(float.NegativeInfinity, "test");
         act.Should().Throw<ArgumentException>()
             .WithMessage("test cannot be Infinity.*")
             .WithParameterName("test");
@@ -113,7 +113,7 @@ public class FloatValidatorTest
     [InlineData(-1f)]
     public void GivenNonNaNOrInfinity_WhenValidated_ThenDoesNotThrow(float value)
     {
-        Action act = () => FloatGuard.RequireValidFloat(value, "test");
+        Action act = () => FloatGuard.RequireValid(value, "test");
         act.Should().NotThrow();
     }
     #endregion
