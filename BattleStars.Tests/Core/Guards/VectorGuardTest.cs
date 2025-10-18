@@ -2,7 +2,7 @@ using System.Numerics;
 using FluentAssertions;
 using BattleStars.Core.Guards;
 
-namespace BattleStars.Tests.Infrastructure.Utilities;
+namespace BattleStars.Tests.Core.Guards;
 
 public class VectorGuardTest
 {
