@@ -3,7 +3,7 @@ using BattleStars.Core.Guards;
 
 namespace BattleStars.Tests.Infrastructure.Utilities;
 
-public class FloatValidatorTest
+public class FloatGuardTest
 {
     #region NaN
 

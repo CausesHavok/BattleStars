@@ -4,7 +4,7 @@ using BattleStars.Core.Guards;
 
 namespace BattleStars.Tests.Infrastructure.Utilities;
 
-public class VectorValidatorTest
+public class VectorGuardTest
 {
     [Fact]
     public void GivenVectorWithNaNComponent_WhenThrowIfNaN_ThenThrowsArgumentException()
