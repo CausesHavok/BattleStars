@@ -5,14 +5,14 @@ public static class VectorGuard
 {
     public static void RequireNotNaN(Vector2 vector, string paramName)
     {
-        FloatGuard.RequireNotNaN(vector.X, $"{paramName}.X");
-        FloatGuard.RequireNotNaN(vector.Y, $"{paramName}.Y");
+        Guard.RequireNotNaN(vector.X, $"{paramName}.X");
+        Guard.RequireNotNaN(vector.Y, $"{paramName}.Y");
     }
 
     public static void RequireFinite(Vector2 vector, string paramName)
     {
-        FloatGuard.RequireFinite(vector.X, $"{paramName}.X");
-        FloatGuard.RequireFinite(vector.Y, $"{paramName}.Y");
+        Guard.RequireFinite(vector.X, $"{paramName}.X");
+        Guard.RequireFinite(vector.Y, $"{paramName}.Y");
     }
 
     public static void RequireNonZero(Vector2 vector, string paramName)

@@ -21,8 +21,8 @@ public class BasicMovable : IMovable
 
     public BasicMovable(PositionalVector2 initialPosition, DirectionalVector2 direction, float speed)
     {
-        FloatGuard.RequireValid(speed, nameof(speed));
-        FloatGuard.RequirePositive(speed, nameof(speed));
+        Guard.RequireValid(speed, nameof(speed));
+        Guard.RequirePositive(speed, nameof(speed));
 
         Position = initialPosition;
         _direction = direction;

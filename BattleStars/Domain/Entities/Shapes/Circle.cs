@@ -16,9 +16,9 @@ public class Circle : IShape
     public Circle(float radius, Color color, IShapeDrawer drawer)
     {
         Guard.NotNull(drawer, nameof(drawer));
-        FloatGuard.RequireValid(radius, nameof(radius));
-        FloatGuard.RequireNonNegative(radius, nameof(radius));
-        FloatGuard.RequireNonZero(radius, nameof(radius));
+        Guard.RequireValid(radius, nameof(radius));
+        Guard.RequireNonNegative(radius, nameof(radius));
+        Guard.RequireNonZero(radius, nameof(radius));
 
         _radius = radius;
         _color = color;
