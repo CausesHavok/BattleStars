@@ -30,7 +30,7 @@ public struct PositionalVector2
         get => _position;
         set
         {
-            VectorGuard.ThrowIfNaNOrInfinity(value, nameof(Position));
+            VectorGuard.RequireValid(value, nameof(Position));
             _position = value;
         }
     }

@@ -29,11 +29,11 @@ public class PlayerMovable : IMovable
         Guard.NotNull(context, nameof(context));
 
         var direction = context.PlayerDirection;
-        VectorGuard.ThrowIfNaNOrInfinity(direction, nameof(direction));
+        VectorGuard.RequireValid(direction, nameof(direction));
         if (direction == Vector2.Zero)
             return;
 
-        VectorGuard.ThrowIfNotNormalized(direction, nameof(direction));
+        VectorGuard.RequireNormalized(direction, nameof(direction));
 
         var newPosition = _position + direction * _speed;
 
