@@ -25,8 +25,8 @@ public class ShapeDescriptor : IShapeDescriptor
     /// <exception cref="ArgumentException">Thrown if scale is non-positive.</exception>
     public ShapeDescriptor(ShapeType shapeType, float scale, Color color)
     {
-        FloatValidator.ThrowIfNaNOrInfinity(scale, nameof(scale));
-        FloatValidator.ThrowIfNegativeOrZero(scale, nameof(scale));
+        Guard.RequireValid(scale, nameof(scale));
+        Guard.RequirePositive(scale, nameof(scale));
         ShapeType = shapeType;
         Scale = scale;
         Color = color;
