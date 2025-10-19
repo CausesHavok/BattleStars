@@ -2,7 +2,7 @@ using BattleStars.Domain.Interfaces;
 using BattleStars.Domain.ValueObjects;
 namespace BattleStars.Domain.Entities;
 
-public class BasicContext : IContext
+internal class BasicContext : IContext
 {
 
     public DirectionalVector2 PlayerDirection { get; set; }

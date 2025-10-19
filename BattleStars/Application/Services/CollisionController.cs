@@ -5,7 +5,7 @@ namespace BattleStars.Application.Services;
 /// <summary>
 /// Controls collision detection and response in the game.
 /// </summary>
-public class CollisionController : ICollisionController
+internal class CollisionController : ICollisionController
 {
 
     public CollisionController(ICollisionChecker collisionChecker)

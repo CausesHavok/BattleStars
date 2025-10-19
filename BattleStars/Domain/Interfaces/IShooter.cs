@@ -1,6 +1,6 @@
 namespace BattleStars.Domain.Interfaces;
 
-public interface IShooter
+internal interface IShooter
 {
     /// <summary>
     /// Defines a shooter capable of firing any number of shots

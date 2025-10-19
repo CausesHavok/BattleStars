@@ -3,7 +3,7 @@ using BattleStars.Domain.ValueObjects;
 using BattleStars.Core.Guards;
 namespace BattleStars.Domain.Entities;
 
-public class BasicMovable : IMovable
+internal class BasicMovable : IMovable
 {
     private PositionalVector2 _position;
     public PositionalVector2 Position

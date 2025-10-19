@@ -1,5 +1,5 @@
 namespace BattleStars.Domain.Interfaces;
-public interface IDestructable
+internal interface IDestructable
 {
     void TakeDamage(float amount);
     bool IsDestroyed { get; }

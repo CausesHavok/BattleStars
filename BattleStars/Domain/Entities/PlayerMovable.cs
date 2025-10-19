@@ -4,7 +4,7 @@ using BattleStars.Core.Guards;
 using System.Numerics;
 namespace BattleStars.Domain.Entities;
 
-public class PlayerMovable : IMovable
+internal class PlayerMovable : IMovable
 {
     private PositionalVector2 _position;
     public PositionalVector2 Position => _position;

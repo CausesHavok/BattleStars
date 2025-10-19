@@ -21,7 +21,7 @@ public class GameController
     private readonly IBoundaryController _boundaryController;
     private readonly ICollisionController _collisionController;
 
-    public GameController(
+    internal GameController(
         IGameState gameState,
         IPlayerController playerController,
         IEnemyController enemyController,
