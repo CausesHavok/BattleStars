@@ -31,7 +31,7 @@ public static class ShapeFactory
     /// The method validates the input parameters and uses a switch expression to create the appropriate shape.
     /// Each shape is scaled according to the descriptor's scale property and colored as specified.
     /// </remarks>
-    public static IShape CreateShape(IShapeDescriptor shapeDescriptor, IShapeDrawer drawer)
+    internal static IShape CreateShape(IShapeDescriptor shapeDescriptor, IShapeDrawer drawer)
     {
         Guard.NotNull(shapeDescriptor, nameof(shapeDescriptor));
         Guard.NotNull(drawer, nameof(drawer));

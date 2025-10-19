@@ -9,11 +9,11 @@ namespace BattleStars.Tests.Domain.Entities;
 
 public class TestBattleStarFixture
 {
-    public Mock<IShape> MockShape = new();
-    public Mock<IMovable> MockMovable = new();
-    public Mock<IDestructable> MockDestructable = new();
-    public Mock<IShooter> MockShooter = new();
-    public BattleStar BattleStar;
+    internal Mock<IShape> MockShape = new();
+    internal Mock<IMovable> MockMovable = new();
+    internal Mock<IDestructable> MockDestructable = new();
+    internal Mock<IShooter> MockShooter = new();
+    internal BattleStar BattleStar;
 
     public TestBattleStarFixture()
     {

@@ -5,7 +5,7 @@ namespace BattleStars.Application.Services;
 /// <summary>
 /// Implements boundary enforcement in the game.
 /// </summary>
-public class BoundaryController : IBoundaryController
+internal class BoundaryController : IBoundaryController
 {
 
     public BoundaryController(IBoundaryChecker boundaryChecker)

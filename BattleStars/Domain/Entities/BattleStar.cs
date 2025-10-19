@@ -3,7 +3,7 @@ using BattleStars.Domain.ValueObjects;
 using BattleStars.Core.Guards;
 namespace BattleStars.Domain.Entities;
 
-public class BattleStar : IBattleStar
+internal class BattleStar : IBattleStar
 {
     private readonly IShape _shape;
     private readonly IMovable _movable;

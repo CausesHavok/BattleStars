@@ -25,7 +25,7 @@ public static class SceneFactory
     /// <returns>
     /// A new instance of the <see cref="BattleStar"/> class.
     /// </returns>
-    public static BattleStar CreatePlayerBattleStar(IShapeDrawer drawer)
+    public static IBattleStar CreatePlayerBattleStar(IShapeDrawer drawer)
     {
         // Player configuration
         var size = 50.0f;
@@ -107,7 +107,7 @@ public static class SceneFactory
     /// <returns>
     /// A new instance of the <see cref="BasicContext"/> class.
     /// </returns>
-    public static BasicContext CreateBasicContext() => new();
+    public static IContext CreateBasicContext() => new BasicContext();
 
     /// <summary>
     /// Creates a shape drawer using Raylib for rendering.

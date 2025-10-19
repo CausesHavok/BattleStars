@@ -6,7 +6,7 @@ using BattleStars.Core.Guards;
 
 namespace BattleStars.Domain.Entities.Shapes;
 
-public class Circle : IShape
+internal class Circle : IShape
 {
     private readonly float _radius;
     private readonly Color _color;

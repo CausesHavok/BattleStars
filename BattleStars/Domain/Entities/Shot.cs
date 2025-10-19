@@ -2,7 +2,7 @@ using BattleStars.Domain.Interfaces;
 using BattleStars.Domain.ValueObjects;
 namespace BattleStars.Domain.Entities;
 
-public class Shot(
+internal class Shot(
     PositionalVector2 position,
     DirectionalVector2 direction,
     float speed,

@@ -6,7 +6,7 @@ using BattleStars.Core.Guards;
 
 namespace BattleStars.Domain.Entities.Shapes;
 
-public class Rectangle : IShape
+internal class Rectangle : IShape
 {
     public Color Color { get; private set; }
     public BoundingBox BoundingBox { get; }

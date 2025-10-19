@@ -2,7 +2,7 @@ using BattleStars.Domain.Interfaces;
 using BattleStars.Core.Guards;
 namespace BattleStars.Domain.Entities
 {
-    public class BasicDestructable : IDestructable
+    internal class BasicDestructable : IDestructable
     {
         private float _health;
 

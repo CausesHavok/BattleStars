@@ -8,7 +8,7 @@ using BattleStars.Core.Guards;
 namespace BattleStars.Domain.Entities.Shapes;
 
 
-public class Triangle : IShape
+internal class Triangle : IShape
 {
     public PositionalVector2 Point1 { get; private set; }
     public PositionalVector2 Point2 { get; private set; }

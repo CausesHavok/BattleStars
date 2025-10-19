@@ -3,7 +3,7 @@ using BattleStars.Domain.ValueObjects;
 
 namespace BattleStars.Domain.Entities.Shapes;
 
-public class PolyShape : IShape
+internal class PolyShape : IShape
 {
     private readonly IShape[] _shapes;
     public BoundingBox BoundingBox { get; }

@@ -10,7 +10,7 @@ namespace BattleStars.Domain.ValueObjects;
 /// This class implements the IShapeDescriptor interface and provides a concrete way to define shape properties
 /// such as type, scale, and color. It includes validation to ensure that the scale is positive and not NaN or Infinity.
 /// </remarks>
-public class ShapeDescriptor : IShapeDescriptor
+internal class ShapeDescriptor : IShapeDescriptor
 {
     public ShapeType ShapeType { get; }
     public float Scale { get; }

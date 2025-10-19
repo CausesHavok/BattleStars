@@ -1,6 +1,6 @@
 namespace BattleStars.Domain.Interfaces;
 
-public interface IContains<T>
+internal interface IContains<T>
 {
     bool Contains(T item);
 }
