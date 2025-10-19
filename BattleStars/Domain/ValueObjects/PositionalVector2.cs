@@ -11,7 +11,7 @@ public struct PositionalVector2
         get => _position.X;
         set
         {
-            FloatValidator.ThrowIfNaNOrInfinity(value, nameof(X));
+            Guard.RequireValid(value, nameof(X));
             _position.X = value;
         }
     }
@@ -20,7 +20,7 @@ public struct PositionalVector2
         get => _position.Y;
         set
         {
-            FloatValidator.ThrowIfNaNOrInfinity(value, nameof(Y));
+            Guard.RequireValid(value, nameof(Y));
             _position.Y = value;
         }
     }
@@ -30,7 +30,7 @@ public struct PositionalVector2
         get => _position;
         set
         {
-            VectorValidator.ThrowIfNaNOrInfinity(value, nameof(Position));
+            Guard.RequireValid(value, nameof(Position));
             _position = value;
         }
     }

@@ -8,8 +8,8 @@ namespace BattleStars.Domain.Entities
 
         public BasicDestructable(float health)
         {
-            FloatValidator.ThrowIfNaNOrInfinity(health, nameof(health));
-            FloatValidator.ThrowIfNegativeOrZero(health, nameof(health));
+            Guard.RequireValid(health, nameof(health));
+            Guard.RequirePositive(health, nameof(health));
 
             _health = health;
         }
@@ -23,8 +23,8 @@ namespace BattleStars.Domain.Entities
         public bool IsDestroyed => Health <= 0;
         public void TakeDamage(float amount)
         {
-            FloatValidator.ThrowIfNaNOrInfinity(amount, nameof(amount));
-            FloatValidator.ThrowIfNegative(amount, nameof(amount));
+            Guard.RequireValid(amount, nameof(amount));
+            Guard.RequireNonNegative(amount, nameof(amount));
 
             Health -= amount;
         }

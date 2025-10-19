@@ -11,7 +11,7 @@ public class BasicMovable : IMovable
         get => _position;
         private set
         {
-            VectorValidator.ThrowIfNaNOrInfinity(value, nameof(value));
+            Guard.RequireValid(value, nameof(value));
             _position = value;
         }
     }
@@ -21,8 +21,8 @@ public class BasicMovable : IMovable
 
     public BasicMovable(PositionalVector2 initialPosition, DirectionalVector2 direction, float speed)
     {
-        FloatValidator.ThrowIfNaNOrInfinity(speed, nameof(speed));
-        FloatValidator.ThrowIfNegativeOrZero(speed, nameof(speed));
+        Guard.RequireValid(speed, nameof(speed));
+        Guard.RequirePositive(speed, nameof(speed));
 
         Position = initialPosition;
         _direction = direction;
