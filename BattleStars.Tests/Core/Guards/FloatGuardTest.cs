@@ -204,17 +204,17 @@ public class FloatGuardTest
     {
         Action act = () => FloatGuard.RequirePositive(-1f, "test");
         act.Should().Throw<ArgumentOutOfRangeException>()
-            .WithMessage("test cannot be negative.*")
+            .WithMessage("test must be positive.*")
             .WithParameterName("test");
 
         act = () => FloatGuard.RequirePositive(0f, "test");
         act.Should().Throw<ArgumentOutOfRangeException>()
-            .WithMessage("test cannot be zero.*")
+            .WithMessage("test must be positive.*")
             .WithParameterName("test");
             
         act = () => FloatGuard.RequirePositive(-0f, "test");
         act.Should().Throw<ArgumentOutOfRangeException>()
-            .WithMessage("test cannot be zero.*")
+            .WithMessage("test must be positive.*")
             .WithParameterName("test");
     }
 
