@@ -1,49 +1,72 @@
+using System.Runtime.CompilerServices;
+using BattleStars.Core.Guards.Utilities;
 namespace BattleStars.Core.Guards;
 
 public static class FloatGuard
 {
-
-    public static float RequireNotNaN(float value, string paramName)
+    public static float RequireNotNaN(
+        float value,
+        [CallerArgumentExpression(nameof(value))] string? paramName = null)
     {
-        Guard.NotNull(paramName, nameof(paramName));
         if (float.IsNaN(value))
-            throw new ArgumentException($"{paramName} cannot be NaN.", paramName);
+        {
+            var resolvedParamName = ParamNameResolver.Resolve(paramName);
+            throw new ArgumentException($"{resolvedParamName} cannot be NaN.", resolvedParamName);
+        }
         return value;
     }
 
-    public static float RequireFinite(float value, string paramName)
+    public static float RequireFinite(
+        float value,
+        [CallerArgumentExpression(nameof(value))] string? paramName = null)
     {
-        Guard.NotNull(paramName, nameof(paramName));
         if (float.IsInfinity(value))
-            throw new ArgumentException($"{paramName} cannot be Infinity.", paramName);
+        {
+            var resolvedParamName = ParamNameResolver.Resolve(paramName);
+            throw new ArgumentException($"{resolvedParamName} must be finite.", resolvedParamName);
+        }
         return value;
     }
 
-    public static float RequireNonNegative(float value, string paramName)
+    public static float RequireNonNegative(
+        float value,
+        [CallerArgumentExpression(nameof(value))] string? paramName = null)
     {
-        Guard.NotNull(paramName, nameof(paramName));
         if (value < 0)
-            throw new ArgumentOutOfRangeException(paramName, $"{paramName} cannot be negative.");
+        {
+            var resolvedParamName = ParamNameResolver.Resolve(paramName);
+            throw new ArgumentOutOfRangeException(resolvedParamName, $"{resolvedParamName} cannot be negative.");
+        }
         return value;
     }
 
-    public static float RequireNonZero(float value, string paramName)
+    public static float RequireNonZero(
+        float value,
+        [CallerArgumentExpression(nameof(value))] string? paramName = null)
     {
-        Guard.NotNull(paramName, nameof(paramName));
         if (value == 0)
-            throw new ArgumentOutOfRangeException(paramName, $"{paramName} cannot be zero.");
+        {
+            var resolvedParamName = ParamNameResolver.Resolve(paramName);
+            throw new ArgumentOutOfRangeException(resolvedParamName, $"{resolvedParamName} cannot be zero.");
+        }
         return value;
     }
 
-    public static float RequirePositive(float value, string paramName)
+    public static float RequirePositive(
+        float value,
+        [CallerArgumentExpression(nameof(value))] string? paramName = null)
     {
-        Guard.NotNull(paramName, nameof(paramName));
         if (value <= 0)
-            throw new ArgumentOutOfRangeException(paramName, $"{paramName} must be positive.");
+        {
+            var resolvedParamName = ParamNameResolver.Resolve(paramName);
+            throw new ArgumentOutOfRangeException(resolvedParamName, $"{resolvedParamName} must be positive.");
+        }
         return value;
     }
 
-    public static float RequireValid(float value, string paramName)
+    public static float RequireValid(
+        float value,
+        [CallerArgumentExpression(nameof(value))] string? paramName = null)
     {
         return RequireNotNaN(RequireFinite(value, paramName), paramName);
     }

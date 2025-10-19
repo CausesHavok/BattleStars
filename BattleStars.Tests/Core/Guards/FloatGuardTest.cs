@@ -10,9 +10,10 @@ public class FloatGuardTest
     [Fact]
     public void GivenNullName_WhenValidatedWithNaN_ThenThrowsArgumentNullException()
     {
-        Action act = () => FloatGuard.RequireNotNaN(0f, null!);
-        act.Should().Throw<ArgumentNullException>()
-            .WithMessage("*Value cannot be null.*");
+        Action act = () => FloatGuard.RequireNotNaN(float.NaN, null!);
+        act.Should().Throw<ArgumentException>()
+            .WithMessage("*<value> cannot be NaN.*")
+            .WithParameterName("<value>");
     }
 
     [Fact]
@@ -43,11 +44,12 @@ public class FloatGuardTest
     #region Infinity
 
     [Fact]
-    public void GivenNullName_WhenValidatedWithInfinity_ThenThrowsArgumentNullException()
+    public void GivenNullName_WhenValidatedWithInfinity_ThenThrowsArgumentException()
     {
-        Action act = () => FloatGuard.RequireFinite(0f, null!);
-        act.Should().Throw<ArgumentNullException>()
-            .WithMessage("*Value cannot be null.*");
+        Action act = () => FloatGuard.RequireFinite(float.PositiveInfinity, null!);
+        act.Should().Throw<ArgumentException>()
+            .WithMessage("<value> must be finite.*")
+            .WithParameterName("<value>");
     }
 
     [Theory]
@@ -57,7 +59,7 @@ public class FloatGuardTest
     {
         Action act = () => FloatGuard.RequireFinite(value, "test");
         act.Should().Throw<ArgumentException>()
-            .WithMessage("test cannot be Infinity.*")
+            .WithMessage("test must be finite.*")
             .WithParameterName("test");
     }
 
@@ -81,9 +83,15 @@ public class FloatGuardTest
     [Fact]
     public void GivenNullName_WhenValidatedWithNaNOrInfinity_ThenThrowsArgumentNullException()
     {
-        Action act = () => FloatGuard.RequireValid(0f, null!);
-        act.Should().Throw<ArgumentNullException>()
-            .WithMessage("*Value cannot be null.*");
+        Action act = () => FloatGuard.RequireValid(float.NaN, null!);
+        act.Should().Throw<ArgumentException>()
+            .WithMessage("*<value> cannot be NaN.*")
+            .WithParameterName("<value>");
+        
+        act = () => FloatGuard.RequireValid(float.PositiveInfinity, null!);
+        act.Should().Throw<ArgumentException>()
+            .WithMessage("*<value> must be finite.*")
+            .WithParameterName("<value>");
     }
 
     [Fact]
@@ -96,12 +104,12 @@ public class FloatGuardTest
 
         act = () => FloatGuard.RequireValid(float.PositiveInfinity, "test");
         act.Should().Throw<ArgumentException>()
-            .WithMessage("test cannot be Infinity.*")
+            .WithMessage("test must be finite.*")
             .WithParameterName("test");
 
         act = () => FloatGuard.RequireValid(float.NegativeInfinity, "test");
         act.Should().Throw<ArgumentException>()
-            .WithMessage("test cannot be Infinity.*")
+            .WithMessage("test must be finite.*")
             .WithParameterName("test");
     }
 
@@ -121,11 +129,12 @@ public class FloatGuardTest
     #region Negative
 
     [Fact]
-    public void GivenNullName_WhenValidatedWithNegative_ThenThrowsArgumentNullException()
+    public void GivenNullName_WhenValidatedWithNegative_ThenThrowsArgumentOutOfRangeException()
     {
         Action act = () => FloatGuard.RequireNonNegative(-1f, null!);
-        act.Should().Throw<ArgumentNullException>()
-            .WithMessage("*Value cannot be null.*");
+        act.Should().Throw<ArgumentOutOfRangeException>()
+            .WithMessage("*<value> cannot be negative.*")
+            .WithParameterName("<value>");
     }
 
     [Fact]
@@ -156,8 +165,9 @@ public class FloatGuardTest
     public void GivenNullName_WhenValidatedWithZero_ThenThrowsArgumentNullException()
     {
         Action act = () => FloatGuard.RequireNonZero(0f, null!);
-        act.Should().Throw<ArgumentNullException>()
-            .WithMessage("*Value cannot be null.*");
+        act.Should().Throw<ArgumentException>()
+            .WithMessage("*<value> cannot be zero.*")
+            .WithParameterName("<value>");
     }
 
     [Fact]
@@ -195,8 +205,9 @@ public class FloatGuardTest
     public void GivenNullName_WhenValidatedWithNegativeOrZero_ThenThrowsArgumentNullException()
     {
         Action act = () => FloatGuard.RequirePositive(0f, null!);
-        act.Should().Throw<ArgumentNullException>()
-            .WithMessage("*Value cannot be null.*");
+        act.Should().Throw<ArgumentException>()
+            .WithMessage("*<value> must be positive.*")
+            .WithParameterName("<value>");
     }
 
     [Fact]

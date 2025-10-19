@@ -37,19 +37,32 @@ public class CircleTest
         - Test the Circle constructor with null IShapeDrawer
     */
 
-    [Theory]
-    [InlineData(float.NaN, "NaN")]
-    [InlineData(float.PositiveInfinity, "infinity")]
-    [InlineData(float.NegativeInfinity, "infinity")]
-    public void GivenCircle_WhenConstructor_WithInvalidRadius_ThenThrowsArgumentException(float radius, string expectedException)
+    [Fact]
+    public void GivenCircle_WhenConstructor_WithInvalidRadius_ThenThrowsArgumentException()
     {
         // Arrange
         var mockShapeDrawer = new MockShapeDrawer();
-        Action act = () => new Circle(radius, Color.Red, mockShapeDrawer);
+        Action act = () => new Circle(float.NaN, Color.Red, mockShapeDrawer);
 
         // Assert
         act.Should().Throw<ArgumentException>()
-            .WithMessage("radius cannot be " + expectedException + ".*")
+            .WithMessage("radius cannot be NaN.*")
+            .And.ParamName.Should().Be("radius");
+
+        // Arrange
+        act = () => new Circle(float.PositiveInfinity, Color.Red, mockShapeDrawer);
+
+        // Assert
+        act.Should().Throw<ArgumentException>()
+            .WithMessage("radius must be finite.*")
+            .And.ParamName.Should().Be("radius");
+
+        // Arrange
+        act = () => new Circle(float.NegativeInfinity, Color.Red, mockShapeDrawer);
+
+        // Assert
+        act.Should().Throw<ArgumentException>()
+            .WithMessage("radius must be finite.*")
             .And.ParamName.Should().Be("radius");
     }
 

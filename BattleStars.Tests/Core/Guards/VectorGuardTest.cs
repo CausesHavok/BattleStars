@@ -22,7 +22,7 @@ public class VectorGuardTest
         var vector = new Vector2(1f, float.PositiveInfinity);
         Action act = () => VectorGuard.RequireFinite(vector, "testVector");
         act.Should().Throw<ArgumentException>()
-            .WithMessage("testVector.Y cannot be Infinity.*")
+            .WithMessage("testVector.Y must be finite.*")
             .WithParameterName("testVector.Y");
     }
 
