@@ -52,30 +52,30 @@ code CoverageReport/index.html
 
 ## 📦 Project Structure
 
-BattleStars/
-├── Application/
-│   ├── Checkers/        # Game rule validation (e.g., collisions, boundaries)
-│   ├── Controllers/     # Orchestrates game logic (player, enemy, shots)
-│   └── Services/        # Game services (input, boundary, collision)
-├── Core/
-│   ├── Guards/          # Centralized validation logic (FloatGuard, VectorGuard, etc.)
-│   │   ├── Utilities/   # Shared helpers like ParamNameResolver
-│   └── Contracts/       # Internal guard contracts and architectural enforcement
-├── Domain/
-│   ├── Entities/        # Core game objects and behaviors
-│   │   └── Shapes/      # Geometric primitives (Circle, Rectangle, etc.)
-│   ├── Interfaces/      # Domain contracts and abstractions
-│   └── ValueObjects/    # Immutable domain concepts (vectors, keys, descriptors)
-├── Infrastructure/
-│   ├── Adapters/        # External system adapters (input, graphics)
-│   ├── Factories/       # Object and service creation
-│   └── Utilities/       # General-purpose helpers
-├── Presentation/
-│   ├── Drawers/         # Shape/UI drawing interfaces and implementations
-│   └── Views/           # UI components (future expansion)
-├── BattleStars.Tests/   # Unit and integration tests with coverage tracking
-├── Program.cs           # Entry point
-├── BattleStars.csproj   # Project file
+BattleStars/  
+├── Application/  
+│   ├── Checkers/        # Game rule validation (e.g., collisions, boundaries)  
+│   ├── Controllers/     # Orchestrates game logic (player, enemy, shots)  
+│   └── Services/        # Game services (input, boundary, collision)  
+├── Core/  
+│   ├── Guards/          # Centralized validation logic (FloatGuard, VectorGuard, etc.)  
+│   │   ├── Utilities/   # Shared helpers like ParamNameResolver  
+│   └── Contracts/       # Internal guard contracts and architectural enforcement  
+├── Domain/  
+│   ├── Entities/        # Core game objects and behaviors  
+│   │   └── Shapes/      # Geometric primitives (Circle, Rectangle, etc.)  
+│   ├── Interfaces/      # Domain contracts and abstractions  
+│   └── ValueObjects/    # Immutable domain concepts (vectors, keys, descriptors)  
+├── Infrastructure/  
+│   ├── Adapters/        # External system adapters (input, graphics)  
+│   ├── Factories/       # Object and service creation  
+│   └── Utilities/       # General-purpose helpers  
+├── Presentation/  
+│   ├── Drawers/         # Shape/UI drawing interfaces and implementations  
+│   └── Views/           # UI components (future expansion)  
+├── BattleStars.Tests/   # Unit and integration tests with coverage tracking  
+├── Program.cs           # Entry point  
+├── BattleStars.csproj   # Project file  
 
 ## 📜 License
 MIT License
