@@ -8,8 +8,6 @@ namespace BattleStars.Tests.Infrastructure.Startup;
 
 public class GameBootstrapperTest
 {
-    // BDD: Given / When / Then style tests for GameBootstrapper.Initialize()
-
     [Fact]
     public void GivenValidWindowSizeAndShapeDrawer_WhenInitialize_ThenReturnsBootstrapResultAndCallsAllCreationMethods()
     {
