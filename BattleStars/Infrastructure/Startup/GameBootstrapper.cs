@@ -14,10 +14,10 @@ public class GameBootstrapper
     private readonly int _windowHeight;
     private readonly IShapeDrawer _shapeDrawer;
 
-    public GameBootstrapper(int windowHeight, int windowWidth, IShapeDrawer shapeDrawer)
+    public GameBootstrapper(int windowWidth, int windowHeight, IShapeDrawer shapeDrawer)
     {
-        _windowHeight = windowHeight;
         _windowWidth = windowWidth;
+        _windowHeight = windowHeight;
         _shapeDrawer = shapeDrawer;
     }
 

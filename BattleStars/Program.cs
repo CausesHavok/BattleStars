@@ -10,7 +10,7 @@ Raylib.InitWindow(windowWidth, windowHeight, "BattleStars - Square Test");
 Raylib.SetTargetFPS(60);
 
 var drawer = SceneFactory.CreateShapeDrawer();
-var bootstrapper = new GameBootstrapper(windowHeight, windowWidth, drawer);
+var bootstrapper = new GameBootstrapper(windowWidth, windowHeight, drawer);
 var gameController = bootstrapper.Initialize().GameController;
 
 var shouldContinue = true;
