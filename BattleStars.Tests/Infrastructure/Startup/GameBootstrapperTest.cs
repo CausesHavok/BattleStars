@@ -59,7 +59,7 @@ public class GameBootstrapperTest
     {
         // Arrange
         var drawer = new Mock<IShapeDrawer>().Object;
-        var bootstrapper = new GameBootstrapper(600, 800, drawer);
+        var bootstrapper = new GameBootstrapper(800, 600, drawer);
 
         // Act
         var result = bootstrapper.Initialize();
@@ -102,8 +102,8 @@ public class GameBootstrapperTest
         public Mock<IGameState> CapturedInitialGameState = new Mock<IGameState>();
         public IGameController CapturedGameController = new Mock<IGameController>().Object;
 
-        public TestGameBootstrapper(int windowHeight, int windowWidth, IShapeDrawer shapeDrawer)
-            : base(windowHeight, windowWidth, shapeDrawer)
+        public TestGameBootstrapper(int windowWidth, int windowHeight, IShapeDrawer shapeDrawer)
+            : base(windowWidth, windowHeight, shapeDrawer)
         {
         }
 
