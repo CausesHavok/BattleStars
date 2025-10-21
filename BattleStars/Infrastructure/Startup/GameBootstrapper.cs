@@ -1,5 +1,4 @@
 using BattleStars.Application.Checkers;
-using BattleStars.Application.Controllers;
 using BattleStars.Application.Services;
 using BattleStars.Domain.Entities;
 using BattleStars.Domain.Interfaces;
