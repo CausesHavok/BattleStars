@@ -5,7 +5,7 @@ using BattleStars.Presentation.Drawers;
 namespace BattleStars.Infrastructure.Startup;
 
 public record BootstrapResult(
-    GameController GameController,
+    IGameController GameController,
     IGameState GameState,
     IInputHandler InputHandler,
     IBoundaryChecker BoundaryChecker,
