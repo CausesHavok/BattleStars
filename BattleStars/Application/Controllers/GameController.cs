@@ -1,6 +1,5 @@
 using BattleStars.Domain.Interfaces;
 using BattleStars.Domain.ValueObjects;
-using BattleStars.Core.Guards;
 namespace BattleStars.Application.Controllers;
 
 /// <summary>
@@ -11,7 +10,7 @@ namespace BattleStars.Application.Controllers;
 /// and boundary checks. It maintains the current state of the game and provides
 /// snapshots of the game state for rendering or other purposes.
 /// </remarks>
-public class GameController
+public class GameController : IGameController
 {
     private readonly IGameState _gameState;
     private readonly IInputHandler _inputHandler;
@@ -20,6 +19,7 @@ public class GameController
     private readonly IShotController _shotController;
     private readonly IBoundaryController _boundaryController;
     private readonly ICollisionController _collisionController;
+    private readonly IContext _context;
 
     internal GameController(
         IGameState gameState,
@@ -28,7 +28,8 @@ public class GameController
         IShotController shotController,
         IBoundaryController boundaryController,
         ICollisionController collisionController,
-        IInputHandler inputHandler)
+        IInputHandler inputHandler,
+        IContext context)
     {
         _gameState = gameState;
         _playerController = playerController;
@@ -37,6 +38,7 @@ public class GameController
         _boundaryController = boundaryController;
         _collisionController = collisionController;
         _inputHandler = inputHandler;
+        _context = context;
     }
 
     /// <summary>
@@ -56,14 +58,13 @@ public class GameController
     /// Check boundaries before collisions. - boundary checks are cheaper than collision checks.
     /// Short-circuit collisions - if an entity is destroyed, don't check it against other entities.
     /// </remarks>
-    public bool RunFrame(IContext context)
+    public bool RunFrame()
     {
-        Guard.NotNull(context, nameof(context));
         if (_inputHandler.ShouldExit()) return false;
 
         _shotController.UpdateShots(_gameState);
-        _playerController.UpdatePlayer(context, _inputHandler, _gameState);
-        _enemyController.UpdateEnemies(context, _gameState);
+        _playerController.UpdatePlayer(_context, _inputHandler, _gameState);
+        _enemyController.UpdateEnemies(_context, _gameState);
         _boundaryController.EnforceBoundaries(_gameState);
         _collisionController.HandleCollisions(_gameState);
 
