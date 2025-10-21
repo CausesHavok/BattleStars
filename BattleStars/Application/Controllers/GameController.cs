@@ -10,7 +10,7 @@ namespace BattleStars.Application.Controllers;
 /// and boundary checks. It maintains the current state of the game and provides
 /// snapshots of the game state for rendering or other purposes.
 /// </remarks>
-public class GameController
+public class GameController : IGameController
 {
     private readonly IGameState _gameState;
     private readonly IInputHandler _inputHandler;
