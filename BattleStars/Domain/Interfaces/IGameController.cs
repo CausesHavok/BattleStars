@@ -1,7 +1,10 @@
 using BattleStars.Domain.ValueObjects;
 
-public interface IGameController
+namespace BattleStars.Domain.Interfaces
 {
-    FrameSnapshot GetFrameSnapshot();
-    bool RunFrame();
+    public interface IGameController
+    {
+        FrameSnapshot GetFrameSnapshot();
+        bool RunFrame();
+    }
 }
