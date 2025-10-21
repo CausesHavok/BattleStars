@@ -74,12 +74,12 @@ public class GameBootstrapper
     protected virtual List<IBattleStar> CreateEnemyBattleStars(IShapeDrawer drawer) => SceneFactory.CreateEnemyBattleStars(drawer);
     protected virtual IContext CreateBasicContext() => SceneFactory.CreateBasicContext();
     protected virtual IInputHandler CreateInputHandler() => new InputHandler(new RaylibKeyBoardProvider());
-    protected virtual BoundaryChecker CreateBoundaryChecker(int width, int height) => new(0, width, 0, height);
-    protected virtual CollisionChecker CreateCollisionChecker() => new();
-    protected virtual GameState CreateInitialGameState(
+    protected virtual IBoundaryChecker CreateBoundaryChecker(int width, int height) => new BoundaryChecker(0, width, 0, height);
+    protected virtual ICollisionChecker CreateCollisionChecker() => new CollisionChecker();
+    protected virtual IGameState CreateInitialGameState(
         IContext context,
         IBattleStar playerBattleStar,
-        List<IBattleStar> enemies) => new(
+        List<IBattleStar> enemies) => new GameState(
             context,
             playerBattleStar,
             ShotFactory.CreateEmptyShotList(),
@@ -87,10 +87,10 @@ public class GameBootstrapper
             ShotFactory.CreateEmptyShotList()
         );
     
-    protected virtual GameController CreateGameController(
-        GameState gameState,
-        BoundaryChecker boundaryChecker,
-        CollisionChecker collisionChecker,
+    protected virtual IGameController CreateGameController(
+        IGameState gameState,
+        IBoundaryChecker boundaryChecker,
+        ICollisionChecker collisionChecker,
         IInputHandler inputHandler,
         IContext context
         ) => ControllerFactory.CreateGameController(
