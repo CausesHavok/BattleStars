@@ -1,55 +1,17 @@
 ﻿using Raylib_cs;
-using BattleStars.Application.Checkers;
-using BattleStars.Application.Services;
-using BattleStars.Domain.Entities;
 using BattleStars.Domain.ValueObjects;
-using BattleStars.Domain.Interfaces;
+using BattleStars.Infrastructure.Startup;
 using BattleStars.Infrastructure.Factories;
-using BattleStars.Infrastructure.Adapters;
 
-int windowWidth = 800;
+int windowWidth  = 800;
 int windowHeight = 600;
 
 Raylib.InitWindow(windowWidth, windowHeight, "BattleStars - Square Test");
 Raylib.SetTargetFPS(60);
 
-// Create drawer
 var drawer = SceneFactory.CreateShapeDrawer();
-
-// Create player BattleStar
-var playerBattleStar = SceneFactory.CreatePlayerBattleStar(drawer);
-
-// Create some enemies
-var enemies = SceneFactory.CreateEnemyBattleStars(drawer);
-
-// Create context
-var context = SceneFactory.CreateBasicContext();
-
-// Create input handler
-var inputHandler = new InputHandler(new RaylibKeyBoardProvider());
-
-// Create boundary checker
-var boundaryChecker = new BoundaryChecker(0, windowWidth, 0, windowHeight);
-
-// Create collision checker
-var collisionChecker = new CollisionChecker();
-
-// Create initial game state
-var gameState = new GameState(
-    context,
-    playerBattleStar,
-    ShotFactory.CreateEmptyShotList(),
-    enemies,
-    ShotFactory.CreateEmptyShotList()
-);
-
-// Create game controller
-var gameController = ControllerFactory.CreateGameController(
-    gameState,
-    boundaryChecker,
-    collisionChecker,
-    inputHandler
-);
+var bootstrapper = new GameBootstrapper(windowHeight, windowWidth, drawer);
+var gameController = bootstrapper.Initialize().GameController;
 
 var shouldContinue = true;
 
@@ -59,7 +21,7 @@ while (!Raylib.WindowShouldClose())
     // Update game state
     if (shouldContinue)
     {
-        shouldContinue = gameController.RunFrame(context);
+        shouldContinue = gameController.RunFrame();
     }
     var frameSnapshot = gameController.GetFrameSnapshot();
 
@@ -76,7 +38,6 @@ while (!Raylib.WindowShouldClose())
     {
         enemy.Draw();
     }
-
 
     // Update and draw shots
     foreach (var shot in frameSnapshot.PlayerShots)

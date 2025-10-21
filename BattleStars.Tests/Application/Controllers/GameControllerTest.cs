@@ -20,7 +20,9 @@ public class GameControllerTest
             new Mock<IGameState>().Object,
             new Mock<IBoundaryChecker>().Object,
             new Mock<ICollisionChecker>().Object,
-            new Mock<IInputHandler>().Object);
+            new Mock<IInputHandler>().Object,
+            new Mock<IContext>().Object
+        );
 
         // Act / Assert
         act.Should().NotThrow();
@@ -29,26 +31,6 @@ public class GameControllerTest
     #endregion
 
     #region RunFrame Tests
-    [Fact]
-    public void RunFrame_NullContext_ThrowsArgumentNullException()
-    {
-        // Arrange
-        var gameController = ControllerFactory.CreateGameController(
-            new Mock<IGameState>().Object,
-            new Mock<IBoundaryChecker>().Object,
-            new Mock<ICollisionChecker>().Object,
-            new Mock<IInputHandler>().Object);
-
-        IContext context = null!;
-
-        // Act
-        Action act = () => gameController.RunFrame(context);
-
-        // Assert
-        act.Should().Throw<ArgumentNullException>()
-            .WithParameterName("context");
-    }
-
     [Fact]
     public void RunFrame_InputHandlerIndicatesExit_ReturnsFalse()
     {
@@ -61,12 +43,12 @@ public class GameControllerTest
             new Mock<IGameState>().Object,
             new Mock<IBoundaryChecker>().Object,
             new Mock<ICollisionChecker>().Object,
-            inputHandlerMock.Object);
-
-        var contextMock = new Mock<IContext>();
+            inputHandlerMock.Object,
+            new Mock<IContext>().Object
+        );
 
         // Act
-        var result = gameController.RunFrame(contextMock.Object);
+        var result = gameController.RunFrame();
 
         // Assert
         result.Should().BeFalse();
@@ -89,12 +71,12 @@ public class GameControllerTest
             gameStateMock.Object,
             new Mock<IBoundaryChecker>().Object,
             new Mock<ICollisionChecker>().Object,
-            inputHandlerMock.Object);
-
-        var contextMock = new Mock<IContext>();
+            inputHandlerMock.Object,
+            new Mock<IContext>().Object
+        );
 
         // Act
-        var result = gameController.RunFrame(contextMock.Object);
+        var result = gameController.RunFrame();
 
         // Assert
         result.Should().BeTrue();
@@ -119,14 +101,14 @@ public class GameControllerTest
             gameStateMock.Object,
             new Mock<IBoundaryChecker>().Object,
             new Mock<ICollisionChecker>().Object,
-            inputHandlerMock.Object);
-
-        var contextMock = new Mock<IContext>();
+            inputHandlerMock.Object,
+            new Mock<IContext>().Object
+        );
 
         gameStateMock.Verify(gs => gs.Validate(), Times.Once); // Once during construction
 
         // Act
-        gameController.RunFrame(contextMock.Object);
+        gameController.RunFrame();
 
         // Assert
         gameStateMock.Verify(gs => gs.Validate(), Times.Exactly(2)); // Once during construction and once after processing
@@ -154,7 +136,8 @@ public class GameControllerTest
             gameStateMock.Object,
             new Mock<IBoundaryChecker>().Object,
             new Mock<ICollisionChecker>().Object,
-            new Mock<IInputHandler>().Object
+            new Mock<IInputHandler>().Object,
+            new Mock<IContext>().Object
         );
 
         // Act
