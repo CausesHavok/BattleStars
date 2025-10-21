@@ -2,10 +2,7 @@ using FluentAssertions;
 using Moq;
 using BattleStars.Infrastructure.Startup;
 using BattleStars.Domain.Interfaces;
-using BattleStars.Domain.Entities;
 using BattleStars.Presentation.Drawers;
-using BattleStars.Application.Controllers;
-using BattleStars.Application.Checkers;
 
 namespace BattleStars.Tests.Infrastructure.Startup;
 
