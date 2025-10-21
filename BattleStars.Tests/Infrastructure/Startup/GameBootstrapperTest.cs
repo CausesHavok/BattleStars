@@ -103,7 +103,7 @@ public class GameBootstrapperTest
         public IGameController CapturedGameController = new Mock<IGameController>().Object;
 
         public TestGameBootstrapper(int windowHeight, int windowWidth, IShapeDrawer shapeDrawer)
-            : base(windowHeight, windowWidth, shapeDrawer)
+            : base(windowWidth, windowHeight, shapeDrawer)
         {
         }
 
