@@ -198,8 +198,6 @@ public class FloatGuardTest
     }
 
     [Theory]
-    [InlineData(float.NaN)]
-    [InlineData(float.PositiveInfinity)]
     [InlineData(float.MaxValue)]
     [InlineData(0f)]
     [InlineData(1f)]
@@ -245,9 +243,6 @@ public class FloatGuardTest
     }
 
     [Theory]
-    [InlineData(float.NaN)]
-    [InlineData(float.PositiveInfinity)]
-    [InlineData(float.NegativeInfinity)]
     [InlineData(float.MaxValue)]
     [InlineData(float.MinValue)]
     [InlineData(1f)]
@@ -299,8 +294,6 @@ public class FloatGuardTest
     }
 
     [Theory]
-    [InlineData(float.NaN)]
-    [InlineData(float.PositiveInfinity)]
     [InlineData(float.MaxValue)]
     public void GivenPositive_WhenRequirePositive_ThenDoesNotThrow(float value)
     {

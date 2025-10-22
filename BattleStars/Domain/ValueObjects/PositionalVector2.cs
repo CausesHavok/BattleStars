@@ -9,30 +9,18 @@ public struct PositionalVector2
     public float X
     {
         get => _position.X;
-        set
-        {
-            Guard.RequireValid(value, nameof(X));
-            _position.X = value;
-        }
+        set => _position.X = Guard.RequireValid(value, nameof(X));
     }
     public float Y
     {
         get => _position.Y;
-        set
-        {
-            Guard.RequireValid(value, nameof(Y));
-            _position.Y = value;
-        }
+        set => _position.Y = Guard.RequireValid(value, nameof(Y));
     }
 
     public Vector2 Position
     {
         get => _position;
-        set
-        {
-            Guard.RequireValid(value, nameof(Position));
-            _position = value;
-        }
+        set => _position = Guard.RequireValid(value, nameof(Position));
     }
 
     public PositionalVector2(Vector2 position)

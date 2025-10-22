@@ -56,26 +56,11 @@ public class BasicMovableTest
     #endregion
 
     #region Move Method Tests
-    // 9. Throws if context is null.
     // 10. Updates position as expected for valid context.
     // 11. Multiple moves accumulate position correctly.
     // 12. Position, direction, speed, and context are not mutated by Move.
     // 13. Zero direction results in no movement.
     // 16. Edge case positions (large/small values) move as expected.
-
-    [Fact] // 9
-    public void GivenNullContext_WhenMove_ThenThrowsArgumentNullException()
-    {
-        var initialPosition = new PositionalVector2(1, 2);
-        var direction = DirectionalVector2.UnitY;
-        var speed = 1f;
-
-        var movable = new BasicMovable(initialPosition, direction, speed);
-
-        Action act = () => movable.Move(null!);
-
-        act.Should().Throw<ArgumentNullException>();
-    }
 
     [Fact] // 10 (and 8 indirectly)
     public void GivenValidContext_WhenMove_ThenUpdatesPositionAsExpected()

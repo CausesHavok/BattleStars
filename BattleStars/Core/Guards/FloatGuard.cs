@@ -32,6 +32,7 @@ public static class FloatGuard
         float value,
         [CallerArgumentExpression(nameof(value))] string? paramName = null)
     {
+        RequireValid(value, paramName);
         if (value < 0)
         {
             var resolvedParamName = ParamNameResolver.Resolve(paramName);
@@ -44,6 +45,7 @@ public static class FloatGuard
         float value,
         [CallerArgumentExpression(nameof(value))] string? paramName = null)
     {
+        RequireValid(value, paramName);
         if (value == 0)
         {
             var resolvedParamName = ParamNameResolver.Resolve(paramName);
@@ -56,6 +58,7 @@ public static class FloatGuard
         float value,
         [CallerArgumentExpression(nameof(value))] string? paramName = null)
     {
+        RequireValid(value, paramName);
         if (value <= 0)
         {
             var resolvedParamName = ParamNameResolver.Resolve(paramName);

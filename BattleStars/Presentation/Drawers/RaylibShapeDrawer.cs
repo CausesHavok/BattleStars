@@ -8,11 +8,7 @@ namespace BattleStars.Presentation.Drawers
     {
         private readonly IRaylibGraphics _graphics;
 
-        public RaylibShapeDrawer(IRaylibGraphics graphics)
-        {
-            Guard.NotNull(graphics, nameof(graphics));
-            _graphics = graphics;
-        }
+        public RaylibShapeDrawer(IRaylibGraphics graphics) => _graphics = Guard.NotNull(graphics, nameof(graphics));
 
         public void DrawRectangle(PositionalVector2 topleft, PositionalVector2 bottomright, Color color)
         {

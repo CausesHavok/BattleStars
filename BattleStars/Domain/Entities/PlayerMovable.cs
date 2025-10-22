@@ -4,32 +4,18 @@ using BattleStars.Core.Guards;
 using System.Numerics;
 namespace BattleStars.Domain.Entities;
 
-internal class PlayerMovable : IMovable
+internal class PlayerMovable(PositionalVector2 initialPosition, float speed, IBoundaryChecker boundaryChecker) : IMovable
 {
-    private PositionalVector2 _position;
+    private PositionalVector2 _position = initialPosition;
     public PositionalVector2 Position => _position;
-    private readonly float _speed;
-    private readonly IBoundaryChecker _boundaryChecker;
-
-    public PlayerMovable(PositionalVector2 initialPosition, float speed, IBoundaryChecker boundaryChecker)
-    {
-        // Removed redundant validation: PositionalVector2 already validates during construction.
-        Guard.RequireValid(speed, nameof(speed));
-        Guard.RequireNonNegative(speed, nameof(speed));
-        Guard.RequireNonZero(speed, nameof(speed));
-        Guard.NotNull(boundaryChecker, nameof(boundaryChecker));
-
-        _position = initialPosition;
-        _speed = speed;
-        _boundaryChecker = boundaryChecker;
-    }
+    private readonly float _speed = Guard.RequirePositive(speed, nameof(speed));
+    private readonly IBoundaryChecker _boundaryChecker = Guard.NotNull(boundaryChecker, nameof(boundaryChecker));
 
     public void Move(IContext context)
     {
         Guard.NotNull(context, nameof(context));
 
         var direction = context.PlayerDirection;
-        Guard.RequireValid(direction, nameof(direction));
         if (direction == Vector2.Zero)
             return;
 

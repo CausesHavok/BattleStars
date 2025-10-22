@@ -22,7 +22,6 @@ internal class Rectangle : IShape
     /// <param name="v2"></param>
     public Rectangle(PositionalVector2 v1, PositionalVector2 v2, Color color, IShapeDrawer drawer)
     {
-        Guard.NotNull(drawer, nameof(drawer));
         float minX = Math.Min(v1.X, v2.X);
         float minY = Math.Min(v1.Y, v2.Y);
         float maxX = Math.Max(v1.X, v2.X);
@@ -33,16 +32,15 @@ internal class Rectangle : IShape
 
         BoundingBox = new BoundingBox(new PositionalVector2(minX, minY), new PositionalVector2(maxX, maxY));
         Color = color;
-        _drawer = drawer;
+        _drawer = Guard.NotNull(drawer, nameof(drawer));
     }
 
-    public bool Contains(PositionalVector2 point)
-    {
-        return BoundingBox.Contains(point);
-    }
+    public bool Contains(PositionalVector2 point) => BoundingBox.Contains(point);
 
-    public void Draw(PositionalVector2 position)
-    {
-        _drawer.DrawRectangle(position + BoundingBox.TopLeft, position + BoundingBox.BottomRight, Color);
-    }
+    public void Draw(PositionalVector2 position) 
+        => _drawer.DrawRectangle(
+                position + BoundingBox.TopLeft,
+                position + BoundingBox.BottomRight,
+                Color
+            );
 }

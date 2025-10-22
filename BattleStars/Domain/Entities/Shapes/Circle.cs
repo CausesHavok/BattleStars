@@ -15,25 +15,13 @@ internal class Circle : IShape
 
     public Circle(float radius, Color color, IShapeDrawer drawer)
     {
-        Guard.NotNull(drawer, nameof(drawer));
-        Guard.RequireValid(radius, nameof(radius));
-        Guard.RequireNonNegative(radius, nameof(radius));
-        Guard.RequireNonZero(radius, nameof(radius));
-
-        _radius = radius;
+        _radius = Guard.RequirePositive(radius, nameof(radius));
         _color = color;
         BoundingBox = new BoundingBox(new PositionalVector2(-_radius, -_radius), new PositionalVector2(_radius, _radius));
-        _drawer = drawer;
+        _drawer = Guard.NotNull(drawer, nameof(drawer));
     }
 
-    public bool Contains(PositionalVector2 point)
-    {
+    public bool Contains(PositionalVector2 point) => point.Position.LengthSquared() <= _radius * _radius;
 
-        return point.Position.LengthSquared() <= _radius * _radius;
-    }
-
-    public void Draw(PositionalVector2 position)
-    {
-        _drawer.DrawCircle(position, _radius, _color);
-    }
+    public void Draw(PositionalVector2 position) => _drawer.DrawCircle(position, _radius, _color);
 }

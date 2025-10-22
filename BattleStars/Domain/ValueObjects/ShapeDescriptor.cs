@@ -25,10 +25,8 @@ internal class ShapeDescriptor : IShapeDescriptor
     /// <exception cref="ArgumentException">Thrown if scale is non-positive.</exception>
     public ShapeDescriptor(ShapeType shapeType, float scale, Color color)
     {
-        Guard.RequireValid(scale, nameof(scale));
-        Guard.RequirePositive(scale, nameof(scale));
         ShapeType = shapeType;
-        Scale = scale;
+        Scale = Guard.RequirePositive(scale, nameof(scale));
         Color = color;
     }
 }
