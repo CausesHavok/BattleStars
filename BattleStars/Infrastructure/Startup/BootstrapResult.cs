@@ -9,6 +9,5 @@ public record BootstrapResult(
     IInputHandler InputHandler,
     IBoundaryChecker BoundaryChecker,
     ICollisionChecker CollisionChecker,
-    IShapeDrawer ShapeDrawer,
-    IContext Context
+    IShapeDrawer ShapeDrawer
 );

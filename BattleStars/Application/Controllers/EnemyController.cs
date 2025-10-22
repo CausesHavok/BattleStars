@@ -17,10 +17,10 @@ internal class EnemyController : IEnemyController
     /// <remarks>
     /// This method updates the position of each enemy and handles their shooting.
     /// </remarks>
-    public void UpdateEnemies(IContext context, IGameState gameState)
+    public void UpdateEnemies(IGameState gameState)
     {
-        MoveEnemies(context, gameState);
-        HandleShooting(context, gameState);
+        MoveEnemies(gameState);
+        HandleShooting(gameState);
     }
 
     /// <summary>
@@ -32,11 +32,11 @@ internal class EnemyController : IEnemyController
     /// This method iterates through all enemies, calling their Shoot method.
     /// If an enemy shoots, the resulting shots are added to the game state's enemy shots.
     /// </remarks>
-    private void HandleShooting(IContext context, IGameState gameState)
+    private void HandleShooting(IGameState gameState)
     {
         foreach (var enemy in gameState.Enemies)
         {
-            var shot = enemy.Shoot(context);
+            var shot = enemy.Shoot(gameState.Context);
             if (shot != null) gameState.EnemyShots.AddRange(shot);
         }
     }
@@ -49,11 +49,11 @@ internal class EnemyController : IEnemyController
     /// <remarks>
     /// This method iterates through all enemies and calls their Move method to update their positions.
     /// </remarks>
-    private void MoveEnemies(IContext context, IGameState gameState)
+    private void MoveEnemies(IGameState gameState)
     {
         foreach (var enemy in gameState.Enemies)
         {
-            enemy.Move(context);
+            enemy.Move(gameState.Context);
         }
     }
 }

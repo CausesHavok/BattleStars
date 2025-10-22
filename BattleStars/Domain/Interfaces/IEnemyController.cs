@@ -5,5 +5,5 @@ namespace BattleStars.Domain.Interfaces;
 /// </summary>
 internal interface IEnemyController
 {
-    void UpdateEnemies(IContext context, IGameState gameState);
+    void UpdateEnemies(IGameState gameState);
 }
