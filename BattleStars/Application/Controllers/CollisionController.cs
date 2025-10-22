@@ -1,6 +1,6 @@
 using BattleStars.Domain.Interfaces;
 using BattleStars.Core.Guards;
-namespace BattleStars.Application.Services;
+namespace BattleStars.Application.Controllers;
 
 /// <summary>
 /// Controls collision detection and response in the game.
