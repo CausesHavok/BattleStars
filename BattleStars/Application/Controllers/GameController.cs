@@ -42,7 +42,6 @@ public class GameController : IGameController
     /// Runs a single frame of the game, updating all entities and handling game logic.
     /// </summary>
     /// <returns>True if the game should continue, false if it should end.</returns>
-    /// <exception cref="ArgumentNullException">Thrown if the context is null.</exception>
     /// <remarks>
     /// This method processes player input, updates the positions of all entities,
     /// checks for collisions, and removes any entities that are out of bounds or destroyed.
