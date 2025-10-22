@@ -1,4 +1,4 @@
-namespace BattleStars.Core.Guards.Utilities
+namespace BattleStars.Core.Guards.Utility
 {
     internal static class ParamNameResolver
     {

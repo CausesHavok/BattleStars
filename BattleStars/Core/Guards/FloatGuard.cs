@@ -1,5 +1,5 @@
 using System.Runtime.CompilerServices;
-using BattleStars.Core.Guards.Utilities;
+using BattleStars.Core.Guards.Utility;
 namespace BattleStars.Core.Guards;
 
 public static class FloatGuard
