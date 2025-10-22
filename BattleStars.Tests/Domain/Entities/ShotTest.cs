@@ -12,6 +12,41 @@ public class ShotTest
 
     #region Constructor Tests
 
+    [Theory]
+    [InlineData(-1f)]
+    [InlineData(float.NegativeInfinity)]
+    [InlineData(float.MinValue)]
+    [InlineData(float.NaN)]
+    [InlineData(float.PositiveInfinity)]
+    public void GivenNegativeOrInvalidSpeed_WhenCreatingShot_ThenThrowsArgumentException(float invalidSpeed)
+    {
+        var position = new PositionalVector2(0, 0);
+        var direction = new DirectionalVector2(1, 0);
+        float damage = 10f;
+
+        Action act = () => Shot.Create(position, direction, invalidSpeed, damage);
+
+        act.Should().Throw<ArgumentException>().WithMessage("*speed*");
+    }
+
+    [Theory]
+    [InlineData(-1f)]
+    [InlineData(float.NegativeInfinity)]
+    [InlineData(float.MinValue)]
+    [InlineData(float.NaN)]
+    [InlineData(float.PositiveInfinity)]
+    public void GivenNegativeOrInvalidDamage_WhenCreatingShot_ThenThrowsArgumentException(float invalidDamage)
+    {
+        var position = new PositionalVector2(0, 0);
+        var direction = new DirectionalVector2(1, 0);
+        float speed = 10f;
+
+        Action act = () => Shot.Create(position, direction, speed, invalidDamage);
+
+        act.Should().Throw<ArgumentException>().WithMessage("*damage*");
+    }
+
+
     [Fact]
     public void GivenValidParameters_WhenShotConstructed_ThenPropertiesAreSetCorrectly()
     {
@@ -20,7 +55,7 @@ public class ShotTest
         float speed = 5f;
         float damage = 10f;
 
-        var shot = new Shot(position, direction, speed, damage);
+        var shot = Shot.Create(position, direction, speed, damage);
 
         shot.Position.Should().Be(position);
         shot.Direction.Should().Be(direction);
@@ -50,7 +85,7 @@ public class ShotTest
         var direction = new DirectionalVector2(Vector2.UnitX); // Right
         float speed = 5f;
         float damage = 10f;
-        var shot = new Shot(position, direction, speed, damage);
+        var shot = Shot.Create(position, direction, speed, damage);
 
         // Act
         shot.Update();
@@ -67,7 +102,7 @@ public class ShotTest
         var direction = new DirectionalVector2(-Vector2.UnitX); // Left
         float speed = 3f;
         float damage = 10f;
-        var shot = new Shot(position, direction, speed, damage);
+        var shot = Shot.Create(position, direction, speed, damage);
 
         // Act
         shot.Update();
@@ -84,7 +119,7 @@ public class ShotTest
         var direction = new DirectionalVector2(Vector2.UnitX); // Right
         float speed = 3f;
         float damage = 10f;
-        var shot = new Shot(position, direction, speed, damage);
+        var shot = Shot.Create(position, direction, speed, damage);
 
         // Act
         shot.Update();
@@ -101,7 +136,7 @@ public class ShotTest
         var direction = new DirectionalVector2(-Vector2.UnitY); // Down
         float speed = 3f;
         float damage = 10f;
-        var shot = new Shot(position, direction, speed, damage);
+        var shot = Shot.Create(position, direction, speed, damage);
 
         // Act
         shot.Update();
@@ -118,7 +153,7 @@ public class ShotTest
         var direction = new DirectionalVector2(Vector2.UnitY); // Up
         float speed = 3f;
         float damage = 10f;
-        var shot = new Shot(position, direction, speed, damage);
+        var shot = Shot.Create(position, direction, speed, damage);
 
         // Act
         shot.Update();
@@ -135,7 +170,7 @@ public class ShotTest
         var direction = new DirectionalVector2(Vector2.Normalize(new Vector2(1, -1))); // Diagonal (Down-Right)
         float speed = 3f;
         float damage = 10f;
-        var shot = new Shot(position, direction, speed, damage);
+        var shot = Shot.Create(position, direction, speed, damage);
 
         // Act
         shot.Update();
@@ -154,7 +189,7 @@ public class ShotTest
         var direction = new DirectionalVector2(Vector2.UnitX); // Right
         float speed = 0f; // No speed
         float damage = 10f;
-        var shot = new Shot(position, direction, speed, damage);
+        var shot = Shot.Create(position, direction, speed, damage);
 
         // Act
         shot.Update();
@@ -171,7 +206,7 @@ public class ShotTest
         var direction = new DirectionalVector2(Vector2.UnitX); // Right
         float speed = 5f;
         float damage = 10f;
-        var shot = new Shot(position, direction, speed, damage);
+        var shot = Shot.Create(position, direction, speed, damage);
         shot.Deactivate(); // Simulate the shot being dead
 
         // Act
@@ -189,7 +224,7 @@ public class ShotTest
         var direction = new DirectionalVector2(Vector2.UnitY); // Up
         float speed = 5f;
         float damage = 10f;
-        var shot = new Shot(position, direction, speed, damage);
+        var shot = Shot.Create(position, direction, speed, damage);
         shot.Deactivate(); // Deactivate the shot
 
         // Act
@@ -215,7 +250,7 @@ public class ShotTest
         var direction = new DirectionalVector2(Vector2.UnitY); // Up
         float speed = 5f;
         float damage = 10f;
-        var shot = new Shot(position, direction, speed, damage);
+        var shot = Shot.Create(position, direction, speed, damage);
 
         // Act
         shot.Deactivate();
@@ -232,7 +267,7 @@ public class ShotTest
         var direction = new DirectionalVector2(Vector2.UnitY); // Up
         float speed = 5f;
         float damage = 10f;
-        var shot = new Shot(position, direction, speed, damage);
+        var shot = Shot.Create(position, direction, speed, damage);
         shot.Deactivate(); // Deactivate the shot
 
         // Act
