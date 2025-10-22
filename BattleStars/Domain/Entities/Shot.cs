@@ -31,8 +31,10 @@ internal class Shot: IShot
         float damage
     )
     {
-        Guard.RequireValid( Guard.RequireNonNegative(speed, nameof(speed)), nameof(speed));
-        Guard.RequireValid( Guard.RequireNonNegative(damage, nameof(damage)), nameof(damage));
+        Guard.RequireValid(speed, nameof(speed));
+        Guard.RequireNonNegative(speed, nameof(speed));
+        Guard.RequireValid(damage, nameof(damage));
+        Guard.RequireNonNegative(damage, nameof(damage));
         return new Shot(position, direction, speed, damage);
     }
 
