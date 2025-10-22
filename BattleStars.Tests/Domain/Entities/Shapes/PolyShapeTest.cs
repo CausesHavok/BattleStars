@@ -4,7 +4,7 @@ using BattleStars.Domain.Entities.Shapes;
 using BattleStars.Domain.ValueObjects;
 using BattleStars.Presentation.Drawers;
 
-namespace BattleStars.Tests.Shapes;
+namespace BattleStars.Tests.Domain.Entities.Shapes;
 
 public class PolyShapeTest
 {

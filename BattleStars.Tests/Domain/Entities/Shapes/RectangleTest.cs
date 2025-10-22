@@ -4,7 +4,7 @@ using BattleStars.Domain.Interfaces;
 using BattleStars.Domain.ValueObjects;
 using BattleStars.Presentation.Drawers;
 
-namespace BattleStars.Tests.Entities.Shapes;
+namespace BattleStars.Tests.Domain.Entities.Shapes;
 
 public class RectangleTest
 {

@@ -5,7 +5,7 @@ using BattleStars.Domain.Interfaces;
 using BattleStars.Domain.ValueObjects;
 using BattleStars.Infrastructure.Factories;
 
-namespace BattleStars.Tests.Entities;
+namespace BattleStars.Tests.Domain.Entities;
 
 public class BasicShooterTest
 {
