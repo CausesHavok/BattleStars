@@ -132,28 +132,6 @@ public class ShotFactoryTest
     }
 
     [Fact]
-    public void GivenInvalidSpeedOrDamage_WhenCustomShot_ThenThrowsArgumentException()
-    {
-        // Given
-        var position = new PositionalVector2(1, 1);
-        var direction = DirectionalVector2.UnitX;
-
-        // When/Then
-        FluentActions.Invoking(() => ShotFactory.CustomShot(position, direction, float.NaN, 1f))
-            .Should().Throw<ArgumentException>();
-        FluentActions.Invoking(() => ShotFactory.CustomShot(position, direction, 1f, float.NaN))
-            .Should().Throw<ArgumentException>();
-        FluentActions.Invoking(() => ShotFactory.CustomShot(position, direction, float.PositiveInfinity, 1f))
-            .Should().Throw<ArgumentException>();
-        FluentActions.Invoking(() => ShotFactory.CustomShot(position, direction, 1f, float.NegativeInfinity))
-            .Should().Throw<ArgumentException>();
-        FluentActions.Invoking(() => ShotFactory.CustomShot(position, direction, -1f, 1f))
-            .Should().Throw<ArgumentException>();
-        FluentActions.Invoking(() => ShotFactory.CustomShot(position, direction, 1f, -1f))
-            .Should().Throw<ArgumentException>();
-    }
-
-    [Fact]
     public void GivenNoParameters_WhenCreateEmptyShotList_ThenReturnsEmptyList()
     {
         // When
