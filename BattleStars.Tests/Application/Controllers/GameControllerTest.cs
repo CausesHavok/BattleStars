@@ -59,7 +59,7 @@ public class GameControllerTest
         var gameStateMock = new Mock<IGameState>();
         gameStateMock.Setup(gs => gs.Context).Returns(new Mock<IContext>().Object);
         gameStateMock.Setup(gs => gs.Player).Returns(new Mock<IBattleStar>().Object);
-        gameStateMock.Setup(gs => gs.Enemies).Returns(new List<IBattleStar>());
+        gameStateMock.Setup(gs => gs.Enemies).Returns([]);
         gameStateMock.Setup(gs => gs.PlayerShots).Returns(ShotFactory.CreateEmptyShotList());
         gameStateMock.Setup(gs => gs.EnemyShots).Returns(ShotFactory.CreateEmptyShotList());
 
