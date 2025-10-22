@@ -2,10 +2,10 @@ using FluentAssertions;
 using Moq;
 using BattleStars.Domain.Interfaces;
 using BattleStars.Domain.ValueObjects;
-using BattleStars.Application.Services;
+using BattleStars.Application.Controllers;
 using BattleStars.Infrastructure.Factories;
 
-namespace BattleStars.Tests.Application.Services;
+namespace BattleStars.Tests.Application.Controllers;
 
 public class CollisionControllerTest
 {
