@@ -12,14 +12,13 @@ public static class ControllerFactory
         IGameState gameState,
         IBoundaryChecker boundaryChecker,
         ICollisionChecker collisionChecker,
-        IInputHandler inputHandler,
-        IContext context)
+        IInputHandler inputHandler
+    )
     {
         Guard.NotNull(gameState, nameof(gameState));
         Guard.NotNull(inputHandler, nameof(inputHandler));
         Guard.NotNull(boundaryChecker, nameof(boundaryChecker));
         Guard.NotNull(collisionChecker, nameof(collisionChecker));
-        Guard.NotNull(context, nameof(context));
         gameState.Validate();
         var playerController    = new PlayerController();
         var enemyController     = new EnemyController();
@@ -34,7 +33,7 @@ public static class ControllerFactory
             shotController,
             boundaryController,
             collisionController,
-            inputHandler,
-            context);
+            inputHandler
+        );
     }
 }

@@ -23,7 +23,6 @@ public class GameBootstrapper
 
     public BootstrapResult Initialize()
     {
-
         // Create player BattleStar
         var playerBattleStar = CreatePlayerBattleStar(_shapeDrawer);
 
@@ -54,8 +53,7 @@ public class GameBootstrapper
             gameState,
             boundaryChecker,
             collisionChecker,
-            inputHandler,
-            context
+            inputHandler
         );
 
         return new BootstrapResult(
@@ -64,8 +62,7 @@ public class GameBootstrapper
             inputHandler,
             boundaryChecker,
             collisionChecker,
-            _shapeDrawer,
-            context
+            _shapeDrawer
         );
     }
 
@@ -90,14 +87,12 @@ public class GameBootstrapper
         IGameState gameState,
         IBoundaryChecker boundaryChecker,
         ICollisionChecker collisionChecker,
-        IInputHandler inputHandler,
-        IContext context
+        IInputHandler inputHandler
         ) => ControllerFactory.CreateGameController(
             gameState,
             boundaryChecker,
             collisionChecker,
-            inputHandler,
-            context
+            inputHandler
         );
 
 }

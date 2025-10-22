@@ -31,7 +31,7 @@ public class GameBootstrapperTest
 
         result.GameState.Player.Should().BeSameAs(sut.CapturedPlayerBattleStar);
         result.GameState.Enemies.Should().BeSameAs(sut.CapturedEnemyBattleStars);
-        result.Context.Should().BeSameAs(sut.CapturedContext);
+        result.GameState.Context.Should().BeSameAs(sut.CapturedContext);
         result.InputHandler.Should().BeSameAs(sut.CapturedInputHandler);
         result.BoundaryChecker.Should().BeSameAs(sut.CapturedBoundaryChecker);
         result.CollisionChecker.Should().BeSameAs(sut.CapturedCollisionChecker);
@@ -71,12 +71,16 @@ public class GameBootstrapperTest
         result.InputHandler.Should().NotBeNull();
         result.BoundaryChecker.Should().NotBeNull();
         result.CollisionChecker.Should().NotBeNull();
-        result.Context.Should().NotBeNull();
         result.ShapeDrawer.Should().BeSameAs(drawer);
 
         result.GameState.Player.Should().NotBeNull("the player should be initialized");
         result.GameState.Enemies.Should().NotBeNull("enemies list should be initialized");
         result.GameState.Enemies.Should().NotBeEmpty("there should be at least one enemy");
+        result.GameState.Context.Should().NotBeNull("the game context should be initialized");
+        result.GameState.PlayerShots.Should().NotBeNull("player shots list should be initialized");
+        result.GameState.EnemyShots.Should().NotBeNull("enemy shots list should be initialized");
+        result.GameState.PlayerShots.Should().BeEmpty("there should be no player shots at game start");
+        result.GameState.EnemyShots.Should().BeEmpty("there should be no enemy shots at game start");
     }
 
 
@@ -153,10 +157,11 @@ public class GameBootstrapperTest
             var gameStateMock = CapturedInitialGameState;
             gameStateMock.Setup(gs => gs.Player).Returns(playerBattleStar);
             gameStateMock.Setup(gs => gs.Enemies).Returns(enemies);
+            gameStateMock.Setup(gs => gs.Context).Returns(context);
             return CapturedInitialGameState.Object;
         }
 
-        protected override IGameController CreateGameController(IGameState gameState, IBoundaryChecker boundaryChecker, ICollisionChecker collisionChecker, IInputHandler inputHandler, IContext context)
+        protected override IGameController CreateGameController(IGameState gameState, IBoundaryChecker boundaryChecker, ICollisionChecker collisionChecker, IInputHandler inputHandler)
         {
             WasCreateGameControllerCalled = true;
             return CapturedGameController;

@@ -5,5 +5,5 @@ namespace BattleStars.Domain.Interfaces;
 /// </summary>
 internal interface IPlayerController
 {
-    void UpdatePlayer(IContext context, IInputHandler inputHandler, IGameState gameState);
+    void UpdatePlayer(IInputHandler inputHandler, IGameState gameState);
 }

@@ -17,15 +17,13 @@ public class ControllerFactoryTests
         var boundaryCheckerMock = new Mock<IBoundaryChecker>();
         var collisionCheckerMock = new Mock<ICollisionChecker>();
         var inputHandlerMock = new Mock<IInputHandler>();
-        var contextMock = new Mock<IContext>();
 
         // When
         var gameController = ControllerFactory.CreateGameController(
             gameStateMock.Object,
             boundaryCheckerMock.Object,
             collisionCheckerMock.Object,
-            inputHandlerMock.Object,
-            contextMock.Object
+            inputHandlerMock.Object
         );
 
         // Then
@@ -41,15 +39,13 @@ public class ControllerFactoryTests
         var boundaryCheckerMock = new Mock<IBoundaryChecker>();
         var collisionCheckerMock = new Mock<ICollisionChecker>();
         var inputHandlerMock = new Mock<IInputHandler>();
-        var contextMock = new Mock<IContext>();
 
         // When
         Action act = () => ControllerFactory.CreateGameController(
             gameState,
             boundaryCheckerMock.Object,
             collisionCheckerMock.Object,
-            inputHandlerMock.Object,
-            contextMock.Object
+            inputHandlerMock.Object
         );
 
         // Then
@@ -65,15 +61,13 @@ public class ControllerFactoryTests
         var boundaryChecker = null as IBoundaryChecker;
         var collisionCheckerMock = new Mock<ICollisionChecker>();
         var inputHandlerMock = new Mock<IInputHandler>();
-        var contextMock = new Mock<IContext>();
 
         // When
         Action act = () => ControllerFactory.CreateGameController(
             gameStateMock.Object,
             boundaryChecker!,
             collisionCheckerMock.Object,
-            inputHandlerMock.Object,
-            contextMock.Object
+            inputHandlerMock.Object
         );
 
         // Then
@@ -89,15 +83,13 @@ public class ControllerFactoryTests
         var boundaryCheckerMock = new Mock<IBoundaryChecker>();
         ICollisionChecker collisionChecker = null!;
         var inputHandlerMock = new Mock<IInputHandler>();
-        var contextMock = new Mock<IContext>();
 
         // When
         Action act = () => ControllerFactory.CreateGameController(
             gameStateMock.Object,
             boundaryCheckerMock.Object,
             collisionChecker,
-            inputHandlerMock.Object,
-            contextMock.Object
+            inputHandlerMock.Object
         );
 
         // Then
@@ -113,43 +105,17 @@ public class ControllerFactoryTests
         var boundaryCheckerMock = new Mock<IBoundaryChecker>();
         var collisionCheckerMock = new Mock<ICollisionChecker>();
         IInputHandler inputHandler = null!;
-        var contextMock = new Mock<IContext>();
 
         // When
         Action act = () => ControllerFactory.CreateGameController(
             gameStateMock.Object,
             boundaryCheckerMock.Object,
             collisionCheckerMock.Object,
-            inputHandler,
-            contextMock.Object
+            inputHandler
         );
 
         // Then
         act.Should().Throw<ArgumentNullException>()
             .WithParameterName("inputHandler");
-    }
-
-    [Fact]
-    public void GivenNullContext_WhenCreateGameControllerIsCalled_ThenThrowsArgumentNullException()
-    {
-        // Given
-        var gameStateMock = new Mock<IGameState>();
-        var boundaryCheckerMock = new Mock<IBoundaryChecker>();
-        var collisionCheckerMock = new Mock<ICollisionChecker>();
-        var inputHandlerMock = new Mock<IInputHandler>();
-        IContext context = null!;
-
-        // When
-        Action act = () => ControllerFactory.CreateGameController(
-            gameStateMock.Object,
-            boundaryCheckerMock.Object,
-            collisionCheckerMock.Object,
-            inputHandlerMock.Object,
-            context
-        );
-
-        // Then
-        act.Should().Throw<ArgumentNullException>()
-            .WithParameterName("context");
     }
 }

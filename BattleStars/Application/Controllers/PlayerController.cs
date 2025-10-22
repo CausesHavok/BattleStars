@@ -14,57 +14,49 @@ internal class PlayerController : IPlayerController
     /// <summary>
     /// Updates the player character based on input and game state.
     /// </summary>
-    /// <param name="context">The current game context, including player direction.</param>
     /// <param name="inputHandler">The input handler to retrieve player commands.</param>
     /// <param name="gameState">The current game state, including the player and active
     /// shots.</param>
-    /// <exception cref="ArgumentNullException">
-    /// Thrown if <paramref name="context"/>, <paramref name="inputHandler"/>, or <paramref name="gameState"/> is null.
-    /// </exception>
     /// <remarks>
-    /// This method first validates the input parameters to ensure they are not null.
-    /// It then updates the player's movement based on the input handler's movement direction.
-    /// If the input handler indicates that the player should shoot, it retrieves the shots
-    /// from the player and adds them to the game state's active shots.
+    /// This method moves the player based on input direction and handles shooting actions.
+    /// It updates the game state with any new shots fired by the player.
     /// </remarks>
-    public void UpdatePlayer(IContext context, IInputHandler inputHandler, IGameState gameState)
+    public void UpdatePlayer(IInputHandler inputHandler, IGameState gameState)
     {
-        MovePlayer(context, inputHandler, gameState.Player);
-        HandleShooting(context, inputHandler, gameState);
+        MovePlayer(inputHandler, gameState);
+        HandleShooting(inputHandler, gameState);
     }
 
     /// <summary>
     /// Moves the player based on input direction.
     /// </summary>
-    /// <param name="context">The current game context.</param>
     /// <param name="inputHandler">The input handler to retrieve movement direction.</param>
-    /// <param name="player">The player character to move.</param>
+    /// <param name="gameState">The current game state, including the player character.</param>
     /// <remarks>
     /// This method retrieves the movement direction from the input handler,
-    /// updates the context with this direction, and then calls the player's Move method
+    /// updates the game state with this direction, and then calls the player's Move method
     /// to update its position.
     /// </remarks>
-    private void MovePlayer(IContext context, IInputHandler inputHandler, IBattleStar player)
+    private void MovePlayer(IInputHandler inputHandler, IGameState gameState)
     {
-        context.PlayerDirection = inputHandler.GetMovement();
-        player.Move(context);
+        gameState.Context.PlayerDirection = inputHandler.GetMovement();
+        gameState.Player.Move(gameState.Context);
     }
 
     /// <summary>
     /// Handles the shooting action of the player.
     /// </summary>
-    /// <param name="context">The current game context.</param>
     /// <param name="inputHandler">The input handler to check for shooting command.</param>
     /// <param name="gameState">The current game state to add new shots.</param>
     /// <remarks>
     /// This method checks if the input handler indicates that the player should shoot.
     /// If so, it retrieves the shots from the player and adds them to the game state's active shots.
     /// </remarks>
-    private void HandleShooting(IContext context, IInputHandler inputHandler, IGameState gameState)
+    private void HandleShooting(IInputHandler inputHandler, IGameState gameState)
     {
         if (inputHandler.ShouldShoot())
         {
-            var shots = gameState.Player.Shoot(context);
+            var shots = gameState.Player.Shoot(gameState.Context);
             if (shots != null)
             {
                 gameState.PlayerShots.AddRange(shots);

@@ -20,8 +20,7 @@ public class GameControllerTest
             new Mock<IGameState>().Object,
             new Mock<IBoundaryChecker>().Object,
             new Mock<ICollisionChecker>().Object,
-            new Mock<IInputHandler>().Object,
-            new Mock<IContext>().Object
+            new Mock<IInputHandler>().Object
         );
 
         // Act / Assert
@@ -43,8 +42,7 @@ public class GameControllerTest
             new Mock<IGameState>().Object,
             new Mock<IBoundaryChecker>().Object,
             new Mock<ICollisionChecker>().Object,
-            inputHandlerMock.Object,
-            new Mock<IContext>().Object
+            inputHandlerMock.Object
         );
 
         // Act
@@ -59,8 +57,9 @@ public class GameControllerTest
     {
         // Arrange
         var gameStateMock = new Mock<IGameState>();
+        gameStateMock.Setup(gs => gs.Context).Returns(new Mock<IContext>().Object);
         gameStateMock.Setup(gs => gs.Player).Returns(new Mock<IBattleStar>().Object);
-        gameStateMock.Setup(gs => gs.Enemies).Returns(new List<IBattleStar>());
+        gameStateMock.Setup(gs => gs.Enemies).Returns([]);
         gameStateMock.Setup(gs => gs.PlayerShots).Returns(ShotFactory.CreateEmptyShotList());
         gameStateMock.Setup(gs => gs.EnemyShots).Returns(ShotFactory.CreateEmptyShotList());
 
@@ -71,8 +70,7 @@ public class GameControllerTest
             gameStateMock.Object,
             new Mock<IBoundaryChecker>().Object,
             new Mock<ICollisionChecker>().Object,
-            inputHandlerMock.Object,
-            new Mock<IContext>().Object
+            inputHandlerMock.Object
         );
 
         // Act
@@ -87,8 +85,9 @@ public class GameControllerTest
     {
         // Arrange
         var gameStateMock = new Mock<IGameState>();
+        gameStateMock.Setup(gs => gs.Context).Returns(new Mock<IContext>().Object);
         gameStateMock.Setup(gs => gs.Player).Returns(new Mock<IBattleStar>().Object);
-        gameStateMock.Setup(gs => gs.Enemies).Returns(new List<IBattleStar>());
+        gameStateMock.Setup(gs => gs.Enemies).Returns([]);
         gameStateMock.Setup(gs => gs.PlayerShots).Returns(ShotFactory.CreateEmptyShotList());
         gameStateMock.Setup(gs => gs.EnemyShots).Returns(ShotFactory.CreateEmptyShotList());
         gameStateMock.Setup(gs => gs.Validate()).Verifiable();
@@ -101,8 +100,7 @@ public class GameControllerTest
             gameStateMock.Object,
             new Mock<IBoundaryChecker>().Object,
             new Mock<ICollisionChecker>().Object,
-            inputHandlerMock.Object,
-            new Mock<IContext>().Object
+            inputHandlerMock.Object
         );
 
         gameStateMock.Verify(gs => gs.Validate(), Times.Once); // Once during construction
@@ -136,8 +134,7 @@ public class GameControllerTest
             gameStateMock.Object,
             new Mock<IBoundaryChecker>().Object,
             new Mock<ICollisionChecker>().Object,
-            new Mock<IInputHandler>().Object,
-            new Mock<IContext>().Object
+            new Mock<IInputHandler>().Object
         );
 
         // Act

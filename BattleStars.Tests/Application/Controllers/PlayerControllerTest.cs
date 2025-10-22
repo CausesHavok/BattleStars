@@ -26,11 +26,12 @@ public class PlayerControllerTest
         contextMock.SetupProperty(c => c.PlayerDirection);
         inputHandlerMock.Setup(i => i.GetMovement()).Returns(DirectionalVector2.UnitX);
         gameStateMock.Setup(g => g.Player).Returns(playerMock.Object);
+        gameStateMock.Setup(g => g.Context).Returns(contextMock.Object);
 
         var controller = new PlayerController();
 
         // When
-        controller.UpdatePlayer(contextMock.Object, inputHandlerMock.Object, gameStateMock.Object);
+        controller.UpdatePlayer(inputHandlerMock.Object, gameStateMock.Object);
 
         // Then
         contextMock.Object.PlayerDirection.Should().Be(DirectionalVector2.UnitX);
@@ -57,11 +58,12 @@ public class PlayerControllerTest
         playerMock.Setup(p => p.Shoot(contextMock.Object)).Returns(expectedShots);
         gameStateMock.Setup(g => g.Player).Returns(playerMock.Object);
         gameStateMock.Setup(g => g.PlayerShots).Returns(shotList);
+        gameStateMock.Setup(g => g.Context).Returns(contextMock.Object);
 
         var controller = new PlayerController();
 
         // When
-        controller.UpdatePlayer(contextMock.Object, inputHandlerMock.Object, gameStateMock.Object);
+        controller.UpdatePlayer(inputHandlerMock.Object, gameStateMock.Object);
 
         // Then
         shotList.Should().Contain(expectedShots);
@@ -81,11 +83,12 @@ public class PlayerControllerTest
         inputHandlerMock.Setup(i => i.ShouldShoot()).Returns(false);
         gameStateMock.Setup(g => g.Player).Returns(playerMock.Object);
         gameStateMock.Setup(g => g.PlayerShots).Returns(shotList);
+        gameStateMock.Setup(g => g.Context).Returns(contextMock.Object);
 
         var controller = new PlayerController();
 
         // When
-        controller.UpdatePlayer(contextMock.Object, inputHandlerMock.Object, gameStateMock.Object);
+        controller.UpdatePlayer(inputHandlerMock.Object, gameStateMock.Object);
 
         // Then
         playerMock.Verify(p => p.Shoot(It.IsAny<IContext>()), Times.Never);
@@ -107,11 +110,12 @@ public class PlayerControllerTest
         playerMock.Setup(p => p.Shoot(contextMock.Object)).Returns((IEnumerable<IShot>?)null!);
         gameStateMock.Setup(g => g.Player).Returns(playerMock.Object);
         gameStateMock.Setup(g => g.PlayerShots).Returns(shotList);
+        gameStateMock.Setup(g => g.Context).Returns(contextMock.Object);
 
         var controller = new PlayerController();
 
         // When
-        controller.UpdatePlayer(contextMock.Object, inputHandlerMock.Object, gameStateMock.Object);
+        controller.UpdatePlayer(inputHandlerMock.Object, gameStateMock.Object);
 
         // Then
         shotList.Should().BeEmpty();
@@ -132,11 +136,12 @@ public class PlayerControllerTest
         playerMock.Setup(p => p.Shoot(contextMock.Object)).Returns(ShotFactory.CreateEmptyShotList());
         gameStateMock.Setup(g => g.Player).Returns(playerMock.Object);
         gameStateMock.Setup(g => g.PlayerShots).Returns(shotList);
+        gameStateMock.Setup(g => g.Context).Returns(contextMock.Object);
 
         var controller = new PlayerController();
 
         // When
-        controller.UpdatePlayer(contextMock.Object, inputHandlerMock.Object, gameStateMock.Object);
+        controller.UpdatePlayer(inputHandlerMock.Object, gameStateMock.Object);
 
         // Then
         shotList.Should().BeEmpty();
@@ -170,12 +175,13 @@ public class PlayerControllerTest
             .Returns(expectedShotsSecond);
         gameStateMock.Setup(g => g.Player).Returns(playerMock.Object);
         gameStateMock.Setup(g => g.PlayerShots).Returns(shotList);
+        gameStateMock.Setup(g => g.Context).Returns(contextMock.Object);
 
         var controller = new PlayerController();
 
         // When
-        controller.UpdatePlayer(contextMock.Object, inputHandlerMock.Object, gameStateMock.Object);
-        controller.UpdatePlayer(contextMock.Object, inputHandlerMock.Object, gameStateMock.Object);
+        controller.UpdatePlayer(inputHandlerMock.Object, gameStateMock.Object);
+        controller.UpdatePlayer(inputHandlerMock.Object, gameStateMock.Object);
 
         // Then
         contextMock.Object.PlayerDirection.Should().Be(DirectionalVector2.UnitY);

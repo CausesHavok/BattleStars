@@ -19,7 +19,6 @@ public class GameController : IGameController
     private readonly IShotController _shotController;
     private readonly IBoundaryController _boundaryController;
     private readonly ICollisionController _collisionController;
-    private readonly IContext _context;
 
     internal GameController(
         IGameState gameState,
@@ -28,8 +27,7 @@ public class GameController : IGameController
         IShotController shotController,
         IBoundaryController boundaryController,
         ICollisionController collisionController,
-        IInputHandler inputHandler,
-        IContext context)
+        IInputHandler inputHandler)
     {
         _gameState = gameState;
         _playerController = playerController;
@@ -38,15 +36,12 @@ public class GameController : IGameController
         _boundaryController = boundaryController;
         _collisionController = collisionController;
         _inputHandler = inputHandler;
-        _context = context;
     }
 
     /// <summary>
     /// Runs a single frame of the game, updating all entities and handling game logic.
     /// </summary>
-    /// <param name="context">The game context containing frame-specific information.</param>
     /// <returns>True if the game should continue, false if it should end.</returns>
-    /// <exception cref="ArgumentNullException">Thrown if the context is null.</exception>
     /// <remarks>
     /// This method processes player input, updates the positions of all entities,
     /// checks for collisions, and removes any entities that are out of bounds or destroyed.
@@ -63,8 +58,8 @@ public class GameController : IGameController
         if (_inputHandler.ShouldExit()) return false;
 
         _shotController.UpdateShots(_gameState);
-        _playerController.UpdatePlayer(_context, _inputHandler, _gameState);
-        _enemyController.UpdateEnemies(_context, _gameState);
+        _playerController.UpdatePlayer(_inputHandler, _gameState);
+        _enemyController.UpdateEnemies(_gameState);
         _boundaryController.EnforceBoundaries(_gameState);
         _collisionController.HandleCollisions(_gameState);
 
