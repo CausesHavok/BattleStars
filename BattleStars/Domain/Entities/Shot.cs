@@ -29,14 +29,13 @@ internal class Shot: IShot
         DirectionalVector2 direction,
         float speed,
         float damage
-    )
-    {
-        Guard.RequireValid(speed, nameof(speed));
-        Guard.RequireNonNegative(speed, nameof(speed));
-        Guard.RequireValid(damage, nameof(damage));
-        Guard.RequireNonNegative(damage, nameof(damage));
-        return new Shot(position, direction, speed, damage);
-    }
+    ) 
+    => new(
+        position,
+        direction,
+        Guard.RequireNonNegative(speed, nameof(speed)),
+        Guard.RequireNonNegative(damage, nameof(damage))
+    );
 
     public void Update()
     {

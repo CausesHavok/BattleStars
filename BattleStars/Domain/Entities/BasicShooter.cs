@@ -9,18 +9,10 @@ namespace BattleStars.Domain.Entities;
 /// <remarks>
 /// This class is intended for decoration with more complex shooters.
 /// </remarks>
-internal class BasicShooter : IShooter
+internal class BasicShooter(Func<PositionalVector2, DirectionalVector2, IShot> shotFactory, DirectionalVector2 direction) : IShooter
 {
-    private readonly Func<PositionalVector2, DirectionalVector2, IShot> _shotFactory;
-    private readonly DirectionalVector2 _direction;
-
-    public BasicShooter(Func<PositionalVector2, DirectionalVector2, IShot> shotFactory, DirectionalVector2 direction)
-    {
-        Guard.NotNull(shotFactory, nameof(shotFactory));
-
-        _shotFactory = shotFactory;
-        _direction = direction;
-    }
+    private readonly Func<PositionalVector2, DirectionalVector2, IShot> _shotFactory = Guard.NotNull(shotFactory, nameof(shotFactory));
+    private readonly DirectionalVector2 _direction = direction;
 
     /// <inheritdoc/>
     /// <remarks>

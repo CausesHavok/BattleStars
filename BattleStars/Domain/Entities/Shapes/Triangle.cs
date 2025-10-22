@@ -28,7 +28,6 @@ internal class Triangle : IShape
     /// <param name="point3">The third point of the triangle.</param>
     public Triangle(PositionalVector2 point1, PositionalVector2 point2, PositionalVector2 point3, Color color, IShapeDrawer drawer)
     {
-        Guard.NotNull(drawer, nameof(drawer));
         Point1 = point1;
         Point2 = point2;
         Point3 = point3;
@@ -38,7 +37,7 @@ internal class Triangle : IShape
 
         Color = color;
         BoundingBox = CalculateBoundingBox();
-        _drawer = drawer;
+        _drawer = Guard.NotNull(drawer, nameof(drawer));
     }
 
     private BoundingBox CalculateBoundingBox()

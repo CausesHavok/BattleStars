@@ -2,17 +2,9 @@ using BattleStars.Domain.Interfaces;
 using BattleStars.Core.Guards;
 namespace BattleStars.Domain.Entities
 {
-    internal class BasicDestructable : IDestructable
+    internal class BasicDestructable(float health) : IDestructable
     {
-        private float _health;
-
-        public BasicDestructable(float health)
-        {
-            Guard.RequireValid(health, nameof(health));
-            Guard.RequirePositive(health, nameof(health));
-
-            _health = health;
-        }
+        private float _health = Guard.RequirePositive(health, nameof(health));
 
         public float Health
         {
@@ -21,12 +13,6 @@ namespace BattleStars.Domain.Entities
         }
 
         public bool IsDestroyed => Health <= 0;
-        public void TakeDamage(float amount)
-        {
-            Guard.RequireValid(amount, nameof(amount));
-            Guard.RequireNonNegative(amount, nameof(amount));
-
-            Health -= amount;
-        }
+        public void TakeDamage(float amount) => Health -= Guard.RequireNonNegative(amount, nameof(amount));
     }
 }

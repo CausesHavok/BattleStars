@@ -67,9 +67,9 @@ public class CircleTest
     }
 
     [Theory]
-    [InlineData(0.0f, "zero")]
-    [InlineData(-1.0f, "negative")]
-    public void GivenCircle_WhenConstructed_WithZeroOrNegativeRadius_ThenThrowsArgumentOutOfRangeException(float radius, string expectedException)
+    [InlineData(0.0f)]
+    [InlineData(-1.0f)]
+    public void GivenCircle_WhenConstructed_WithZeroOrNegativeRadius_ThenThrowsArgumentOutOfRangeException(float radius)
     {
         // Arrange
         var mockShapeDrawer = new MockShapeDrawer();
@@ -77,7 +77,7 @@ public class CircleTest
 
         // Assert
         act.Should().Throw<ArgumentOutOfRangeException>()
-            .WithMessage("radius cannot be " + expectedException + ".*")
+            .WithMessage("radius must be positive.*")
             .And.ParamName.Should().Be("radius");
     }
 
