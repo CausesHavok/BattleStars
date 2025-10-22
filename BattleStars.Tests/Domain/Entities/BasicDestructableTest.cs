@@ -1,7 +1,7 @@
 using FluentAssertions;
 using BattleStars.Domain.Entities;
 
-namespace BattleStars.Tests.Entities;
+namespace BattleStars.Tests.Domain.Entities;
 
 public class BasicDestructableTest
 {

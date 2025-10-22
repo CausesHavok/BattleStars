@@ -4,7 +4,7 @@ using BattleStars.Domain.Entities;
 using BattleStars.Domain.Interfaces;
 using BattleStars.Domain.ValueObjects;
 
-namespace BattleStars.Tests.Entities;
+namespace BattleStars.Tests.Domain.Entities;
 
 public class BasicMovableTest
 {

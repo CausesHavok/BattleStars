@@ -2,7 +2,7 @@ using System.Numerics;
 using FluentAssertions;
 using BattleStars.Domain.ValueObjects;
 
-namespace BattleStars.Tests.ValueObjects;
+namespace BattleStars.Tests.Domain.ValueObjects;
 
 public class PositionalVector2Test
 {
