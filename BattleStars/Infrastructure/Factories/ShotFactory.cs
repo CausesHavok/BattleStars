@@ -6,7 +6,7 @@ namespace BattleStars.Infrastructure.Factories;
 public static class ShotFactory
 {
     public static IShot CustomShot(PositionalVector2 position, DirectionalVector2 direction, float speed, float damage) 
-        => new Shot(position, direction, speed, damage);
+        => Shot.Create(position, direction, speed, damage);
 
     public static IShot CreateScatterShot(PositionalVector2 position, DirectionalVector2 direction)
         => CustomShot(position, direction, speed: 3f, damage: 3f);
