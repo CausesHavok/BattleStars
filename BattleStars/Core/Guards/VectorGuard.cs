@@ -1,6 +1,6 @@
 using System.Numerics;
 using System.Runtime.CompilerServices;
-using BattleStars.Core.Guards.Utility;
+using BattleStars.Core.Guards.Utilities;
 namespace BattleStars.Core.Guards;
 
 public static class VectorGuard
