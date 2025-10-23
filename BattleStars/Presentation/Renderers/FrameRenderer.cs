@@ -10,19 +10,23 @@ namespace BattleStars.Presentation.Renderers;
 public class FrameRenderer
 {
     private readonly IRendererGraphics _graphics;
+    private readonly IShapeDrawer _shapeDrawer;
 
-    public FrameRenderer(IRendererGraphics graphics)
+    public FrameRenderer(IRendererGraphics graphics, IShapeDrawer shapeDrawer)
     {
         _graphics = Guard.NotNull(graphics, nameof(graphics));
+        _shapeDrawer = Guard.NotNull(shapeDrawer, nameof(shapeDrawer));
     }
 
     public FrameRenderer()
     {
-        _graphics = new RaylibGraphicsAdapter();
+        var adapter = new RaylibGraphicsAdapter();
+        _graphics = Guard.NotNull(adapter, nameof(adapter));
+        _shapeDrawer = new RaylibShapeDrawer(adapter);
     }
 
 
-    public void RenderFrame(FrameSnapshot frameSnapshot, IShapeDrawer drawer)
+    public void RenderFrame(FrameSnapshot frameSnapshot)
     {
         // Draw
         _graphics.BeginDrawing();
@@ -31,8 +35,8 @@ public class FrameRenderer
 
         DrawPlayer(frameSnapshot.Player);
         DrawEnemies(frameSnapshot.Enemies);
-        DrawShots(frameSnapshot.PlayerShots, Color.Yellow, drawer);
-        DrawShots(frameSnapshot.EnemyShots, Color.Orange, drawer);
+        DrawShots(frameSnapshot.PlayerShots, Color.Yellow);
+        DrawShots(frameSnapshot.EnemyShots, Color.Orange);
 
         // Game over message
         if (frameSnapshot.Player.IsDestroyed)
@@ -52,11 +56,11 @@ public class FrameRenderer
         }
     }
 
-    private void DrawShots(IEnumerable<IShot> shots, Color color, IShapeDrawer drawer)
+    private void DrawShots(IEnumerable<IShot> shots, Color color)
     {
         foreach (var shot in shots)
         {
-            drawer.DrawRectangle(shot.Position, new PositionalVector2(10 + shot.Position.X, 5 + shot.Position.Y), color);
+            _shapeDrawer.DrawRectangle(shot.Position, new PositionalVector2(10 + shot.Position.X, 5 + shot.Position.Y), color);
         }
     }
 

@@ -26,7 +26,7 @@ while (!Raylib.WindowShouldClose())
     var frameSnapshot = gameController.GetFrameSnapshot();
 
     // Render frame
-    frameRenderer.RenderFrame(frameSnapshot, drawer);
+    frameRenderer.RenderFrame(frameSnapshot);
 }
 
 Raylib.CloseWindow();
