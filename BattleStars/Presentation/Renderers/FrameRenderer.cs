@@ -25,7 +25,7 @@ public sealed class FrameRenderer
     public FrameRenderer()
     {
         var adapter = new RaylibGraphicsAdapter();
-        _graphics = Guard.NotNull(adapter, nameof(adapter));
+        _graphics = adapter;
         _shapeDrawer = new RaylibShapeDrawer(adapter);
     }
 
