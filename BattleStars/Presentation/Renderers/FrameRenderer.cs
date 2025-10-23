@@ -12,6 +12,10 @@ public class FrameRenderer
     private readonly IRendererGraphics _graphics;
     private readonly IShapeDrawer _shapeDrawer;
 
+    private const string MoveHint = "Arrow keys move the square";
+    private const string GameOverText = "Game Over!";
+    private const string ExitHint = "Press ESC to exit";
+
     public FrameRenderer(IRendererGraphics graphics, IShapeDrawer shapeDrawer)
     {
         _graphics = Guard.NotNull(graphics, nameof(graphics));
@@ -31,7 +35,7 @@ public class FrameRenderer
         // Draw
         _graphics.BeginDrawing();
         _graphics.ClearBackground(Color.Black);
-        _graphics.DrawText("Arrow keys move the square", 10, 10, 20, Color.White);
+        _graphics.DrawText(MoveHint, 10, 10, 20, Color.White);
 
         DrawPlayer(frameSnapshot.Player);
         DrawEnemies(frameSnapshot.Enemies);
@@ -68,7 +72,7 @@ public class FrameRenderer
 
     private void DrawEndMessage()
     {
-        _graphics.DrawText("Game Over!", 350, 280, 40, Color.Red);
-        _graphics.DrawText("Press ESC to exit", 320, 330, 20, Color.White);
+        _graphics.DrawText(GameOverText, 350, 280, 40, Color.Red);
+        _graphics.DrawText(ExitHint, 320, 330, 20, Color.White);
     }
 }
