@@ -14,28 +14,35 @@ namespace BattleStars.Infrastructure.Adapters;
 public class RaylibGraphicsAdapter : IRaylibGraphics, IRendererGraphics
 {
     private static Color ToRaylibColor(System.Drawing.Color color) =>
-        new Color(color.R, color.G, color.B, color.A);
+        new(color.R, color.G, color.B, color.A);
 
     public void BeginDrawing() => Raylib.BeginDrawing();
     public void EndDrawing() => Raylib.EndDrawing();
     public void ClearBackground(System.Drawing.Color color) => Raylib.ClearBackground(ToRaylibColor(color));
-    public void DrawText(string text, int x, int y, int fontSize, System.Drawing.Color color) =>
+    public void DrawText(
+        string text,
+        int x,
+        int y,
+        int fontSize,
+        System.Drawing.Color color) =>
         Raylib.DrawText(text, x, y, fontSize, ToRaylibColor(color));
     
-    public void DrawRectangle(PositionalVector2 topLeft, PositionalVector2 size, System.Drawing.Color color)
-    {
+    public void DrawRectangle(
+        PositionalVector2 topLeft,
+        PositionalVector2 size,
+        System.Drawing.Color color) =>
         Raylib.DrawRectangleV(topLeft, size, ToRaylibColor(color));
-    }
 
-    public void DrawTriangle(PositionalVector2 p1, PositionalVector2 p2, PositionalVector2 p3, System.Drawing.Color color)
-    {
+    public void DrawTriangle(
+        PositionalVector2 p1,
+        PositionalVector2 p2,
+        PositionalVector2 p3,
+        System.Drawing.Color color) =>
         Raylib.DrawTriangle(p1, p2, p3, ToRaylibColor(color));
-    }
 
-    public void DrawCircle(PositionalVector2 center, float radius, System.Drawing.Color color)
-    {
+    public void DrawCircle(
+        PositionalVector2 center,
+        float radius,
+        System.Drawing.Color color) =>
         Raylib.DrawCircleV(center, radius, ToRaylibColor(color));
-    }
-
 }
-
