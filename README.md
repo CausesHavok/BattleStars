@@ -72,6 +72,7 @@ BattleStars/
 │   └── Utilities/       # General-purpose helpers  
 ├── Presentation/  
 │   ├── Drawers/         # Shape/UI drawing interfaces and implementations  
+│   ├── Renderers        # Frame-level rendering orchestation
 │   └── Views/           # UI components (future expansion)  
 ├── BattleStars.Tests/   # Unit and integration tests with coverage tracking  
 ├── Program.cs           # Entry point  
