@@ -18,15 +18,8 @@ var frameRenderer = new FrameRenderer();
 
 while (!Raylib.WindowShouldClose())
 {
-    // Update game state
-    if (shouldContinue)
-    {
-        shouldContinue = gameController.RunFrame();
-    }
-    var frameSnapshot = gameController.GetFrameSnapshot();
-
-    // Render frame
-    frameRenderer.RenderFrame(frameSnapshot);
+    if (shouldContinue) shouldContinue = gameController.RunFrame();
+    frameRenderer.RenderFrame(gameController.GetFrameSnapshot());
 }
 
 Raylib.CloseWindow();
