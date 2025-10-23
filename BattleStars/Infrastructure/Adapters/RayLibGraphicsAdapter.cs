@@ -11,11 +11,17 @@ namespace BattleStars.Infrastructure.Adapters;
 /// Direct testing is not applicable; excluded from coverage.
 /// </remarks>
 [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-public class RaylibGraphicsAdapter : IRaylibGraphics
+public class RaylibGraphicsAdapter : IRaylibGraphics, IRendererGraphics
 {
     private static Color ToRaylibColor(System.Drawing.Color color) =>
         new Color(color.R, color.G, color.B, color.A);
 
+    public void BeginDrawing() => Raylib.BeginDrawing();
+    public void EndDrawing() => Raylib.EndDrawing();
+    public void ClearBackground(System.Drawing.Color color) => Raylib.ClearBackground(ToRaylibColor(color));
+    public void DrawText(string text, int x, int y, int fontSize, System.Drawing.Color color) =>
+        Raylib.DrawText(text, x, y, fontSize, ToRaylibColor(color));
+    
     public void DrawRectangle(PositionalVector2 topLeft, PositionalVector2 size, System.Drawing.Color color)
     {
         Raylib.DrawRectangleV(topLeft, size, ToRaylibColor(color));
@@ -30,5 +36,6 @@ public class RaylibGraphicsAdapter : IRaylibGraphics
     {
         Raylib.DrawCircleV(center, radius, ToRaylibColor(color));
     }
+
 }
 
