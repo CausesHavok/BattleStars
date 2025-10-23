@@ -1,23 +1,38 @@
 using BattleStars.Domain.ValueObjects;
 using BattleStars.Domain.Interfaces;
+using BattleStars.Infrastructure.Adapters;
 using BattleStars.Presentation.Drawers;
-using Raylib_cs;
+using System.Drawing;
+using BattleStars.Core.Guards;
 
 namespace BattleStars.Presentation.Renderers;
 
 public class FrameRenderer
 {
+    private readonly IRendererGraphics _graphics;
+
+    public FrameRenderer(IRendererGraphics graphics)
+    {
+        _graphics = Guard.NotNull(graphics, nameof(graphics));
+    }
+
+    public FrameRenderer()
+    {
+        _graphics = new RaylibGraphicsAdapter();
+    }
+
+
     public void RenderFrame(FrameSnapshot frameSnapshot, IShapeDrawer drawer)
     {
         // Draw
-        Raylib.BeginDrawing();
-        Raylib.ClearBackground(Color.Black);
-        Raylib.DrawText("Arrow keys move the square", 10, 10, 20, Color.White);
+        _graphics.BeginDrawing();
+        _graphics.ClearBackground(Color.Black);
+        _graphics.DrawText("Arrow keys move the square", 10, 10, 20, Color.White);
 
         DrawPlayer(frameSnapshot.Player);
         DrawEnemies(frameSnapshot.Enemies);
-        DrawShots(frameSnapshot.PlayerShots, System.Drawing.Color.Yellow, drawer);
-        DrawShots(frameSnapshot.EnemyShots, System.Drawing.Color.Orange, drawer);
+        DrawShots(frameSnapshot.PlayerShots, Color.Yellow, drawer);
+        DrawShots(frameSnapshot.EnemyShots, Color.Orange, drawer);
 
         // Game over message
         if (frameSnapshot.Player.IsDestroyed)
@@ -25,7 +40,7 @@ public class FrameRenderer
             DrawEndMessage();
         }
 
-        Raylib.EndDrawing();
+        _graphics.EndDrawing();
     }
 
 
@@ -37,7 +52,7 @@ public class FrameRenderer
         }
     }
 
-    private void DrawShots(IEnumerable<IShot> shots, System.Drawing.Color color, IShapeDrawer drawer)
+    private void DrawShots(IEnumerable<IShot> shots, Color color, IShapeDrawer drawer)
     {
         foreach (var shot in shots)
         {
@@ -49,7 +64,7 @@ public class FrameRenderer
 
     private void DrawEndMessage()
     {
-        Raylib.DrawText("Game Over!", 350, 280, 40, Color.Red);
-        Raylib.DrawText("Press ESC to exit", 320, 330, 20, Color.White);
+        _graphics.DrawText("Game Over!", 350, 280, 40, Color.Red);
+        _graphics.DrawText("Press ESC to exit", 320, 330, 20, Color.White);
     }
 }
