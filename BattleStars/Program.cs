@@ -10,8 +10,8 @@ int windowHeight = 600;
 
 var drawer = SceneFactory.CreateShapeDrawer();
 var bootstrapper = new GameBootstrapper(windowWidth, windowHeight, drawer);
-var frameRenderer = new FrameRenderer();
 var raylibAdapter = new RaylibGraphicsAdapter();
-
+var frameRenderer = new FrameRenderer(raylibAdapter, drawer);
 var app = new BattleStarsRunner(frameRenderer, raylibAdapter, bootstrapper);
+
 app.Run();
