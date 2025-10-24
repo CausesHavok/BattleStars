@@ -22,12 +22,17 @@ public class BattleStarsRunner(IFrameRenderer frameRenderer, IWindowConfiguratio
 
         var gameController = _gameBootstrapper.Initialize().GameController;
         var shouldContinue = true;
-
-        while (!_windowConfiguration.WindowShouldClose())
+        try
         {
-            if (shouldContinue) shouldContinue = gameController.RunFrame();
-            _frameRenderer.RenderFrame(gameController.GetFrameSnapshot());
+            while (!_windowConfiguration.WindowShouldClose())
+            {
+                if (shouldContinue) shouldContinue = gameController.RunFrame();
+                _frameRenderer.RenderFrame(gameController.GetFrameSnapshot());
+            }
         }
-        _windowConfiguration.CloseWindow();
+        finally
+        {
+            _windowConfiguration.CloseWindow();
+        }
     }
 }
