@@ -8,7 +8,7 @@ using BattleStars.Presentation.Drawers;
 
 namespace BattleStars.Infrastructure.Startup;
 
-public class GameBootstrapper
+public class GameBootstrapper : IGameBootstrapper
 {
     private readonly int _windowWidth;
     private readonly int _windowHeight;
@@ -82,7 +82,7 @@ public class GameBootstrapper
             enemies,
             ShotFactory.CreateEmptyShotList()
         );
-    
+
     protected virtual IGameController CreateGameController(
         IGameState gameState,
         IBoundaryChecker boundaryChecker,
