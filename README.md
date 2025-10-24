@@ -23,7 +23,7 @@ I bring a strong academic foundation in what code should be, and BattleStars is 
 
 ## 🛠️ Tech Stack
 
-- **C# 9.0**
+- **C# 12.0**
 - **xUnit** for testing
 - **FluentAssertions** for expressive assertions
 - **Moq** for mocking dependencies
