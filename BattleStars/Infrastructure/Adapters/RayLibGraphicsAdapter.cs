@@ -11,22 +11,12 @@ namespace BattleStars.Infrastructure.Adapters;
 /// Direct testing is not applicable; excluded from coverage.
 /// </remarks>
 [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-public class RaylibGraphicsAdapter : IRaylibGraphics, IRendererGraphics
+public class RaylibGraphicsAdapter : IRaylibGraphics, IRendererGraphics, IWindowConfiguration
 {
     private static Color ToRaylibColor(System.Drawing.Color color) =>
         new(color.R, color.G, color.B, color.A);
 
-    public void BeginDrawing() => Raylib.BeginDrawing();
-    public void EndDrawing() => Raylib.EndDrawing();
-    public void ClearBackground(System.Drawing.Color color) => Raylib.ClearBackground(ToRaylibColor(color));
-    public void DrawText(
-        string text,
-        int x,
-        int y,
-        int fontSize,
-        System.Drawing.Color color) =>
-        Raylib.DrawText(text, x, y, fontSize, ToRaylibColor(color));
-    
+    #region IRaylibGraphics implementation
     public void DrawRectangle(
         PositionalVector2 topLeft,
         PositionalVector2 size,
@@ -45,4 +35,26 @@ public class RaylibGraphicsAdapter : IRaylibGraphics, IRendererGraphics
         float radius,
         System.Drawing.Color color) =>
         Raylib.DrawCircleV(center, radius, ToRaylibColor(color));
+    #endregion
+
+    #region IRendererGraphics implementation
+    public void BeginDrawing() => Raylib.BeginDrawing();
+    public void EndDrawing() => Raylib.EndDrawing();
+    public void ClearBackground(System.Drawing.Color color) => Raylib.ClearBackground(ToRaylibColor(color));
+    public void DrawText(
+        string text,
+        int x,
+        int y,
+        int fontSize,
+        System.Drawing.Color color) =>
+        Raylib.DrawText(text, x, y, fontSize, ToRaylibColor(color));
+    #endregion
+
+    #region IWindowConfiguration implementation
+    public void InitWindow(int width, int height, string title) =>
+        Raylib.InitWindow(width, height, title);
+    public bool WindowShouldClose() => Raylib.WindowShouldClose();
+    public void SetTargetFPS(int fps) => Raylib.SetTargetFPS(fps);
+    public void CloseWindow() => Raylib.CloseWindow();
+    #endregion
 }

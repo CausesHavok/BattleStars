@@ -7,7 +7,7 @@ using BattleStars.Core.Guards;
 
 namespace BattleStars.Presentation.Renderers;
 
-public sealed class FrameRenderer
+public sealed class FrameRenderer : IFrameRenderer
 {
     private readonly IRendererGraphics _graphics;
     private readonly IShapeDrawer _shapeDrawer;
