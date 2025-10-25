@@ -22,7 +22,7 @@ public class BattleStarsRunner(IFrameRenderer frameRenderer, IWindowConfiguratio
 
     private IGameController EnsureInitialized()
     {
-        if (_initialized && _gameController != null) return _gameController;
+        if (_initialized) return Guard.NotNull(_gameController, nameof(_gameController));
 
         _windowConfiguration.InitWindow(WindowWidth, WindowHeight, Title);
         _windowConfiguration.SetTargetFPS(TargetFps);
