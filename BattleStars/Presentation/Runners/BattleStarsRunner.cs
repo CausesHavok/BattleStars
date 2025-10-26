@@ -6,25 +6,31 @@ using BattleStars.Domain.Interfaces;
 
 namespace BattleStars.Presentation.Runners;
 
-public class BattleStarsRunner(IFrameRenderer frameRenderer, IWindowConfiguration windowConfiguration, IGameBootstrapper gameBootstrapper)
+public class BattleStarsRunner(
+    IFrameRenderer frameRenderer,
+    IWindowConfiguration windowConfiguration,
+    IGameBootstrapper gameBootstrapper,
+    int windowWidth,
+    int windowHeight
+)
 {
     private readonly IFrameRenderer _frameRenderer = Guard.NotNull(frameRenderer, nameof(frameRenderer));
     private readonly IWindowConfiguration _windowConfiguration = Guard.NotNull(windowConfiguration, nameof(windowConfiguration));
     private readonly IGameBootstrapper _gameBootstrapper = Guard.NotNull(gameBootstrapper, nameof(gameBootstrapper));
+    private readonly int _windowWidth = windowWidth;
+    private readonly int _windowHeight = windowHeight;
 
     private IGameController? _gameController;
     private bool _initialized;
 
     private const string Title = "BattleStars";
     private const int TargetFps = 60;
-    private const int WindowWidth = 800;
-    private const int WindowHeight = 600;
 
     private IGameController EnsureInitialized()
     {
         if (_initialized) return Guard.NotNull(_gameController, nameof(_gameController));
 
-        _windowConfiguration.InitWindow(WindowWidth, WindowHeight, Title);
+        _windowConfiguration.InitWindow(_windowWidth, _windowHeight, Title);
         _windowConfiguration.SetTargetFPS(TargetFps);
 
         var initResult = _gameBootstrapper.Initialize();

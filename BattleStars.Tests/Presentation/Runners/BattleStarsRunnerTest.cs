@@ -58,7 +58,13 @@ public class BattleStarsRunnerTests
         var gameControllerMock = CreateGameControllerMock();
         var bootstrapperMock = CreateBootstrapperMock(gameControllerMock);
 
-        var sut = new BattleStarsRunner(frameRendererMock.Object, windowConfigMock.Object, bootstrapperMock.Object);
+        var sut = new BattleStarsRunner(
+            frameRendererMock.Object,
+            windowConfigMock.Object,
+            bootstrapperMock.Object,
+            800,
+            600
+        );
 
         // When
         var result = sut.RunSingleFrame();
@@ -78,7 +84,13 @@ public class BattleStarsRunnerTests
         var gameControllerMock = CreateGameControllerMock();
         var bootstrapperMock = CreateBootstrapperMock(gameControllerMock);
 
-        var sut = new BattleStarsRunner(frameRendererMock.Object, windowConfigMock.Object, bootstrapperMock.Object);
+        var sut = new BattleStarsRunner(
+            frameRendererMock.Object,
+            windowConfigMock.Object,
+            bootstrapperMock.Object,
+            800,
+            600
+        );
 
         // First call to initialize
         sut.RunSingleFrame();
@@ -107,7 +119,13 @@ public class BattleStarsRunnerTests
         var gameControllerMock = CreateGameControllerMock();
         var bootstrapperMock = CreateBootstrapperMock(gameControllerMock);
 
-        var sut = new BattleStarsRunner(frameRendererMock.Object, windowConfigMock.Object, bootstrapperMock.Object);
+        var sut = new BattleStarsRunner(
+            frameRendererMock.Object,
+            windowConfigMock.Object,
+            bootstrapperMock.Object,
+            800,
+            600
+        );
 
         // When
         var result = sut.RunSingleFrame();
@@ -129,7 +147,13 @@ public class BattleStarsRunnerTests
 
         windowConfigMock.Setup(w => w.WindowShouldClose()).Returns(true);
 
-        var sut = new BattleStarsRunner(frameRendererMock.Object, windowConfigMock.Object, bootstrapperMock.Object);
+        var sut = new BattleStarsRunner(
+            frameRendererMock.Object,
+            windowConfigMock.Object,
+            bootstrapperMock.Object,
+            800,
+            600
+        );
 
         // When
         sut.Run(CancellationToken.None);
@@ -152,7 +176,13 @@ public class BattleStarsRunnerTests
         // WindowShouldClose: first call -> false (enter loop), second call -> true (exit)
         windowConfigMock.SetupSequence(w => w.WindowShouldClose()).Returns(false).Returns(true);
 
-        var sut = new BattleStarsRunner(frameRendererMock.Object, windowConfigMock.Object, bootstrapperMock.Object);
+        var sut = new BattleStarsRunner(
+            frameRendererMock.Object,
+            windowConfigMock.Object,
+            bootstrapperMock.Object,
+            800,
+            600
+        );
 
         // When
         sut.Run(CancellationToken.None);
@@ -175,7 +205,13 @@ public class BattleStarsRunnerTests
         // WindowShouldClose would be false but token cancels immediately
         windowConfigMock.Setup(w => w.WindowShouldClose()).Returns(false);
 
-        var sut = new BattleStarsRunner(frameRendererMock.Object, windowConfigMock.Object, bootstrapperMock.Object);
+        var sut = new BattleStarsRunner(
+            frameRendererMock.Object,
+            windowConfigMock.Object,
+            bootstrapperMock.Object,
+            800,
+            600
+        );
 
         using var cts = new CancellationTokenSource();
         cts.Cancel(); // cancel immediately
