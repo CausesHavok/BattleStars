@@ -68,11 +68,11 @@ public class BattleStarsRunner(IFrameRenderer frameRenderer, IWindowConfiguratio
         }
         finally 
         {
-            Dispose();
+            Cleanup();
         }
     }
     
-    private void Dispose()
+    private void Cleanup()
     {
         if (_initialized)
         {
