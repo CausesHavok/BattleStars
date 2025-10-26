@@ -38,7 +38,7 @@ public class BattleStarsRunner(IFrameRenderer frameRenderer, IWindowConfiguratio
     /// Run a single frame. Returns true when the game signals it should continue; false if the game is finished.
     /// Does NOT close the window (caller controls lifecycle).
     /// </summary>
-    public bool RunOnce()
+    public bool RunSingleFrame()
     {
         var gameController = EnsureInitialized();
 

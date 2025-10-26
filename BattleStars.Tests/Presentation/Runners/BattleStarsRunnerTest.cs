@@ -61,7 +61,7 @@ public class BattleStarsRunnerTests
         var sut = new BattleStarsRunner(frameRendererMock.Object, windowConfigMock.Object, bootstrapperMock.Object);
 
         // When
-        var result = sut.RunOnce();
+        var result = sut.RunSingleFrame();
 
         // Then
         result.Should().BeTrue();
@@ -81,7 +81,7 @@ public class BattleStarsRunnerTests
         var sut = new BattleStarsRunner(frameRendererMock.Object, windowConfigMock.Object, bootstrapperMock.Object);
 
         // First call to initialize
-        sut.RunOnce();
+        sut.RunSingleFrame();
 
         // Reset invocation counts
         bootstrapperMock.Invocations.Clear();
@@ -89,7 +89,7 @@ public class BattleStarsRunnerTests
         gameControllerMock.Invocations.Clear();
 
         // When
-        var result = sut.RunOnce();
+        var result = sut.RunSingleFrame();
 
         // Then
         result.Should().BeTrue();
@@ -110,7 +110,7 @@ public class BattleStarsRunnerTests
         var sut = new BattleStarsRunner(frameRendererMock.Object, windowConfigMock.Object, bootstrapperMock.Object);
 
         // When
-        var result = sut.RunOnce();
+        var result = sut.RunSingleFrame();
 
         // Then
         result.Should().BeTrue();
