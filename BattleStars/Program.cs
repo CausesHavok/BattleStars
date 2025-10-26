@@ -1,25 +1,17 @@
-﻿using Raylib_cs;
-using BattleStars.Infrastructure.Startup;
+﻿
+using BattleStars.Infrastructure.Adapters;
 using BattleStars.Infrastructure.Factories;
+using BattleStars.Infrastructure.Startup;
 using BattleStars.Presentation.Renderers;
+using BattleStars.Presentation.Runners;
 
 int windowWidth  = 800;
 int windowHeight = 600;
 
-Raylib.InitWindow(windowWidth, windowHeight, "BattleStars - Square Test");
-Raylib.SetTargetFPS(60);
-
 var drawer = SceneFactory.CreateShapeDrawer();
 var bootstrapper = new GameBootstrapper(windowWidth, windowHeight, drawer);
-var gameController = bootstrapper.Initialize().GameController;
+var raylibAdapter = new RaylibGraphicsAdapter();
+var frameRenderer = new FrameRenderer(raylibAdapter, drawer);
+var app = new BattleStarsRunner(frameRenderer, raylibAdapter, bootstrapper, windowWidth, windowHeight);
 
-var shouldContinue = true;
-var frameRenderer = new FrameRenderer();
-
-while (!Raylib.WindowShouldClose())
-{
-    if (shouldContinue) shouldContinue = gameController.RunFrame();
-    frameRenderer.RenderFrame(gameController.GetFrameSnapshot());
-}
-
-Raylib.CloseWindow();
+app.Run();
