@@ -17,7 +17,7 @@ I bring a strong academic foundation in what code should be, and BattleStars is 
 - 🧠 **Logic Layer**: Collision detection, boundary enforcement, and validation
 - 🎯 **Shapes**: Circle, Rectangle, Triangle, and Polygon support with Raylib-style rendering
 - 💥 **Shots**: Projectile modeling and factories
-- 🧪 **Test Coverage**: 64% line coverage, 49% branch coverage (and climbing!)
+- 🧪 **Test Coverage**: 99% line coverage, 100% branch coverage
 
 ---
 
@@ -73,10 +73,11 @@ BattleStars/
 ├── Presentation/  
 │   ├── Drawers/         # Shape/UI drawing interfaces and implementations  
 │   ├── Renderers        # Frame-level rendering orchestation
+│   ├── Runners          # Principal game runners  
 │   └── Views/           # UI components (future expansion)  
 ├── BattleStars.Tests/   # Unit and integration tests with coverage tracking  
 ├── Program.cs           # Entry point  
-├── BattleStars.csproj   # Project file  
+└── BattleStars.csproj   # Project file  
 
 ## 📜 License
 MIT License
