@@ -15,10 +15,10 @@ public static class ControllerFactory
         IInputHandler inputHandler
     )
     {
-        Guard.NotNull(gameState, nameof(gameState));
-        Guard.NotNull(inputHandler, nameof(inputHandler));
-        Guard.NotNull(boundaryChecker, nameof(boundaryChecker));
-        Guard.NotNull(collisionChecker, nameof(collisionChecker));
+        Guard.NotNull(gameState);
+        Guard.NotNull(inputHandler);
+        Guard.NotNull(boundaryChecker);
+        Guard.NotNull(collisionChecker);
         gameState.Validate();
         var playerController    = new PlayerController();
         var enemyController     = new EnemyController();

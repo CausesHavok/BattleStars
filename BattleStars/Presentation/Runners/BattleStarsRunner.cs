@@ -14,9 +14,9 @@ public class BattleStarsRunner(
     int windowHeight
 )
 {
-    private readonly IFrameRenderer _frameRenderer = Guard.NotNull(frameRenderer, nameof(frameRenderer));
-    private readonly IWindowConfiguration _windowConfiguration = Guard.NotNull(windowConfiguration, nameof(windowConfiguration));
-    private readonly IGameBootstrapper _gameBootstrapper = Guard.NotNull(gameBootstrapper, nameof(gameBootstrapper));
+    private readonly IFrameRenderer _frameRenderer = Guard.NotNull(frameRenderer);
+    private readonly IWindowConfiguration _windowConfiguration = Guard.NotNull(windowConfiguration);
+    private readonly IGameBootstrapper _gameBootstrapper = Guard.NotNull(gameBootstrapper);
     private readonly int _windowWidth = windowWidth;
     private readonly int _windowHeight = windowHeight;
 
@@ -28,7 +28,7 @@ public class BattleStarsRunner(
 
     private IGameController EnsureInitialized()
     {
-        if (_initialized) return Guard.NotNull(_gameController, nameof(_gameController));
+        if (_initialized) return Guard.NotNull(_gameController);
 
         _windowConfiguration.InitWindow(_windowWidth, _windowHeight, Title);
         _windowConfiguration.SetTargetFPS(TargetFps);

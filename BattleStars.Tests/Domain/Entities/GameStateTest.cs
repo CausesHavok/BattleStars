@@ -98,7 +98,7 @@ public class GameStateTest
         Action act = () => gameState.Context = null!;
 
         // Then
-        act.Should().Throw<ArgumentNullException>().WithMessage("*Context*");
+        act.Should().Throw<ArgumentNullException>().WithMessage("*Value*");
     }
 
     [Fact]
@@ -116,7 +116,7 @@ public class GameStateTest
         Action act = () => gameState.Player = null!;
 
         // Then
-        act.Should().Throw<ArgumentNullException>().WithMessage("*Player*");
+        act.Should().Throw<ArgumentNullException>().WithMessage("*Value*");
     }
 
     [Fact]
@@ -134,7 +134,7 @@ public class GameStateTest
         Action act = () => gameState.PlayerShots = null!;
 
         // Then
-        act.Should().Throw<ArgumentNullException>().WithMessage("*PlayerShots*");
+        act.Should().Throw<ArgumentNullException>().WithMessage("*Value*");
     }
 
     [Fact]
@@ -152,7 +152,7 @@ public class GameStateTest
         Action act = () => gameState.Enemies = null!;
 
         // Then
-        act.Should().Throw<ArgumentNullException>().WithMessage("*Enemies*");
+        act.Should().Throw<ArgumentNullException>().WithMessage("*Value*");
     }
 
     [Fact]
@@ -170,7 +170,7 @@ public class GameStateTest
         Action act = () => gameState.EnemyShots = null!;
 
         // Then
-        act.Should().Throw<ArgumentNullException>().WithMessage("*EnemyShots*");
+        act.Should().Throw<ArgumentNullException>().WithMessage("*Value*");
     }
 
     [Fact]

@@ -37,7 +37,7 @@ public class CollisionControllerTest
         var act = () => controller.HandleCollisions(gameStateMock.Object);
 
         // Then
-        act.Should().Throw<ArgumentNullException>().WithParameterName("Player");
+        act.Should().Throw<ArgumentNullException>().WithParameterName("gameState.Player");
     }
 
     [Fact]
@@ -54,7 +54,7 @@ public class CollisionControllerTest
         var act = () => controller.HandleCollisions(gameStateMock.Object);
 
         // Then
-        act.Should().Throw<ArgumentNullException>().WithParameterName("Enemies");
+        act.Should().Throw<ArgumentNullException>().WithParameterName("gameState.Enemies");
     }
 
     [Fact]
@@ -72,7 +72,7 @@ public class CollisionControllerTest
         var act = () => controller.HandleCollisions(gameStateMock.Object);
 
         // Then
-        act.Should().Throw<ArgumentNullException>().WithParameterName("PlayerShots");
+        act.Should().Throw<ArgumentNullException>().WithParameterName("gameState.PlayerShots");
     }
 
     [Fact]
@@ -91,7 +91,7 @@ public class CollisionControllerTest
         var act = () => controller.HandleCollisions(gameStateMock.Object);
 
         // Then
-        act.Should().Throw<ArgumentNullException>().WithParameterName("EnemyShots");
+        act.Should().Throw<ArgumentNullException>().WithParameterName("gameState.EnemyShots");
     }
 
     [Fact]

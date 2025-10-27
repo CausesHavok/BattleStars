@@ -8,12 +8,12 @@ internal class PlayerMovable(PositionalVector2 initialPosition, float speed, IBo
 {
     private PositionalVector2 _position = initialPosition;
     public PositionalVector2 Position => _position;
-    private readonly float _speed = Guard.RequirePositive(speed, nameof(speed));
-    private readonly IBoundaryChecker _boundaryChecker = Guard.NotNull(boundaryChecker, nameof(boundaryChecker));
+    private readonly float _speed = Guard.RequirePositive(speed);
+    private readonly IBoundaryChecker _boundaryChecker = Guard.NotNull(boundaryChecker);
 
     public void Move(IContext context)
     {
-        Guard.NotNull(context, nameof(context));
+        Guard.NotNull(context);
 
         var direction = context.PlayerDirection;
         if (direction == Vector2.Zero)

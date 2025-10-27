@@ -32,7 +32,7 @@ internal class Rectangle : IShape
 
         BoundingBox = new BoundingBox(new PositionalVector2(minX, minY), new PositionalVector2(maxX, maxY));
         Color = color;
-        _drawer = Guard.NotNull(drawer, nameof(drawer));
+        _drawer = Guard.NotNull(drawer);
     }
 
     public bool Contains(PositionalVector2 point) => BoundingBox.Contains(point);

@@ -33,8 +33,8 @@ public static class ShapeFactory
     /// </remarks>
     internal static IShape CreateShape(IShapeDescriptor shapeDescriptor, IShapeDrawer drawer)
     {
-        Guard.NotNull(shapeDescriptor, nameof(shapeDescriptor));
-        Guard.NotNull(drawer, nameof(drawer));
+        Guard.NotNull(shapeDescriptor);
+        Guard.NotNull(drawer);
         Guard.RequirePositive(shapeDescriptor.Scale, nameof(shapeDescriptor.Scale));
 
         return shapeDescriptor.ShapeType switch

@@ -37,7 +37,7 @@ internal class Triangle : IShape
 
         Color = color;
         BoundingBox = CalculateBoundingBox();
-        _drawer = Guard.NotNull(drawer, nameof(drawer));
+        _drawer = Guard.NotNull(drawer);
     }
 
     private BoundingBox CalculateBoundingBox()

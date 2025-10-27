@@ -18,8 +18,8 @@ public sealed class FrameRenderer : IFrameRenderer
 
     public FrameRenderer(IRendererGraphics graphics, IShapeDrawer shapeDrawer)
     {
-        _graphics = Guard.NotNull(graphics, nameof(graphics));
-        _shapeDrawer = Guard.NotNull(shapeDrawer, nameof(shapeDrawer));
+        _graphics = Guard.NotNull(graphics);
+        _shapeDrawer = Guard.NotNull(shapeDrawer);
     }
 
     public FrameRenderer()

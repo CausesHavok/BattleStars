@@ -6,8 +6,8 @@ public class CollisionChecker : ICollisionChecker
 {
     public bool CheckBattleStarShotCollision(IBattleStar battleStar, IShot shot)
     {
-        Guard.NotNull(battleStar, nameof(battleStar));
-        Guard.NotNull(shot, nameof(shot));
+        Guard.NotNull(battleStar);
+        Guard.NotNull(shot);
 
         return battleStar.Contains(shot.Position);
     }

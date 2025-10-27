@@ -25,7 +25,7 @@ public class InputHandler : IInputHandler
     /// <exception cref="ArgumentNullException">Thrown if <paramref name="keyboardProvider"/> is null.</exception>
     public InputHandler(IKeyboardProvider keyboardProvider)
     {
-        Guard.NotNull(keyboardProvider, nameof(keyboardProvider));
+        Guard.NotNull(keyboardProvider);
         _keyboardProvider = keyboardProvider;
     }
 

@@ -10,7 +10,7 @@ internal class BoundaryController : IBoundaryController
 
     public BoundaryController(IBoundaryChecker boundaryChecker)
     {
-        Guard.NotNull(boundaryChecker, nameof(boundaryChecker));
+        Guard.NotNull(boundaryChecker);
         _boundaryChecker = boundaryChecker;
     }
 
@@ -24,9 +24,9 @@ internal class BoundaryController : IBoundaryController
     /// </remarks>
     public void EnforceBoundaries(IGameState gameState)
     {
-        Guard.NotNull(gameState, nameof(gameState));
-        Guard.NotNull(gameState.Player, nameof(gameState.Player));
-        Guard.NotNull(gameState.Enemies, nameof(gameState.Enemies));
+        Guard.NotNull(gameState);
+        Guard.NotNull(gameState.Player);
+        Guard.NotNull(gameState.Enemies);
         HandlePlayerShots(gameState);
         HandleEnemyShots(gameState);
     }
