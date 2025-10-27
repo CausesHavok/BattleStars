@@ -53,10 +53,8 @@ public static class ShapeFactory
     /// <param name="shapeDescriptor">The descriptor defining the shape properties.</param>
     /// <param name="drawer">The drawer responsible for rendering the shape.</param>
     /// <returns>An instance of Circle.</returns>
-    private static Circle CreateCircle(IShapeDescriptor shapeDescriptor, IShapeDrawer drawer)
-    {
-        return new Circle(shapeDescriptor.Scale * _defaultSize, shapeDescriptor.Color, drawer);
-    }
+    private static Circle CreateCircle(IShapeDescriptor shapeDescriptor, IShapeDrawer drawer) =>
+        new(shapeDescriptor.Scale * _defaultSize, shapeDescriptor.Color, drawer);
 
     /// <summary>
     /// Creates a square shape based on the provided descriptor and drawer.
