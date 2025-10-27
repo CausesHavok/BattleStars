@@ -12,15 +12,10 @@ internal class BattleStar : IBattleStar
 
     public BattleStar(IShape shape, IMovable movable, IDestructable destructable, IShooter shooter)
     {
-        Guard.NotNull(shape);
-        Guard.NotNull(movable);
-        Guard.NotNull(destructable);
-        Guard.NotNull(shooter);
-
-        _shape = shape;
-        _movable = movable;
-        _destructable = destructable;
-        _shooter = shooter;
+        _shape = Guard.NotNull(shape);
+        _movable = Guard.NotNull(movable);
+        _destructable = Guard.NotNull(destructable);
+        _shooter = Guard.NotNull(shooter);
     }
 
     public void Draw() => _shape.Draw(_movable.Position);

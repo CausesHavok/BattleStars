@@ -1,8 +1,6 @@
 using BattleStars.Application.Controllers;
-using BattleStars.Application.Services;
 using BattleStars.Domain.Interfaces;
 using BattleStars.Core.Guards;
-using BattleStars.Domain.Entities;
 
 namespace BattleStars.Infrastructure.Factories;
 

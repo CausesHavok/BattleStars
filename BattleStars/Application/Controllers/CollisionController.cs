@@ -8,11 +8,8 @@ namespace BattleStars.Application.Controllers;
 internal class CollisionController : ICollisionController
 {
 
-    public CollisionController(ICollisionChecker collisionChecker)
-    {
-        Guard.NotNull(collisionChecker);
-        _collisionChecker = collisionChecker;
-    }
+    public CollisionController(ICollisionChecker collisionChecker) =>
+        _collisionChecker = Guard.NotNull(collisionChecker);
 
     private readonly ICollisionChecker _collisionChecker;
     /// <summary>

@@ -35,7 +35,7 @@ public static class ShapeFactory
     {
         Guard.NotNull(shapeDescriptor);
         Guard.NotNull(drawer);
-        Guard.RequirePositive(shapeDescriptor.Scale, nameof(shapeDescriptor.Scale));
+        Guard.RequirePositive(shapeDescriptor.Scale);
 
         return shapeDescriptor.ShapeType switch
         {

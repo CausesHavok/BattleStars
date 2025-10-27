@@ -23,11 +23,8 @@ public class InputHandler : IInputHandler
     /// </summary>
     /// <param name="keyboardProvider">The keyboard provider to use for input handling.</param>
     /// <exception cref="ArgumentNullException">Thrown if <paramref name="keyboardProvider"/> is null.</exception>
-    public InputHandler(IKeyboardProvider keyboardProvider)
-    {
-        Guard.NotNull(keyboardProvider);
-        _keyboardProvider = keyboardProvider;
-    }
+    public InputHandler(IKeyboardProvider keyboardProvider) =>
+        _keyboardProvider = Guard.NotNull(keyboardProvider);
 
     /// <summary>
     /// Gets the movement direction based on current keyboard input.

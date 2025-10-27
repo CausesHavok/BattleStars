@@ -8,11 +8,8 @@ namespace BattleStars.Application.Controllers;
 internal class BoundaryController : IBoundaryController
 {
 
-    public BoundaryController(IBoundaryChecker boundaryChecker)
-    {
-        Guard.NotNull(boundaryChecker);
-        _boundaryChecker = boundaryChecker;
-    }
+    public BoundaryController(IBoundaryChecker boundaryChecker) =>
+        _boundaryChecker = Guard.NotNull(boundaryChecker);
 
     private readonly IBoundaryChecker _boundaryChecker;
 

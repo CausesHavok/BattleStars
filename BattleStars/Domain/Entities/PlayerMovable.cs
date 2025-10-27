@@ -19,7 +19,7 @@ internal class PlayerMovable(PositionalVector2 initialPosition, float speed, IBo
         if (direction == Vector2.Zero)
             return;
 
-        Guard.RequireNormalized(direction, nameof(direction));
+        Guard.RequireNormalized(direction);
 
         var newPosition = _position + direction * _speed;
 

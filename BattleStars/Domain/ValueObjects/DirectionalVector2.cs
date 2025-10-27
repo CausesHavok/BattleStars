@@ -14,10 +14,10 @@ public struct DirectionalVector2
         get => _direction;
         set
         {
-            Guard.RequireValid(value, nameof(Direction));
+            Guard.RequireValid(value);
             if (value != Vector2.Zero)
             {
-                Guard.RequireNormalized(value, nameof(Direction));
+                Guard.RequireNormalized(value);
             }
             _direction = value;
         }

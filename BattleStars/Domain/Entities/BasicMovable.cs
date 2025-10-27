@@ -11,12 +11,12 @@ internal class BasicMovable(PositionalVector2 initialPosition, DirectionalVector
         get => _position;
         private set
         {
-            Guard.RequireValid(value, nameof(value));
+            Guard.RequireValid(value);
             _position = value;
         }
     }
 
     private readonly DirectionalVector2 _direction = direction;
-    private readonly float _speed = Guard.RequirePositive(speed, nameof(speed));
+    private readonly float _speed = Guard.RequirePositive(speed);
     public void Move(IContext context) => Position += _direction * _speed;
 }

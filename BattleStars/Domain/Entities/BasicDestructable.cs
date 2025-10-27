@@ -4,7 +4,7 @@ namespace BattleStars.Domain.Entities
 {
     internal class BasicDestructable(float health) : IDestructable
     {
-        private float _health = Guard.RequirePositive(health, nameof(health));
+        private float _health = Guard.RequirePositive(health);
 
         public float Health
         {
@@ -13,6 +13,6 @@ namespace BattleStars.Domain.Entities
         }
 
         public bool IsDestroyed => Health <= 0;
-        public void TakeDamage(float amount) => Health -= Guard.RequireNonNegative(amount, nameof(amount));
+        public void TakeDamage(float amount) => Health -= Guard.RequireNonNegative(amount);
     }
 }
