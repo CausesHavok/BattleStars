@@ -43,7 +43,7 @@ public static class ShapeFactory
             ShapeType.Square => CreateSquare(shapeDescriptor, drawer),
             ShapeType.Triangle => CreateTriangle(shapeDescriptor, drawer),
             ShapeType.Hexagon => CreateHexagon(shapeDescriptor, drawer),
-            _ => throw new ArgumentException("Invalid shape type"),
+            _ => throw new ArgumentException("Invalid shape type"), //TODO : refac error handling
         };
     }
 

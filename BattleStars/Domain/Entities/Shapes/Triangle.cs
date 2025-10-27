@@ -32,6 +32,7 @@ internal class Triangle : IShape
         Point2 = point2;
         Point3 = point3;
 
+        //TODO : refac error handling
         if (!IsValidTriangle())
             throw new ArgumentException("The points do not form a valid triangle.");
 

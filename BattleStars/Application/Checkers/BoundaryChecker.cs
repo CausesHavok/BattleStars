@@ -1,4 +1,5 @@
 using BattleStars.Core.Guards;
+using BattleStars.Core.Guards.Utilities;
 using BattleStars.Domain.Interfaces;
 
 namespace BattleStars.Application.Checkers;
@@ -14,9 +15,9 @@ public class BoundaryChecker : IBoundaryChecker
         _minY = Guard.RequireValid(minY);
         _maxY = Guard.RequireValid(maxY);
         if (_minX >= _maxX)
-            throw new ArgumentException("minX must be less than maxX.");
+            throw new ArgumentException(ExceptionMessageFormatter.MustBeLessThan("minX", "maxX"), nameof(minX));
         if (_minY >= _maxY)
-            throw new ArgumentException("minY must be less than maxY.");
+            throw new ArgumentException(ExceptionMessageFormatter.MustBeLessThan("minY", "maxY"), nameof(minY));
     }
 
     public bool IsOutsideXBounds(float x)

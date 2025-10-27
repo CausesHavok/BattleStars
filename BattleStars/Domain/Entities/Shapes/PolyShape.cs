@@ -19,6 +19,7 @@ internal class PolyShape : IShape
     /// <exception cref="ArgumentException">Thrown when the triangles array has less than three triangles.</exception>
     public PolyShape(IShape[] shapes)
     {
+        // TODO: refac error handling
         if (shapes == null || shapes.Length == 0)
             throw new ArgumentException("A polygon must have at least one shape.");
 

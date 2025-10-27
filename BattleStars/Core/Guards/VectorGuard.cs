@@ -22,14 +22,14 @@ public static class VectorGuard
     public static Vector2 RequireNonZero(Vector2 vector, string paramName)
     {
         if (vector == Vector2.Zero)
-            throw new ArgumentOutOfRangeException(paramName, ExceptionMessageFormatter.CannotBe(paramName, "zero vector"));
+            throw new ArgumentOutOfRangeException(paramName, ExceptionMessageFormatter.CannotBeZeroVector(paramName));
         return vector;
     }
 
     public static Vector2 RequireNormalized(Vector2 vector, string paramName)
     {
         if (Math.Abs(vector.LengthSquared() - 1f) > 0.001f)
-            throw new ArgumentException(ExceptionMessageFormatter.MustBe(paramName, "a normalized vector"), paramName);
+            throw new ArgumentException(ExceptionMessageFormatter.MustBeNormalized(paramName), paramName);
         return vector;
     }
 
