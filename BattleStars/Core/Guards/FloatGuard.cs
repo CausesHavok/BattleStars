@@ -21,7 +21,7 @@ public static class FloatGuard
     {
         RequireValid(value, paramName);
         if (value < 0)
-            throw new ArgumentOutOfRangeException(paramName, $"{paramName} cannot be negative.");
+            throw new ArgumentOutOfRangeException(paramName, ExceptionMessageFormatter.CannotBe(paramName, "negative"));
         return value;
     }
 
@@ -29,7 +29,7 @@ public static class FloatGuard
     {
         RequireValid(value, paramName);
         if (value == 0)
-            throw new ArgumentOutOfRangeException(paramName, $"{paramName} cannot be zero.");
+            throw new ArgumentOutOfRangeException(paramName, ExceptionMessageFormatter.CannotBe(paramName, "zero"));
         return value;
     }
 
@@ -37,7 +37,7 @@ public static class FloatGuard
     {
         RequireValid(value, paramName);
         if (value <= 0)
-            throw new ArgumentOutOfRangeException(paramName, $"{paramName} must be positive.");
+            throw new ArgumentOutOfRangeException(paramName, ExceptionMessageFormatter.MustBe(paramName, "positive"));
         return value;
     }
 
