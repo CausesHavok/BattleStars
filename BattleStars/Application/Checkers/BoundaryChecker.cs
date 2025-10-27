@@ -5,46 +5,41 @@ namespace BattleStars.Application.Checkers;
 
 public class BoundaryChecker : IBoundaryChecker
 {
-    private readonly float minX, maxX, minY, maxY;
+    private readonly float _minX, _maxX, _minY, _maxY;
 
     public BoundaryChecker(float minX, float maxX, float minY, float maxY)
     {
-        Guard.RequireValid(minX, nameof(minX));
-        Guard.RequireValid(maxX, nameof(maxX));
-        Guard.RequireValid(minY, nameof(minY));
-        Guard.RequireValid(maxY, nameof(maxY));
-        if (minX >= maxX)
+        _minX = Guard.RequireValid(minX);
+        _maxX = Guard.RequireValid(maxX);
+        _minY = Guard.RequireValid(minY);
+        _maxY = Guard.RequireValid(maxY);
+        if (_minX >= _maxX)
             throw new ArgumentException("minX must be less than maxX.");
-        if (minY >= maxY)
+        if (_minY >= _maxY)
             throw new ArgumentException("minY must be less than maxY.");
-
-        this.minX = minX;
-        this.maxX = maxX;
-        this.minY = minY;
-        this.maxY = maxY;
     }
 
     public bool IsOutsideXBounds(float x)
     {
-        Guard.RequireValid(x, nameof(x));
-        return x < minX || x > maxX;
+        Guard.RequireValid(x);
+        return x < _minX || x > _maxX;
     }
 
     public float XDistanceToBoundary(float x)
     {
-        Guard.RequireValid(x, nameof(x));
-        return Math.Min(Math.Abs(x - minX), Math.Abs(x - maxX));
+        Guard.RequireValid(x);
+        return Math.Min(Math.Abs(x - _minX), Math.Abs(x - _maxX));
     }
 
     public bool IsOutsideYBounds(float y)
     {
-        Guard.RequireValid(y, nameof(y));
-        return y < minY || y > maxY;
+        Guard.RequireValid(y);
+        return y < _minY || y > _maxY;
     }
 
     public float YDistanceToBoundary(float y)
     {
-        Guard.RequireValid(y, nameof(y));
-        return Math.Min(Math.Abs(y - minY), Math.Abs(y - maxY));
+        Guard.RequireValid(y);
+        return Math.Min(Math.Abs(y - _minY), Math.Abs(y - _maxY));
     }
 }
