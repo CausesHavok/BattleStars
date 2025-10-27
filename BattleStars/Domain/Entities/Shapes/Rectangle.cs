@@ -1,4 +1,5 @@
 using System.Drawing;
+using BattleStars.Core.Guards.Utilities;
 using BattleStars.Domain.Interfaces;
 using BattleStars.Domain.ValueObjects;
 using BattleStars.Presentation.Drawers;
@@ -26,13 +27,13 @@ internal class Rectangle : IShape
         float minY = Math.Min(v1.Y, v2.Y);
         float maxX = Math.Max(v1.X, v2.X);
         float maxY = Math.Max(v1.Y, v2.Y);
-
-        if (minX == maxX || minY == maxY)
-            throw new ArgumentException("Rectangle must have non-zero width and height.");
+        
+        if (minX == maxX) throw new ArgumentException(ExceptionMessageFormatter.MustBe("width", "greater than zero"));
+        if (minY == maxY) throw new ArgumentException(ExceptionMessageFormatter.MustBe("height", "greater than zero"));
 
         BoundingBox = new BoundingBox(new PositionalVector2(minX, minY), new PositionalVector2(maxX, maxY));
         Color = color;
-        _drawer = Guard.NotNull(drawer, nameof(drawer));
+        _drawer = Guard.NotNull(drawer);
     }
 
     public bool Contains(PositionalVector2 point) => BoundingBox.Contains(point);

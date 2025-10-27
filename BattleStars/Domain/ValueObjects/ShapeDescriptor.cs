@@ -26,7 +26,7 @@ internal class ShapeDescriptor : IShapeDescriptor
     public ShapeDescriptor(ShapeType shapeType, float scale, Color color)
     {
         ShapeType = shapeType;
-        Scale = Guard.RequirePositive(scale, nameof(scale));
+        Scale = Guard.RequirePositive(scale);
         Color = color;
     }
 }

@@ -15,35 +15,35 @@ public class GameState(
     List<IBattleStar> enemies,
     List<IShot> enemyShots) : IGameState
 {
-    private IContext _context = Guard.NotNull(context, nameof(context));
-    private IBattleStar _player = Guard.NotNull(player, nameof(player));
-    private List<IBattleStar> _enemies = Guard.NotNull(enemies, nameof(enemies));
+    private IContext _context = Guard.NotNull(context);
+    private IBattleStar _player = Guard.NotNull(player);
+    private List<IBattleStar> _enemies = Guard.NotNull(enemies);
     private List<IShot> _playerShots = playerShots;
     private List<IShot> _enemyShots = enemyShots;
     public IContext Context
     {
         get => _context;
-        set => _context = Guard.NotNull(value, nameof(Context));
+        set => _context = Guard.NotNull(value);
     }
     public IBattleStar Player
     {
         get => _player;
-        set => _player = Guard.NotNull(value, nameof(Player));
+        set => _player = Guard.NotNull(value);
     }
     public List<IBattleStar> Enemies
     {
         get => _enemies;
-        set => _enemies = Guard.NotNull(value, nameof(Enemies));
+        set => _enemies = Guard.NotNull(value);
     }
     public List<IShot> PlayerShots
     {
         get => _playerShots;
-        set => _playerShots = Guard.NotNull(value, nameof(PlayerShots));
+        set => _playerShots = Guard.NotNull(value);
     }
     public List<IShot> EnemyShots
     {
         get => _enemyShots;
-        set => _enemyShots = Guard.NotNull(value, nameof(EnemyShots));
+        set => _enemyShots = Guard.NotNull(value);
     }
 
 

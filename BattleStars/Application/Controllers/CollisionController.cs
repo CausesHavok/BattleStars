@@ -8,11 +8,8 @@ namespace BattleStars.Application.Controllers;
 internal class CollisionController : ICollisionController
 {
 
-    public CollisionController(ICollisionChecker collisionChecker)
-    {
-        Guard.NotNull(collisionChecker, nameof(collisionChecker));
-        _collisionChecker = collisionChecker;
-    }
+    public CollisionController(ICollisionChecker collisionChecker) =>
+        _collisionChecker = Guard.NotNull(collisionChecker);
 
     private readonly ICollisionChecker _collisionChecker;
     /// <summary>
@@ -23,11 +20,11 @@ internal class CollisionController : ICollisionController
     /// </remarks>
     public void HandleCollisions(IGameState gameState)
     {
-        Guard.NotNull(gameState, nameof(gameState));
-        Guard.NotNull(gameState.Player, nameof(gameState.Player));
-        Guard.NotNull(gameState.Enemies, nameof(gameState.Enemies));
-        Guard.NotNull(gameState.PlayerShots, nameof(gameState.PlayerShots));
-        Guard.NotNull(gameState.EnemyShots, nameof(gameState.EnemyShots));
+        Guard.NotNull(gameState);
+        Guard.NotNull(gameState.Player);
+        Guard.NotNull(gameState.Enemies);
+        Guard.NotNull(gameState.PlayerShots);
+        Guard.NotNull(gameState.EnemyShots);
 
         HandleEnemyCollisions(gameState);
         HandlePlayerCollision(gameState);

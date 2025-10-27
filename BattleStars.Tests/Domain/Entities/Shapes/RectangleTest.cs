@@ -29,10 +29,10 @@ public class RectangleTest
     */
 
     [Theory]
-    [InlineData(0f, 0f, 0f, 1f)] // zero width
-    [InlineData(0f, 0f, 1f, 0f)] // zero height
-    [InlineData(1f, 1f, 1f, 1f)] // zero width and height
-    public void GivenZeroWidthOrHeight_WhenConstructingRectangle_ThenThrowsArgumentException(float v1x, float v1y, float v2x, float v2y)
+    [InlineData(0f, 0f, 0f, 1f, "Width")] // zero width
+    [InlineData(0f, 0f, 1f, 0f, "Height")] // zero height
+    [InlineData(1f, 1f, 1f, 1f, "Width")] // zero width and height
+    public void GivenZeroWidthOrHeight_WhenConstructingRectangle_ThenThrowsArgumentException(float v1x, float v1y, float v2x, float v2y, string paramName)
     {
         var v1 = new PositionalVector2(v1x, v1y);
         var v2 = new PositionalVector2(v2x, v2y);
@@ -40,7 +40,7 @@ public class RectangleTest
         Action act = () => new BattleStars.Domain.Entities.Shapes.Rectangle(v1, v2, Color.Red, drawerMock);
 
         act.Should().Throw<ArgumentException>()
-            .WithMessage("Rectangle must have non-zero width and height.*");
+            .WithMessage($"{paramName} must be greater than zero.*");
     }
 
     [Fact]

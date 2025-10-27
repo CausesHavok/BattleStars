@@ -3,6 +3,7 @@ using BattleStars.Domain.Interfaces;
 using BattleStars.Domain.ValueObjects;
 using BattleStars.Core.Guards;
 using BattleStars.Presentation.Drawers;
+using BattleStars.Core.Guards.Utilities;
 
 namespace BattleStars.Infrastructure.Factories;
 
@@ -33,9 +34,9 @@ public static class ShapeFactory
     /// </remarks>
     internal static IShape CreateShape(IShapeDescriptor shapeDescriptor, IShapeDrawer drawer)
     {
-        Guard.NotNull(shapeDescriptor, nameof(shapeDescriptor));
-        Guard.NotNull(drawer, nameof(drawer));
-        Guard.RequirePositive(shapeDescriptor.Scale, nameof(shapeDescriptor.Scale));
+        Guard.NotNull(shapeDescriptor);
+        Guard.NotNull(drawer);
+        Guard.RequirePositive(shapeDescriptor.Scale);
 
         return shapeDescriptor.ShapeType switch
         {
@@ -43,7 +44,7 @@ public static class ShapeFactory
             ShapeType.Square => CreateSquare(shapeDescriptor, drawer),
             ShapeType.Triangle => CreateTriangle(shapeDescriptor, drawer),
             ShapeType.Hexagon => CreateHexagon(shapeDescriptor, drawer),
-            _ => throw new ArgumentException("Invalid shape type"),
+            _ => throw new ArgumentException(ExceptionMessageFormatter.InvalidEnumValue(typeof(ShapeType)), nameof(shapeDescriptor.ShapeType)),
         };
     }
 
@@ -53,10 +54,8 @@ public static class ShapeFactory
     /// <param name="shapeDescriptor">The descriptor defining the shape properties.</param>
     /// <param name="drawer">The drawer responsible for rendering the shape.</param>
     /// <returns>An instance of Circle.</returns>
-    private static Circle CreateCircle(IShapeDescriptor shapeDescriptor, IShapeDrawer drawer)
-    {
-        return new Circle(shapeDescriptor.Scale * _defaultSize, shapeDescriptor.Color, drawer);
-    }
+    private static Circle CreateCircle(IShapeDescriptor shapeDescriptor, IShapeDrawer drawer) =>
+        new(shapeDescriptor.Scale * _defaultSize, shapeDescriptor.Color, drawer);
 
     /// <summary>
     /// Creates a square shape based on the provided descriptor and drawer.

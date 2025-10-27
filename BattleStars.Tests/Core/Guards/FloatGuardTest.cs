@@ -5,28 +5,9 @@ namespace BattleStars.Tests.Core.Guards;
 
 public class FloatGuardTest
 {
-    #region NaN
-
+    #region NotNaN
     [Fact]
-    public void GivenNullName_WhenRequireNotNaN_ThenThrowsArgumentException()
-    {
-        Action act = () => FloatGuard.RequireNotNaN(float.NaN, null!);
-        act.Should().Throw<ArgumentException>()
-            .WithMessage("*<value> cannot be NaN.*")
-            .WithParameterName("<value>");
-    }
-
-    [Fact]
-    public void GivenNoName_WhenRequireNotNaN_ThenThrowsArgumentException()
-    {
-        Action act = () => FloatGuard.RequireNotNaN(float.NaN);
-        act.Should().Throw<ArgumentException>()
-            .WithMessage("*float.NaN cannot be NaN.*")
-            .WithParameterName("float.NaN");
-    }
-
-    [Fact]
-    public void GivenName_WhenRequireNotNaN_ThenThrowsArgumentException()
+    public void GivenNaN_WhenRequireNotNaN_ThenThrowsArgumentException()
     {
         Action act = () => FloatGuard.RequireNotNaN(float.NaN, "test");
         act.Should().Throw<ArgumentException>()
@@ -44,36 +25,16 @@ public class FloatGuardTest
     [InlineData(-1f)]
     public void GivenNonNaN_WhenRequireNotNaN_ThenDoesNotThrow(float value)
     {
-        Action act = () => FloatGuard.RequireNotNaN(value);
+        Action act = () => FloatGuard.RequireNotNaN(value, "test");
         act.Should().NotThrow();
     }
 
     #endregion
-
     #region Finite
-
-    [Fact]
-    public void GivenNullName_WhenRequireFinite_ThenThrowsArgumentException()
-    {
-        Action act = () => FloatGuard.RequireFinite(float.PositiveInfinity, null!);
-        act.Should().Throw<ArgumentException>()
-            .WithMessage("<value> must be finite.*")
-            .WithParameterName("<value>");
-    }
-
-    [Fact]
-    public void GivenNoName_WhenRequireFinite_ThenThrowsArgumentException()
-    {
-        Action act = () => FloatGuard.RequireFinite(float.PositiveInfinity);
-        act.Should().Throw<ArgumentException>()
-            .WithMessage("*float.PositiveInfinity must be finite.*")
-            .WithParameterName("float.PositiveInfinity");
-    }
-
     [Theory]
     [InlineData(float.PositiveInfinity)]
     [InlineData(float.NegativeInfinity)]
-    public void GivenName_WhenRequireFinite_ThenThrowsArgumentException(float value)
+    public void GivenInfinity_WhenRequireFinite_ThenThrowsArgumentException(float value)
     {
         Action act = () => FloatGuard.RequireFinite(value, "test");
         act.Should().Throw<ArgumentException>()
@@ -90,54 +51,14 @@ public class FloatGuardTest
     [InlineData(-1f)]
     public void GivenNonInfinity_WhenRequireFinite_ThenDoesNotThrow(float value)
     {
-        Action act = () => FloatGuard.RequireFinite(value);
+        Action act = () => FloatGuard.RequireFinite(value, "test");
         act.Should().NotThrow();
     }
 
     #endregion
-
-    #region RequireValid
-
+    #region Valid
     [Fact]
-    public void GivenNullName_WhenRequireValid_ThenThrowsArgumentException()
-    {
-        Action act = () => FloatGuard.RequireValid(float.NaN, null!);
-        act.Should().Throw<ArgumentException>()
-            .WithMessage("*<value> cannot be NaN.*")
-            .WithParameterName("<value>");
-        
-        act = () => FloatGuard.RequireValid(float.PositiveInfinity, null!);
-        act.Should().Throw<ArgumentException>()
-            .WithMessage("*<value> must be finite.*")
-            .WithParameterName("<value>");
-
-        act = () => FloatGuard.RequireValid(float.NegativeInfinity, null!);
-        act.Should().Throw<ArgumentException>()
-            .WithMessage("*<value> must be finite.*")
-            .WithParameterName("<value>");
-    }
-
-    [Fact]
-    public void GivenNoName_WhenRequireValid_ThenThrowsArgumentException()
-    {
-        Action act = () => FloatGuard.RequireValid(float.NaN);
-        act.Should().Throw<ArgumentException>()
-            .WithMessage("*float.NaN cannot be NaN.*")
-            .WithParameterName("float.NaN");
-
-        act = () => FloatGuard.RequireValid(float.PositiveInfinity);
-        act.Should().Throw<ArgumentException>()
-            .WithMessage("*float.PositiveInfinity must be finite.*")
-            .WithParameterName("float.PositiveInfinity");
-        
-        act = () => FloatGuard.RequireValid(float.NegativeInfinity);
-        act.Should().Throw<ArgumentException>()
-            .WithMessage("*float.NegativeInfinity must be finite.*")
-            .WithParameterName("float.NegativeInfinity");
-    }
-
-    [Fact]
-    public void GivenName_WhenRequireValid_ThenThrowsArgumentException()
+    public void GivenInvalid_WhenRequireValid_ThenThrowsArgumentException()
     {
         Action act = () => FloatGuard.RequireValid(float.NaN, "test");
         act.Should().Throw<ArgumentException>()
@@ -163,7 +84,7 @@ public class FloatGuardTest
     [InlineData(-1f)]
     public void GivenValid_WhenRequireValid_ThenDoesNotThrow(float value)
     {
-        Action act = () => FloatGuard.RequireValid(value);
+        Action act = () => FloatGuard.RequireValid(value, "test");
         act.Should().NotThrow();
     }
     #endregion
@@ -171,25 +92,7 @@ public class FloatGuardTest
     #region Negative
 
     [Fact]
-    public void GivenNullName_WhenRequireNonNegative_ThenThrowsArgumentOutOfRangeException()
-    {
-        Action act = () => FloatGuard.RequireNonNegative(-1f, null!);
-        act.Should().Throw<ArgumentOutOfRangeException>()
-            .WithMessage("*<value> cannot be negative.*")
-            .WithParameterName("<value>");
-    }
-
-    [Fact]
-    public void GivenNoName_WhenRequireNonNegative_ThenDoesNotThrow()
-    {
-        Action act = () => FloatGuard.RequireNonNegative(-1f);
-        act.Should().Throw<ArgumentOutOfRangeException>()
-            .WithMessage("*-1f cannot be negative.*")
-            .WithParameterName("-1f");
-    }
-
-    [Fact]
-    public void GivenName_WhenRequireNonNegative_ThenThrowsArgumentOutOfRangeException()
+    public void GivenNegative_WhenRequireNonNegative_ThenThrowsArgumentOutOfRangeException()
     {
         Action act = () => FloatGuard.RequireNonNegative(-1f, "test");
         act.Should().Throw<ArgumentOutOfRangeException>()
@@ -203,33 +106,15 @@ public class FloatGuardTest
     [InlineData(1f)]
     public void GivenNonNegative_WhenValidated_ThenDoesNotThrow(float value)
     {
-        Action act = () => FloatGuard.RequireNonNegative(value);
+        Action act = () => FloatGuard.RequireNonNegative(value, "test");
         act.Should().NotThrow();
     }
 
     #endregion
 
     #region Zero
-    [Fact]
-    public void GivenNullName_WhenRequireNonZero_ThenThrowsArgumentOutOfRangeException()
-    {
-        Action act = () => FloatGuard.RequireNonZero(0f, null!);
-        act.Should().Throw<ArgumentOutOfRangeException>()
-            .WithMessage("*<value> cannot be zero.*")
-            .WithParameterName("<value>");
-    }
-
-    [Fact]
-    public void GivenNoName_WhenRequireNonZero_ThenThrowsArgumentOutOfRangeException()
-    {
-        Action act = () => FloatGuard.RequireNonZero(0f);
-        act.Should().Throw<ArgumentOutOfRangeException>()
-            .WithMessage("*0f cannot be zero.*")
-            .WithParameterName("0f");
-    }
-
-    [Fact]
-    public void GivenName_WhenRequireNonZero_ThenThrowsArgumentOutOfRangeException()
+     [Fact]
+    public void GivenZero_WhenRequireNonZero_ThenThrowsArgumentOutOfRangeException()
     {
         Action act = () => FloatGuard.RequireNonZero(0f, "test");
         act.Should().Throw<ArgumentOutOfRangeException>()
@@ -249,33 +134,14 @@ public class FloatGuardTest
     [InlineData(-1f)]
     public void GivenNonZero_WhenValidatedAgainstZero_ThenDoesNotThrow(float value)
     {
-        Action act = () => FloatGuard.RequireNonZero(value);
+        Action act = () => FloatGuard.RequireNonZero(value, "test");
         act.Should().NotThrow();
     }
     #endregion
 
     #region Positive
-
     [Fact]
-    public void GivenNullName_WhenRequirePositive_ThenThrowsArgumentOutOfRangeException()
-    {
-        Action act = () => FloatGuard.RequirePositive(0f, null!);
-        act.Should().Throw<ArgumentOutOfRangeException>()
-            .WithMessage("*<value> must be positive.*")
-            .WithParameterName("<value>");
-    }
-
-    [Fact]
-    public void GivenNoName_WhenRequirePositive_ThenThrowsArgumentOutOfRangeException()
-    {
-        Action act = () => FloatGuard.RequirePositive(0f);
-        act.Should().Throw<ArgumentOutOfRangeException>()
-            .WithMessage("*0f must be positive.*")
-            .WithParameterName("0f");
-    }
-
-    [Fact]
-    public void GivenName_WhenRequirePositive_ThenThrowsArgumentOutOfRangeException()
+    public void GivenNonPositive_WhenRequirePositive_ThenThrowsArgumentOutOfRangeException()
     {
         Action act = () => FloatGuard.RequirePositive(-1f, "test");
         act.Should().Throw<ArgumentOutOfRangeException>()
@@ -297,7 +163,7 @@ public class FloatGuardTest
     [InlineData(float.MaxValue)]
     public void GivenPositive_WhenRequirePositive_ThenDoesNotThrow(float value)
     {
-        Action act = () => FloatGuard.RequirePositive(value);
+        Action act = () => FloatGuard.RequirePositive(value, "test");
         act.Should().NotThrow();
     }
     #endregion

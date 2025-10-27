@@ -33,8 +33,8 @@ internal class Shot: IShot
     => new(
         position,
         direction,
-        Guard.RequireNonNegative(speed, nameof(speed)),
-        Guard.RequireNonNegative(damage, nameof(damage))
+        Guard.RequireNonNegative(speed),
+        Guard.RequireNonNegative(damage)
     );
 
     public void Update()

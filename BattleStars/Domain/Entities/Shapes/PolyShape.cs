@@ -1,3 +1,4 @@
+using BattleStars.Core.Guards;
 using BattleStars.Domain.Interfaces;
 using BattleStars.Domain.ValueObjects;
 
@@ -19,9 +20,7 @@ internal class PolyShape : IShape
     /// <exception cref="ArgumentException">Thrown when the triangles array has less than three triangles.</exception>
     public PolyShape(IShape[] shapes)
     {
-        if (shapes == null || shapes.Length == 0)
-            throw new ArgumentException("A polygon must have at least one shape.");
-
+        Guard.RequireNotEmpty(Guard.NotNull(shapes));
         _shapes = shapes;
         BoundingBox = CalculateBoundingBox();
     }

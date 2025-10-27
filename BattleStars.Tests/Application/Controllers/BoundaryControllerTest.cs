@@ -50,7 +50,7 @@ public class BoundaryControllerTest
         var act = () => controller.EnforceBoundaries(gameStateMock.Object);
 
         // Then
-        act.Should().Throw<ArgumentNullException>().WithParameterName("Player");
+        act.Should().Throw<ArgumentNullException>().WithParameterName("gameState.Player");
     }
 
     [Fact]
@@ -67,7 +67,7 @@ public class BoundaryControllerTest
         var act = () => controller.EnforceBoundaries(gameStateMock.Object);
 
         // Then
-        act.Should().Throw<ArgumentNullException>().WithParameterName("Enemies");
+        act.Should().Throw<ArgumentNullException>().WithParameterName("gameState.Enemies");
     }
 
     #endregion

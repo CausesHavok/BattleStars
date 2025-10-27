@@ -37,7 +37,7 @@ public class PolyShapeTest
         Action act = () => new PolyShape(null!);
 
         act.Should().Throw<ArgumentException>()
-            .WithMessage("A polygon must have at least one shape.*");
+            .WithMessage("value cannot be null*");
     }
 
     [Fact]
@@ -46,7 +46,7 @@ public class PolyShapeTest
         Action act = () => new PolyShape(Array.Empty<Triangle>());
 
         act.Should().Throw<ArgumentException>()
-            .WithMessage("A polygon must have at least one shape.*");
+            .WithMessage("*cannot be empty*");
     }
 
     [Fact]

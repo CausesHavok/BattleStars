@@ -11,7 +11,7 @@ namespace BattleStars.Domain.Entities;
 /// </remarks>
 internal class BasicShooter(Func<PositionalVector2, DirectionalVector2, IShot> shotFactory, DirectionalVector2 direction) : IShooter
 {
-    private readonly Func<PositionalVector2, DirectionalVector2, IShot> _shotFactory = Guard.NotNull(shotFactory, nameof(shotFactory));
+    private readonly Func<PositionalVector2, DirectionalVector2, IShot> _shotFactory = Guard.NotNull(shotFactory);
     private readonly DirectionalVector2 _direction = direction;
 
     /// <inheritdoc/>
@@ -20,7 +20,7 @@ internal class BasicShooter(Func<PositionalVector2, DirectionalVector2, IShot> s
     /// </remarks>
     public IEnumerable<IShot> Shoot(IContext context)
     {
-        Guard.NotNull(context, nameof(context));
+        Guard.NotNull(context);
 
         var shot = _shotFactory(context.ShooterPosition, _direction);
         return [shot];

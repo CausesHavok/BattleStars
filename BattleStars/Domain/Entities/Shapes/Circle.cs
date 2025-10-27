@@ -15,10 +15,10 @@ internal class Circle : IShape
 
     public Circle(float radius, Color color, IShapeDrawer drawer)
     {
-        _radius = Guard.RequirePositive(radius, nameof(radius));
+        _radius = Guard.RequirePositive(radius);
         _color = color;
         BoundingBox = new BoundingBox(new PositionalVector2(-_radius, -_radius), new PositionalVector2(_radius, _radius));
-        _drawer = Guard.NotNull(drawer, nameof(drawer));
+        _drawer = Guard.NotNull(drawer);
     }
 
     public bool Contains(PositionalVector2 point) => point.Position.LengthSquared() <= _radius * _radius;
