@@ -9,4 +9,13 @@ public static class ExceptionMessageFormatter
 
     public static string IsInvalid(string paramName) =>
         $"{paramName} is invalid.";
+
+    public static string MustBeLessThan(string paramName1, string paramName2) =>
+        $"{paramName1} must be less than {paramName2}.";
+
+    public static string MustBeNormalized(string paramName) =>
+        $"{paramName} must be a normalized vector.";
+
+    public static string CannotBeZeroVector(string paramName) =>
+        $"{paramName} cannot be a zero vector.";
 }
