@@ -32,7 +32,7 @@ public class VectorGuardTest
         var vector = Vector2.Zero;
         Action act = () => VectorGuard.RequireNonZero(vector, "testVector");
         act.Should().Throw<ArgumentOutOfRangeException>()
-            .WithMessage("testVector cannot be a zero vector.*")
+            .WithMessage("testVector cannot be zero vector.*")
             .WithParameterName("testVector");
     }
 

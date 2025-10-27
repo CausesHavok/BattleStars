@@ -1,4 +1,5 @@
 using System.Numerics;
+using BattleStars.Core.Guards.Utilities;
 
 namespace BattleStars.Core.Guards;
 
@@ -21,19 +22,17 @@ public static class VectorGuard
     public static Vector2 RequireNonZero(Vector2 vector, string paramName)
     {
         if (vector == Vector2.Zero)
-            throw new ArgumentOutOfRangeException(paramName, $"{paramName} cannot be a zero vector.");
+            throw new ArgumentOutOfRangeException(paramName, ExceptionMessageFormatter.CannotBe(paramName, "zero vector"));
         return vector;
     }
 
     public static Vector2 RequireNormalized(Vector2 vector, string paramName)
     {
         if (Math.Abs(vector.LengthSquared() - 1f) > 0.001f)
-            throw new ArgumentException($"{paramName} must be a normalized vector.", paramName);
+            throw new ArgumentException(ExceptionMessageFormatter.MustBe(paramName, "a normalized vector"), paramName);
         return vector;
     }
 
-    public static Vector2 RequireValid(Vector2 vector, string paramName)
-    {
-        return RequireFinite(RequireNotNaN(vector, paramName), paramName);
-    }
+    public static Vector2 RequireValid(Vector2 vector, string paramName) =>
+        RequireFinite(RequireNotNaN(vector, paramName), paramName);
 }

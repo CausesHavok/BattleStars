@@ -1,5 +1,4 @@
-using System;
-
+using BattleStars.Core.Guards.Utilities;
 namespace BattleStars.Core.Guards;
 
 public static class FloatGuard
@@ -7,14 +6,14 @@ public static class FloatGuard
     public static float RequireNotNaN(float value, string paramName)
     {
         if (float.IsNaN(value))
-            throw new ArgumentException($"{paramName} cannot be NaN.", paramName);
+            throw new ArgumentException(ExceptionMessageFormatter.CannotBe(paramName, "NaN"), paramName);
         return value;
     }
 
     public static float RequireFinite(float value, string paramName)
     {
         if (float.IsInfinity(value))
-            throw new ArgumentException($"{paramName} must be finite.", paramName);
+            throw new ArgumentException(ExceptionMessageFormatter.MustBe(paramName, "finite"), paramName);
         return value;
     }
 
