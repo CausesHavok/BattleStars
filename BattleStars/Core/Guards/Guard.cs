@@ -41,4 +41,7 @@ public static class Guard
 
     public static Vector2 RequireValid(Vector2 vector, [CallerArgumentExpression(nameof(vector))] string? paramName = null)
         => VectorGuard.RequireValid(vector, ParamNameResolver.Resolve(paramName));
+
+    public static IEnumerable<T> RequireNotEmpty<T>(IEnumerable<T> collection, [CallerArgumentExpression(nameof(collection))] string? paramName = null)
+        => CollectionGuard.RequireNotEmpty(collection, ParamNameResolver.Resolve(paramName));
 }

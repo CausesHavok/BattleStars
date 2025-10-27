@@ -18,4 +18,10 @@ public static class ExceptionMessageFormatter
 
     public static string CannotBeZeroVector(string paramName) =>
         $"{paramName} cannot be a zero vector.";
+
+    public static string InvalidEnumValue(Type enumType) =>
+        $"Invalid value for enum type {enumType.Name}.";
+
+    public static string CannotBeEmpty(string paramName) =>
+        $"{paramName} cannot be empty.";
 }

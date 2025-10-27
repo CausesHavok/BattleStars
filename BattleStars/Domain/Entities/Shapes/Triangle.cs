@@ -4,6 +4,7 @@ using BattleStars.Domain.Interfaces;
 using BattleStars.Domain.ValueObjects;
 using BattleStars.Presentation.Drawers;
 using BattleStars.Core.Guards;
+using BattleStars.Core.Guards.Utilities;
 
 namespace BattleStars.Domain.Entities.Shapes;
 
@@ -32,9 +33,7 @@ internal class Triangle : IShape
         Point2 = point2;
         Point3 = point3;
 
-        //TODO : refac error handling
-        if (!IsValidTriangle())
-            throw new ArgumentException("The points do not form a valid triangle.");
+        if (!IsValidTriangle()) throw new ArgumentException(ExceptionMessageFormatter.IsInvalid("triangle"));
 
         Color = color;
         BoundingBox = CalculateBoundingBox();

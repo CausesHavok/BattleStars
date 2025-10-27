@@ -22,7 +22,7 @@ public class InputHandler : IInputHandler
     /// Initializes a new instance of the <see cref="InputHandler"/> class.
     /// </summary>
     /// <param name="keyboardProvider">The keyboard provider to use for input handling.</param>
-    /// <exception cref="ArgumentNullException">Thrown if <paramref name="keyboardProvider"/> is null.</exception>
+    /// <exception cref="NullException">Thrown if <paramref name="keyboardProvider"/> is null.</exception>
     public InputHandler(IKeyboardProvider keyboardProvider) =>
         _keyboardProvider = Guard.NotNull(keyboardProvider);
 

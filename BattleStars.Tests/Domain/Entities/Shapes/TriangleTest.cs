@@ -43,7 +43,7 @@ public class TriangleTest
         Action act = () => new Triangle(Point1, Point2, Point3, Color.Red, drawerMock);
 
         act.Should().Throw<ArgumentException>()
-            .WithMessage("The points do not form a valid triangle.*");
+            .WithMessage("*triangle is invalid*");
     }
 
     [Fact]

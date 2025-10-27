@@ -3,6 +3,7 @@ using BattleStars.Domain.Interfaces;
 using BattleStars.Domain.ValueObjects;
 using BattleStars.Core.Guards;
 using BattleStars.Presentation.Drawers;
+using BattleStars.Core.Guards.Utilities;
 
 namespace BattleStars.Infrastructure.Factories;
 
@@ -43,7 +44,7 @@ public static class ShapeFactory
             ShapeType.Square => CreateSquare(shapeDescriptor, drawer),
             ShapeType.Triangle => CreateTriangle(shapeDescriptor, drawer),
             ShapeType.Hexagon => CreateHexagon(shapeDescriptor, drawer),
-            _ => throw new ArgumentException("Invalid shape type"), //TODO : refac error handling
+            _ => throw new ArgumentException(ExceptionMessageFormatter.InvalidEnumValue(typeof(ShapeType)), nameof(shapeDescriptor.ShapeType)),
         };
     }
 
